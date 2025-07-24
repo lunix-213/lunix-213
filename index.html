@@ -1,199 +1,913 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fantasy Game Landing Page</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Orbitron', sans-serif;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUNIX World</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #000000 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+        
+        /* Header/Navigation */
+        header {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            transition: background-color 0.3s ease;
+        }
+        
+        header:hover {
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ff3366;
+            text-shadow: 0 0 10px rgba(255, 51, 102, 0.5);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 2rem;
+        }
+        
+        nav ul li a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        nav ul li a:hover {
+            color: #ff3366;
+        }
+        
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #ff3366;
+            transition: width 0.3s;
+        }
+        
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+        
+        .btn {
+            background-color: #ff3366;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: #ff6699;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 51, 102, 0.5);
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('https://via.placeholder.com/1920x1080/1a1a2e/ffffff?text=Celestial+Odyssey') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 2rem;
+            padding-top: 80px;
+        }
+        
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #ff3366;
+            text-shadow: 0 0 20px rgba(255, 51, 102, 0.7);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin-bottom: 2rem;
+            color: #ccc;
+        }
+        
+        .hero-btns {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: #ff3366;
+            border: 2px solid #ff3366;
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(255, 51, 102, 0.1);
+        }
+        
+        /* Image Carousel */
+        .carousel-container {
+            width: 80%;
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .carousel {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            height: 300px;
+        }
+        
+        .carousel img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        
+        .carousel-nav {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+        
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .carousel-dot.active {
+            background-color: #ff3366;
+            transform: scale(1.2);
+        }
+        
+        /* Characters Section */
+        .section {
+            padding: 5rem 2rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #ff3366;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #ff3366, transparent);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .characters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .character-card {
+            background-color: rgba(26, 26, 46, 0.8);
+            border-radius: 10px;
+            overflow: hidden;
+            width: 280px;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
+        
+        .character-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(255, 51, 102, 0.3);
+            border-color: rgba(255, 51, 102, 0.5);
+        }
+        
+        .character-img {
+            height: 350px;
+            background-color: #1a1a2e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #e0e0e0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .character-info {
+            padding: 1.5rem;
+        }
+        
+        .character-name {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #ff3366;
+        }
+        
+        .character-element {
+            display: inline-block;
+            padding: 0.2rem 0.8rem;
+            background-color: rgba(26, 26, 46, 0.8);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Game Features */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .feature-card {
+            background-color: rgba(26, 26, 46, 0.8);
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 51, 102, 0.2);
+            border-color: rgba(255, 51, 102, 0.3);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: #ff3366;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #ff3366;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: rgba(10, 10, 20, 0.9);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff3366;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 10px rgba(255, 51, 102, 0.5);
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .social-links a {
+            color: #e0e0e0;
+            font-size: 1.5rem;
+            transition: all 0.3s;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .social-links a:hover {
+            color: #ff3366;
+            background-color: rgba(255, 51, 102, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            color: #7a7a8c;
+            font-size: 0.9rem;
+        }
+        
+        /* Side Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 400px;
+            height: 100%;
+            background-color: white;
+            z-index: 1000;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+            transform: translateX(100%);
+        }
+        
+        .modal.active {
+            display: block;
+            transform: translateX(0);
+        }
+        
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        
+        .modal-overlay.active {
+            display: block;
+        }
+        
+        .modal-content {
+            padding: 2rem;
+            color: #333;
+            height: 100%;
+            overflow-y: auto;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #333;
+            background: none;
+            border: none;
+            z-index: 1001;
+        }
+        
+        .modal-title {
+            color: #ff3366;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+        
+        .modal-subtitle {
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .modal-list {
+            list-style-type: none;
+            margin-top: 1.5rem;
+        }
+        
+        .modal-list li {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .modal-list a {
+            color: #ff3366;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+            display: block;
+            padding: 0.5rem 0;
+        }
+        
+        .modal-list a:hover {
+            color: #ff6699;
+        }
+        
+        .character-description {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .element-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
 
-    body {
-      background: linear-gradient(135deg, #1e1e2f, #2c3e50);
-      color: white;
-    }
+        .Spreadsheet {
+            background-color: #37be74;
+            color: #005536f8;
+        }
+        
+        .anemo {
+            background-color: #74d6a0;
+            color: #0a3d2a;
+        }
+        
+        .geo {
+            background-color: #f5c66e;
+            color: #5a3a0a;
+        }
+        
+        .pyro {
+            background-color: #ff8c7a;
+            color: #5a0e03;
+        }
 
-    header {
-      background-image: url('https://source.unsplash.com/1600x900/?fantasy,game');
-      background-size: cover;
-      background-position: center;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      position: relative;
-    }
+        .character-img {
+         height: 350px; /* Fixed height */
+        overflow: hidden; /* Hide overflow */
+        }
 
-    header::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.0);
-    }
+        .character-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* This makes images cover the container */
+        object-position: center; /* Focus on center of image */
+        }
 
-    header h1 {
-		z-index: 1;
-		font-size: 3.5rem;
-		color: #fff;
-		animation: fadeInDown 1.2s ease;
-		text-shadow: 0 0 10px #00f0ff, 0 0 20px #00f0ff, 0 0 30px #00f0ff;
-    }
-
-    header p {
-      z-index: 1;
-      margin-top: 10px;
-      font-size: 1.2rem;
-      color: #ccc;
-      animation: fadeInUp 1.5s ease;
-    }
-
-    @keyframes fadeInDown {
-      from {
-        opacity: 0;
-        transform: translateY(-30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    section {
-      padding: 60px 20px;
-      max-width: 1200px;
-      margin: auto;
-    }
-
-    .features {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 30px;
-      justify-content: space-around;
-      text-align: center;
-    }
-
-    .feature {
-      flex: 1 1 300px;
-      background: #333948;
-      border-radius: 10px;
-      padding: 30px;
-      transition: transform 0.3s;
-    }
-
-    .feature:hover {
-      transform: translateY(-10px);
-      background: #3e4a60;
-    }
-
-    .feature img {
-      width: 80px;
-      margin-bottom: 20px;
-    }
-
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-
-    .gallery img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      border-radius: 10px;
-    }
-
-    .cta {
-      text-align: center;
-      margin-top: 40px;
-    }
-
-    .cta a {
-      text-decoration: none;
-      background: #e91e63;
-      color: white;
-      padding: 15px 30px;
-      border-radius: 30px;
-      font-size: 1.2rem;
-      transition: background 0.3s;
-    }
-
-    .cta a:hover {
-      background: #c2185b;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: #1c1c2b;
-      font-size: 0.9rem;
-      color: #aaa;
-    }
-  </style>
+        .carousel img {
+        width: 100%;
+        height: 300px; /* Fixed height for carousel */
+        object-fit: cover; /* Maintain aspect ratio */
+        }
+        
+        @media (max-width: 768px) {
+            .modal {
+                width: 80%;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <div>
-      <h1>LUNIX WORLD</h1>
-      <p>Embark on an epic journey in a world full of magic and mystery.</p>
-    </div>
-  </header>
+    <header>
+        <div class="logo">LUNIX</div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#characters">Characters</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#">News</a></li>
+                <li><a href="#" class="btn">Download</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <section class="hero">
+        <h1>Embark on an Epic Journey</h1>
+        <p>Explore the vast world of galaxy, uncover its secrets, and build your team of powerful characters in this breathtaking open-world adventure.</p>
+        <div class="hero-btns">
+            <a href="#" class="btn">Play Now</a>
+            <a href="#" class="btn btn-secondary">Watch Trailer</a>
+        </div>
+        
+        <!-- Image Carousel -->
+        <div class="carousel-container">
+            <div class="carousel">
+                <img src="https://via.placeholder.com/1000x300/1a1a2e/ffffff?text=Game+Screenshot+1" alt="Game Screenshot 1">
+                <img src="https://via.placeholder.com/1000x300/2a2a3e/ffffff?text=Game+Screenshot+2" alt="Game Screenshot 2">
+                <img src="https://via.placeholder.com/1000x300/3a3a4e/ffffff?text=Game+Screenshot+3" alt="Game Screenshot 3">
+                <img src="https://via.placeholder.com/1000x300/4a4a5e/ffffff?text=Game+Screenshot+4" alt="Game Screenshot 4">
+                <img src="https://via.placeholder.com/1000x300/5a5a6e/ffffff?text=Game+Screenshot+5" alt="Game Screenshot 5">
+            </div>
+            <div class="carousel-nav">
+                <div class="carousel-dot active" data-index="0"></div>
+                <div class="carousel-dot" data-index="1"></div>
+                <div class="carousel-dot" data-index="2"></div>
+                <div class="carousel-dot" data-index="3"></div>
+                <div class="carousel-dot" data-index="4"></div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="characters" class="section">
+        <h2 class="section-title">Meet the Worlds</h2>
+        <div class="characters">
+            <!-- Aether Character -->
+            <div class="character-card" onclick="openModal('aether')">
+                <div class="character-img">
+                    <img src="img/char001.jpg" alt="Aether character art">
+                </div>
+                <div class="character-info">
+                    <h3 class="character-name">LuniX - GAJI</h3>
+                    <span class="character-element">Spreadsheet</span>
+                    <p>Spreadsheet khusus untuk pengelolaan Gaji RSUD dr. Soekardjo kota Tasikmalaya (2025)</p>
+                </div>
+            </div>
+            
+            <!-- Lumine Character -->
+            <div class="character-card" onclick="openModal('lumine')">
+                <div class="character-img">
+                    [Placeholder: Lumine Art]
+                </div>
+                <div class="character-info">
+                    <h3 class="character-name">LuniX - TPP</h3>
+                    <span class="character-element">Spreadsheet</span>
+                    <p>Spreadsheet khusus untuk pengelolaan TPP RSUD dr. Soekardjo kota Tasikmalaya (2025)</p>
+                </div>
+            </div>
+            
+            <!-- Ventus Character -->
+            <div class="character-card" onclick="openModal('ventus')">
+                <div class="character-img">
+                    [Placeholder: Ventus Art]
+                </div>
+                <div class="character-info">
+                    <h3 class="character-name">Ventus</h3>
+                    <span class="character-element">Anemo</span>
+                    <p>A carefree bard who seems to know more than he lets on.</p>
+                </div>
+            </div>
+            
+            <!-- Pyra Character -->
+            <div class="character-card" onclick="openModal('pyra')">
+                <div class="character-img">
+                    [Placeholder: Pyra Art]
+                </div>
+                <div class="character-info">
+                    <h3 class="character-name">Pyra</h3>
+                    <span class="character-element">Pyro</span>
+                    <p>A fiery warrior with a strong sense of justice and loyalty.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="features" class="section" style="background: rgba(0, 0, 0, 0.3);">
+        <h2 class="section-title">Game Features</h2>
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🌍</div>
+                <h3 class="feature-title">Vast Open World</h3>
+                <p>Explore a beautifully crafted world with diverse landscapes, hidden treasures, and dynamic weather.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">⚔️</div>
+                <h3 class="feature-title">Elemental Combat</h3>
+                <p>Master the elements and combine them for devastating effects in real-time battles.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">👥</div>
+                <h3 class="feature-title">Character Collection</h3>
+                <p>Build your dream team from dozens of unique characters, each with their own story and abilities.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🏰</div>
+                <h3 class="feature-title">Co-op Adventures</h3>
+                <p>Team up with friends to tackle challenging domains and world bosses together.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🎶</div>
+                <h3 class="feature-title">Stunning Soundtrack</h3>
+                <p>Immerse yourself in a world brought to life by an award-winning orchestral score.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📖</div>
+                <h3 class="feature-title">Engaging Story</h3>
+                <p>Unravel the mysteries of Teyvat through an epic narrative with regular updates.</p>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="footer-logo">LUNIX</div>
+        <div class="social-links">
+            <a href="#">📘</a>
+            <a href="#">🐦</a>
+            <a href="#">📷</a>
+            <a href="#">▶️</a>
+            <a href="#">🎮</a>
+        </div>
+        <p class="copyright">© 2025 LUNIX. All rights reserved. | Privacy Policy | Terms of Service</p>
+    </footer>
 
-  <section>
-    <h2 style="text-align: center; margin-bottom: 40px;">Game Features</h2>
-    <div class="features">
-      <div class="feature">
-        <img src="https://cdn-icons-png.flaticon.com/512/189/189001.png" alt="Open World" />
-        <h3>Open World</h3>
-        <p>Explore vast magical realms with dynamic weather and time systems.</p>
-      </div>
-      <div class="feature">
-        <img src="https://cdn-icons-png.flaticon.com/512/3144/3144456.png" alt="Multiplayer" />
-        <h3>Multiplayer</h3>
-        <p>Team up with friends and defeat legendary bosses together.</p>
-      </div>
-      <div class="feature">
-        <img src="https://cdn-icons-png.flaticon.com/512/854/854866.png" alt="Customization" />
-        <h3>Customization</h3>
-        <p>Create and customize your hero with endless gear and skills.</p>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2 style="text-align: center; margin-bottom: 40px;">Gallery</h2>
-    <div class="gallery">
-      <img src="https://source.unsplash.com/800x600/?fantasy,landscape" alt="screenshot1" />
-      <img src="https://source.unsplash.com/801x601/?castle,game" alt="screenshot2" />
-      <img src="https://source.unsplash.com/802x602/?dragon,fantasy" alt="screenshot3" />
-      <img src="https://source.unsplash.com/803x603/?magic,warrior" alt="screenshot4" />
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" id="modal-overlay" onclick="closeModal()"></div>
+    
+    <!-- Character Modal (single modal that gets updated) -->
+    <div class="modal" id="character-modal">
+        <button class="close-modal" onclick="closeModal()">×</button>
+        <div class="modal-content" id="modal-content">
+            <!-- Content will be inserted here by JavaScript -->
+        </div>
     </div>
 
-    <div class="cta">
-      <h2>Ready to begin your quest?</h2>
-      <a href="#">Download Now</a>
-    </div>
-  </section>
-
-  <footer>
-    &copy; 2025 Fantasy Quest. All rights reserved.
-  </footer>
+    <script>
+        // Carousel functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const carousel = document.querySelector('.carousel');
+            const dots = document.querySelectorAll('.carousel-dot');
+            const images = document.querySelectorAll('.carousel img');
+            const totalImages = images.length;
+            let currentIndex = 0;
+            let interval;
+            
+            // Set initial position
+            updateCarousel();
+            
+            // Auto-rotate carousel
+            function startCarousel() {
+                interval = setInterval(() => {
+                    currentIndex = (currentIndex + 1) % totalImages;
+                    updateCarousel();
+                }, 3000);
+            }
+            
+            // Update carousel position and active dot
+            function updateCarousel() {
+                carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
+                
+                // Update dots
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentIndex);
+                });
+            }
+            
+            // Dot click event
+            dots.forEach(dot => {
+                dot.addEventListener('click', function() {
+                    currentIndex = parseInt(this.getAttribute('data-index'));
+                    updateCarousel();
+                    resetInterval();
+                });
+            });
+            
+            // Reset interval when user interacts
+            function resetInterval() {
+                clearInterval(interval);
+                startCarousel();
+            }
+            
+            // Start the carousel
+            startCarousel();
+            
+            // Pause on hover
+            carousel.addEventListener('mouseenter', () => clearInterval(interval));
+            carousel.addEventListener('mouseleave', startCarousel);
+        });
+        
+        // Character data with unique modal content
+        const characters = {
+            aether: {
+                name: "LUNIX - Gaji",
+                title: "Gaji RSUD dr. Soekardjo Kota Tasikmalaya 2025",
+                element: "Spreadsheet",
+                description: "Spreadsheet khusus untuk gaji mulai dari 2025.",
+                stats: {
+                    rarity: "5-Star",
+                    weapon: "Spreadsheet",
+                    region: "Laniakea"
+                },
+                lists: [
+                    {
+                        title: "List Gaji",
+                        items: [
+                            {text: "01. Lunix Gaji bulan Januari 2025", href: "#"},
+                            {text: "02. Lunix Gaji bulan Februari 2025", href: "#"},
+                            {text: "03. Lunix Gaji bulan Maret 2025", href: "#"},
+                            {text: "04. Lunix Gaji bulan April 2025", href: "#"},
+                            {text: "05. Lunix Gaji bulan Mei 2025", href: "#"},
+                            {text: "06. Lunix Gaji bulan Juni 2025", href: "#"},
+                            {text: "07. Lunix Gaji bulan Juli 2025", href: "#"},
+                            {text: "08. Lunix Gaji bulan Agustus 2025", href: "#"},
+                            {text: "09. Lunix Gaji bulan September 2025", href: "#"},
+                            {text: "10. Lunix Gaji bulan Oktober 2025", href: "#"},
+                            {text: "11. Lunix Gaji bulan November 2025", href: "#"},
+                            {text: "12. Lunix Gaji bulan Desember 2025", href: "#"}
+                        ]
+                    },
+                    {
+                        title: "Recommended Builds",
+                        items: [
+                            {text: "Anemo Support Build", href: "#"},
+                            {text: "Physical DPS Build", href: "#"}
+                        ]
+                    }
+                ]
+            },
+            lumine: {
+                name: "Lunix - TPP",
+                title: "Tambahan Penghasilan Pegawai",
+                element: "Spreadsheet",
+                description: "TPP khusus RSUD dr. Soekardjo",
+                stats: {
+                    rarity: "5-Star",
+                    weapon: "Spreadsheet",
+                    region: "Summer Triangle"
+                },
+                lists: [
+                    {
+                        title: "List TPP",
+                        items: [
+                            {text: "01. Lunix TPP bulan Januari 2025", href: "#"},
+                            {text: "02. Lunix TPP bulan Februari 2025", href: "#"},
+                            {text: "03. Lunix TPP bulan Maret 2025", href: "#"},
+                            {text: "04. Lunix TPP bulan April 2025", href: "#"},
+                            {text: "05. Lunix TPP bulan Mei 2025", href: "#"},
+                            {text: "06. Lunix TPP bulan Juni 2025", href: "#"},
+                            {text: "07. Lunix TPP bulan Juli 2025", href: "#"},
+                            {text: "08. Lunix TPP bulan Agustus 2025", href: "#"},
+                            {text: "09. Lunix TPP bulan September 2025", href: "#"},
+                            {text: "10. Lunix TPP bulan Oktober 2025", href: "#"},
+                            {text: "11. Lunix TPP bulan November 2025", href: "#"},
+                            {text: "12. Lunix TPP bulan Desember 2025", href: "#"}
+                        ]
+                    },
+                    {
+                        title: "Recommended Builds",
+                        items: [
+                            {text: "Geo Support Build", href: "#"},
+                            {text: "Defense Scaling Build", href: "#"}
+                        ]
+                    }
+                ]
+            },
+            ventus: {
+                name: "Ventus",
+                title: "The Free-Spirited Bard",
+                element: "anemo",
+                description: "A wandering bard who seems to know songs from every corner of Teyvat. Though he appears carefree, Ventus hides a mysterious past and great power as an Anemo archon.",
+                stats: {
+                    rarity: "5-Star",
+                    weapon: "Bow",
+                    region: "Mondstadt"
+                },
+                lists: [
+                    {
+                        title: "Combat Skills",
+                        items: [
+                            {text: "Divine Marksmanship (Normal Attack)", href: "#"},
+                            {text: "Skyward Sonnet (Elemental Skill)", href: "#"},
+                            {text: "Wind's Grand Ode (Elemental Burst)", href: "#"}
+                        ]
+                    },
+                    {
+                        title: "Team Compositions",
+                        items: [
+                            {text: "Swirl Support Team", href: "#"},
+                            {text: "Elemental Reaction Team", href: "#"}
+                        ]
+                    }
+                ]
+            },
+            pyra: {
+                name: "Pyra",
+                title: "The Flame of Justice",
+                element: "pyro",
+                description: "A fierce warrior from Natlan who wields a greatsword with unmatched strength. Pyra's burning passion for justice is matched only by the flames she commands.",
+                stats: {
+                    rarity: "4-Star",
+                    weapon: "Claymore",
+                    region: "Natlan"
+                },
+                lists: [
+                    {
+                        title: "Combat Skills",
+                        items: [
+                            {text: "Blazing Onslaught (Normal Attack)", href: "#"},
+                            {text: "Flame Sweep (Elemental Skill)", href: "#"},
+                            {text: "Inferno Cleave (Elemental Burst)", href: "#"}
+                        ]
+                    },
+                    {
+                        title: "Best Artifacts",
+                        items: [
+                            {text: "Crimson Witch Set", href: "#"},
+                            {text: "Gladiator's Finale Set", href: "#"}
+                        ]
+                    }
+                ]
+            }
+        };
+        
+        // Modal functionality
+        function openModal(character) {
+            const modal = document.getElementById('character-modal');
+            const overlay = document.getElementById('modal-overlay');
+            const content = document.getElementById('modal-content');
+            
+            // Set modal content
+            const charData = characters[character];
+            let html = `
+                <h2 class="modal-title">${charData.name}</h2>
+                <h3 class="modal-subtitle">${charData.title}</h3>
+                <span class="element-badge ${charData.element}">${charData.element.toUpperCase()}</span>
+                <p class="character-description">${charData.description}</p>
+                <div style="display: flex; gap: 2rem; margin-bottom: 1.5rem;">
+                    <div>
+                        <strong>Rarity</strong><br>
+                        ${charData.stats.rarity}
+                    </div>
+                    <div>
+                        <strong>Class</strong><br>
+                        ${charData.stats.weapon}
+                    </div>
+                    <div>
+                        <strong>Region</strong><br>
+                        ${charData.stats.region}
+                    </div>
+                </div>
+            `;
+            
+            // Add each list
+            charData.lists.forEach(list => {
+                html += `<h4 style="color: #ff3366; margin: 1.5rem 0 0.5rem;">${list.title}</h4><ul class="modal-list">`;
+                list.items.forEach(item => {
+                    html += `<li><a href="${item.href}">${item.text}</a></li>`;
+                });
+                html += '</ul>';
+            });
+            
+            content.innerHTML = html;
+            
+            // Show modal and overlay
+            modal.classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal() {
+            const modal = document.getElementById('character-modal');
+            const overlay = document.getElementById('modal-overlay');
+            
+            modal.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close modal when pressing Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
 </body>
 </html>
