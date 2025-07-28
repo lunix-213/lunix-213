@@ -239,16 +239,28 @@
             border-color: rgba(255, 51, 102, 0.5);
         }
         
-        .character-img {
+       .character-img {
             height: 350px;
-            background-color: #1a1a2e;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: #e0e0e0;
+            background-color: #1a1a2e;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .character-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            transition: transform 0.3s ease;
         }
         
+        .character-card:hover .character-img img {
+            transform: scale(1.05);
+        }
         .character-info {
             padding: 1.5rem;
         }
@@ -303,195 +315,6 @@
             font-size: 1.5rem;
             margin-bottom: 1rem;
             color: #ff3366;
-        }
-        
-        /* Footer */
-        footer {
-            background-color: rgba(10, 10, 20, 0.9);
-            padding: 3rem 2rem;
-            text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .footer-logo {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #ff3366;
-            margin-bottom: 1.5rem;
-            text-shadow: 0 0 10px rgba(255, 51, 102, 0.5);
-        }
-        
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .social-links a {
-            color: #e0e0e0;
-            font-size: 1.5rem;
-            transition: all 0.3s;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-        
-        .social-links a:hover {
-            color: #ff3366;
-            background-color: rgba(255, 51, 102, 0.2);
-            transform: translateY(-3px);
-        }
-        
-        .copyright {
-            color: #7a7a8c;
-            font-size: 0.9rem;
-        }
-        
-        /* Side Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 400px;
-            height: 100%;
-            background-color: white;
-            z-index: 1000;
-            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease;
-            transform: translateX(100%);
-        }
-        
-        .modal.active {
-            display: block;
-            transform: translateX(0);
-        }
-        
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-        }
-        
-        .modal-overlay.active {
-            display: block;
-        }
-        
-        .modal-content {
-            padding: 2rem;
-            color: #333;
-            height: 100%;
-            overflow-y: auto;
-        }
-        
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #333;
-            background: none;
-            border: none;
-            z-index: 1001;
-        }
-        
-        .modal-title {
-            color: #ff3366;
-            margin-bottom: 1.5rem;
-            font-size: 2rem;
-        }
-        
-        .modal-subtitle {
-            color: #666;
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
-        }
-        
-        .modal-list {
-            list-style-type: none;
-            margin-top: 1.5rem;
-        }
-        
-        .modal-list li {
-            margin-bottom: 1rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .modal-list a {
-            color: #ff3366;
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.3s;
-            display: block;
-            padding: 0.5rem 0;
-        }
-        
-        .modal-list a:hover {
-            color: #ff6699;
-        }
-        
-        .character-description {
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-        
-        .element-badge {
-            display: inline-block;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
-
-        .Spreadsheet {
-            background-color: #37be74;
-            color: #005536f8;
-        }
-        
-        .anemo {
-            background-color: #74d6a0;
-            color: #0a3d2a;
-        }
-        
-        .geo {
-            background-color: #f5c66e;
-            color: #5a3a0a;
-        }
-        
-        .pyro {
-            background-color: #ff8c7a;
-            color: #5a0e03;
-        }
-
-        .character-img {
-         height: 350px; /* Fixed height */
-        overflow: hidden; /* Hide overflow */
-        }
-
-        .character-img img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover; /* This makes images cover the container */
-        object-position: center; /* Focus on center of image */
-        }
-
-        .carousel img {
-        width: 100%;
-        height: 300px; /* Fixed height for carousel */
-        object-fit: cover; /* Maintain aspect ratio */
         }
         
         /* News Section Styles */
@@ -614,9 +437,6 @@
         }
         
         @media (max-width: 768px) {
-            .modal {
-                width: 80%;
-            }
             .news-modal {
                 width: 80%;
             }
@@ -715,7 +535,7 @@
                 </div>
             </div>
 
-         <!-- Pyra Character -->
+            <!-- Lux Character -->
             <div class="character-card" onclick="openModal('lux')">
                 <div class="character-img">
                     <img src="img/char001.jpg" alt="Character art">
@@ -793,7 +613,7 @@
     <!-- Modal Overlay -->
     <div class="modal-overlay" id="modal-overlay" onclick="closeModal()"></div>
     
-    <!-- Character Modal (single modal that gets updated) -->
+    <!-- Character Modal -->
     <div class="modal" id="character-modal">
         <button class="close-modal" onclick="closeModal()">×</button>
         <div class="modal-content" id="modal-content">
@@ -810,322 +630,58 @@
     </div>
 
     <script>
-        // Carousel functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const carousel = document.querySelector('.carousel');
-            const dots = document.querySelectorAll('.carousel-dot');
-            const images = document.querySelectorAll('.carousel img');
-            const totalImages = images.length;
-            let currentIndex = 0;
-            let interval;
-            
-            // Set initial position
-            updateCarousel();
-            
-            // Auto-rotate carousel
-            function startCarousel() {
-                interval = setInterval(() => {
-                    currentIndex = (currentIndex + 1) % totalImages;
-                    updateCarousel();
-                }, 3000);
-            }
-            
-            // Update carousel position and active dot
-            function updateCarousel() {
-                carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
-                
-                // Update dots
-                dots.forEach((dot, index) => {
-                    dot.classList.toggle('active', index === currentIndex);
-                });
-            }
-            
-            // Dot click event
-            dots.forEach(dot => {
-                dot.addEventListener('click', function() {
-                    currentIndex = parseInt(this.getAttribute('data-index'));
-                    updateCarousel();
-                    resetInterval();
-                });
-            });
-            
-            // Reset interval when user interacts
-            function resetInterval() {
-                clearInterval(interval);
-                startCarousel();
-            }
-            
-            // Start the carousel
-            startCarousel();
-            
-            // Pause on hover
-            carousel.addEventListener('mouseenter', () => clearInterval(interval));
-            carousel.addEventListener('mouseleave', startCarousel);
-            
-            // Load news
-            loadNews();
-        });
-        
-        // Character data with unique modal content
-        const characters = {
-            aether: {
-                name: "LUNIX - Gaji",
-                title: "Gaji RSUD dr. Soekardjo Kota Tasikmalaya 2025",
-                element: "Spreadsheet",
-                description: "Spreadsheet khusus untuk gaji mulai dari 2025.",
-                stats: {
-                    rarity: "5-Star",
-                    weapon: "Spreadsheet",
-                    region: "Laniakea"
-                },
-                lists: [
-                    {
-                        title: "List Gaji",
-                        items: [
-                            {text: "00. Lunix Gaji bulan ke-13 2025", href: "#"},
-                            {text: "00. Lunix Gaji THR 2025", href: "#"},
-                            {text: "01. Lunix Gaji bulan Januari 2025", href: "#"},
-                            {text: "02. Lunix Gaji bulan Februari 2025", href: "#"},
-                            {text: "03. Lunix Gaji bulan Maret 2025", href: "#"},
-                            {text: "04. Lunix Gaji bulan April 2025", href: "#"},
-                            {text: "05. Lunix Gaji bulan Mei 2025", href: "#"},
-                            {text: "06. Lunix Gaji bulan Juni 2025", href: "#"},
-                            {text: "07. Lunix Gaji bulan Juli 2025", href: "#"},
-                            {text: "08. Lunix Gaji bulan Agustus 2025", href: "#"},
-                            {text: "09. Lunix Gaji bulan September 2025", href: "#"},
-                            {text: "10. Lunix Gaji bulan Oktober 2025", href: "#"},
-                            {text: "11. Lunix Gaji bulan November 2025", href: "#"},
-                            {text: "12. Lunix Gaji bulan Desember 2025", href: "#"}
-                        ]
-                    },
-                    {
-                        title: "Recommended Builds",
-                        items: [
-                            {text: "Anemo Support Build", href: "#"},
-                            {text: "Physical DPS Build", href: "#"}
-                        ]
-                    }
-                ]
+        // Data JSON untuk berita
+        const newsData = [
+            {
+                "id": "1",
+                "tanggal": "01-Feb",
+                "jenis": "Berita",
+                "judul": "Pembaruan untuk sistem Gaji",
+                "isi": "Ini adalah sample isi berita tentang pembaruan sistem gaji terbaru. Sistem ini telah diperbarui dengan fitur-fitur baru yang memudahkan pengelolaan gaji bulanan.",
+                "card_image": "img/char001.jpg",
+                "modal_image": "img/char001.jpg"
             },
-            lumine: {
-                name: "Lunix - TPP",
-                title: "Tambahan Penghasilan Pegawai",
-                element: "Spreadsheet",
-                description: "TPP khusus RSUD dr. Soekardjo",
-                stats: {
-                    rarity: "5-Star",
-                    weapon: "Spreadsheet",
-                    region: "Summer Triangle"
-                },
-                lists: [
-                    {
-                        title: "List TPP",
-                        items: [
-                            {text: "00. Lunix TPP bulan ke-13 2025", href: "#"},
-                            {text: "00. Lunix TPP THR 2025", href: "#"},
-                            {text: "01. Lunix TPP bulan Januari 2025", href: "#"},
-                            {text: "02. Lunix TPP bulan Februari 2025", href: "#"},
-                            {text: "03. Lunix TPP bulan Maret 2025", href: "#"},
-                            {text: "04. Lunix TPP bulan April 2025", href: "#"},
-                            {text: "05. Lunix TPP bulan Mei 2025", href: "#"},
-                            {text: "06. Lunix TPP bulan Juni 2025", href: "#"},
-                            {text: "07. Lunix TPP bulan Juli 2025", href: "#"},
-                            {text: "08. Lunix TPP bulan Agustus 2025", href: "#"},
-                            {text: "09. Lunix TPP bulan September 2025", href: "#"},
-                            {text: "10. Lunix TPP bulan Oktober 2025", href: "#"},
-                            {text: "11. Lunix TPP bulan November 2025", href: "#"},
-                            {text: "12. Lunix TPP bulan Desember 2025", href: "#"}
-                        ]
-                    },
-                    {
-                        title: "Recommended Builds",
-                        items: [
-                            {text: "Geo Support Build", href: "#"},
-                            {text: "Defense Scaling Build", href: "#"}
-                        ]
-                    }
-                ]
+            {
+                "id": "2",
+                "tanggal": "02-Feb",
+                "jenis": "Berita",
+                "judul": "Pembaruan untuk TPP secara bertahap",
+                "isi": "Ini adalah sample isi berita tentang pembaruan sistem TPP. Pembaruan akan dilakukan secara bertahap untuk memastikan stabilitas sistem.",
+                "card_image": "img/char002.jpg",
+                "modal_image": "img/char002.jpg"
             },
-            ventus: {
-                name: "Ventus",
-                title: "The Free-Spirited Bard",
-                element: "anemo",
-                description: "A wandering bard who seems to know songs from every corner of Teyvat. Though he appears carefree, Ventus hides a mysterious past and great power as an Anemo archon.",
-                stats: {
-                    rarity: "5-Star",
-                    weapon: "Bow",
-                    region: "Mondstadt"
-                },
-                lists: [
-                    {
-                        title: "Combat Skills",
-                        items: [
-                            {text: "Divine Marksmanship (Normal Attack)", href: "#"},
-                            {text: "Skyward Sonnet (Elemental Skill)", href: "#"},
-                            {text: "Wind's Grand Ode (Elemental Burst)", href: "#"}
-                        ]
-                    },
-                    {
-                        title: "Team Compositions",
-                        items: [
-                            {text: "Swirl Support Team", href: "#"},
-                            {text: "Elemental Reaction Team", href: "#"}
-                        ]
-                    }
-                ]
-            },
-             lux: {
-                name: "Lux",
-                title: "The Free-Spirited Bard",
-                element: "anemo",
-                description: "A wandering bard who seems to know songs from every corner of Teyvat. Though he appears carefree, Ventus hides a mysterious past and great power as an Anemo archon.",
-                stats: {
-                    rarity: "5-Star",
-                    weapon: "Bow",
-                    region: "Mondstadt"
-                },
-                lists: [
-                    {
-                        title: "Combat Skills",
-                        items: [
-                            {text: "Divine Marksmanship (Normal Attack)", href: "#"},
-                            {text: "Skyward Sonnet (Elemental Skill)", href: "#"},
-                            {text: "Wind's Grand Ode (Elemental Burst)", href: "#"}
-                        ]
-                    },
-                    {
-                        title: "Team Compositions",
-                        items: [
-                            {text: "Swirl Support Team", href: "#"},
-                            {text: "Elemental Reaction Team", href: "#"}
-                        ]
-                    }
-                ]
-            },
-            pyra: {
-                name: "Pyra",
-                title: "The Flame of Justice",
-                element: "pyro",
-                description: "A fierce warrior from Natlan who wields a greatsword with unmatched strength. Pyra's burning passion for justice is matched only by the flames she commands.",
-                stats: {
-                    rarity: "4-Star",
-                    weapon: "Claymore",
-                    region: "Natlan"
-                },
-                lists: [
-                    {
-                        title: "Combat Skills",
-                        items: [
-                            {text: "Blazing Onslaught (Normal Attack)", href: "#"},
-                            {text: "Flame Sweep (Elemental Skill)", href: "#"},
-                            {text: "Inferno Cleave (Elemental Burst)", href: "#"}
-                        ]
-                    },
-                    {
-                        title: "Best Artifacts",
-                        items: [
-                            {text: "Crimson Witch Set", href: "#"},
-                            {text: "Gladiator's Finale Set", href: "#"}
-                        ]
-                    }
-                ]
+            {
+                "id": "3",
+                "tanggal": "03-Feb",
+                "jenis": "Pengumuman",
+                "judul": "Pembaruan Data Terbaru",
+                "isi": "Ini adalah sample isi berita tentang pembaruan data terbaru. Semua data telah diperbaharui sesuai dengan ketentuan yang berlaku.",
+                "card_image": "img/char003.jpg",
+                "modal_image": "img/char003.jpg"
             }
-        };
-        
-        // Modal functionality
-        function openModal(character) {
-            const modal = document.getElementById('character-modal');
-            const overlay = document.getElementById('modal-overlay');
-            const content = document.getElementById('modal-content');
-            
-            // Set modal content
-            const charData = characters[character];
-            let html = `
-                <h2 class="modal-title">${charData.name}</h2>
-                <h3 class="modal-subtitle">${charData.title}</h3>
-                <span class="element-badge ${charData.element}">${charData.element.toUpperCase()}</span>
-                <p class="character-description">${charData.description}</p>
-                <div style="display: flex; gap: 2rem; margin-bottom: 1.5rem;">
-                    <div>
-                        <strong>Rarity</strong><br>
-                        ${charData.stats.rarity}
-                    </div>
-                    <div>
-                        <strong>Class</strong><br>
-                        ${charData.stats.weapon}
-                    </div>
-                    <div>
-                        <strong>Region</strong><br>
-                        ${charData.stats.region}
-                    </div>
-                </div>
-            `;
-            
-            // Add each list
-            charData.lists.forEach(list => {
-                html += `<h4 style="color: #ff3366; margin: 1.5rem 0 0.5rem;">${list.title}</h4><ul class="modal-list">`;
-                list.items.forEach(item => {
-                    html += `<li><a href="${item.href}">${item.text}</a></li>`;
-                });
-                html += '</ul>';
-            });
-            
-            content.innerHTML = html;
-            
-            // Show modal and overlay
-            modal.classList.add('active');
-            overlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-        
-        function closeModal() {
-            const modal = document.getElementById('character-modal');
-            const overlay = document.getElementById('modal-overlay');
-            
-            modal.classList.remove('active');
-            overlay.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-        
+        ];
+
         // News functionality
         function loadNews() {
-            // CSV data yang Anda berikan
-            const csvData = `ID;tanggal;jenis;Judul;Isi
-1;01-Feb;Berita;Pembaruan untuk sistem Gaji;Ini adalah sample isi berita 
-2;02-Feb;Berita;Pembaruan untuk TPP secara bertahap;Ini adalah sample isi berita 
-3;03-Feb;Berita;Pembaruan Data ;Ini adalah sample isi berita`;
-            
-            const newsData = parseCSV(csvData);
-            displayNews(newsData);
-        }
-        
-        function parseCSV(csv) {
-            const lines = csv.split('\n');
-            const headers = lines[0].split(';');
-            const result = [];
-            
-            for (let i = 1; i < lines.length; i++) {
-                if (!lines[i]) continue;
+            try {
+                console.log('Data berita yang dimuat:', newsData);
                 
-                const obj = {};
-                const currentline = lines[i].split(';');
-                
-                for (let j = 0; j < headers.length; j++) {
-                    obj[headers[j].toLowerCase()] = currentline[j];
+                if (newsData.length > 0) {
+                    displayNews(newsData);
+                } else {
+                    document.getElementById('news-container').innerHTML = 
+                        '<div class="loading">Tidak ada berita yang ditemukan</div>';
                 }
-                
-                result.push(obj);
+            } catch (error) {
+                console.error('Error loading news:', error);
+                document.getElementById('news-container').innerHTML = 
+                    '<div class="loading">Gagal memuat berita. Silakan coba lagi nanti.</div>';
             }
-            
-            return result;
         }
-        
+
         function displayNews(newsData) {
             const newsContainer = document.getElementById('news-container');
             newsContainer.innerHTML = '';
-            
-            // Gunakan gambar placeholder yang sama untuk semua berita
-            const placeholderImage = 'https://via.placeholder.com/600x400/1a1a2e/ffffff?text=LUNIX+News';
             
             newsData.forEach(news => {
                 const newsCard = document.createElement('div');
@@ -1134,59 +690,57 @@
                 
                 newsCard.innerHTML = `
                     <div class="news-image">
-                        <img src="${placeholderImage}" alt="${news.judul}">
+                        <img src="${news.card_image}" alt="${news.judul}">
                     </div>
                     <div class="news-content">
                         <div class="news-date">${news.tanggal}</div>
                         <span class="news-category">${news.jenis}</span>
                         <h3 class="news-title">${news.judul}</h3>
-                        <p class="news-excerpt">${news.isi.substring(0, 100)}...</p>
+                        <p class="news-excerpt">${news.isi.substring(0, 100)}${news.isi.length > 100 ? '...' : ''}</p>
                     </div>
                 `;
                 
                 newsContainer.appendChild(newsCard);
             });
         }
-        
+
         function openNewsModal(newsId) {
-            // CSV data yang Anda berikan
-            const csvData = `ID;tanggal;jenis;Judul;Isi
-1;01-Feb;Berita;Pembaruan untuk sistem Gaji;Ini adalah sample isi berita 
-2;02-Feb;Berita;Pembaruan untuk TPP secara bertahap;Ini adalah sample isi berita 
-3;03-Feb;Berita;Pembaruan Data ;Ini adalah sample isi berita`;
-            
-            const newsData = parseCSV(csvData);
-            const news = newsData.find(item => item.id === newsId);
-            
-            if (!news) return;
-            
-            const modal = document.getElementById('news-modal');
-            const overlay = document.getElementById('modal-overlay');
-            const content = document.getElementById('news-modal-content');
-            
-            // Gunakan gambar placeholder yang sama untuk semua berita
-            const placeholderImage = 'https://via.placeholder.com/800x400/1a1a2e/ffffff?text=LUNIX+News+Detail';
-            
-            content.innerHTML = `
-                <h1 class="news-modal-title">${news.judul}</h1>
-                <div class="news-modal-meta">
-                    <span>${news.tanggal}</span>
-                    <span>•</span>
-                    <span>${news.jenis}</span>
-                </div>
-                <div class="news-image">
-                    <img src="${placeholderImage}" alt="${news.judul}" style="width:100%; border-radius:8px;">
-                </div>
-                <div class="news-modal-body">
-                    <p>${news.isi}</p>
-                </div>
-            `;
-            
-            modal.classList.add('active');
-            overlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
+            try {
+                const news = newsData.find(item => item.id === newsId);
+                
+                if (!news) {
+                    alert('Berita tidak ditemukan');
+                    return;
+                }
+                
+                const modal = document.getElementById('news-modal');
+                const overlay = document.getElementById('modal-overlay');
+                const content = document.getElementById('news-modal-content');
+                
+                content.innerHTML = `
+                    <h1 class="news-modal-title">${news.judul}</h1>
+                    <div class="news-modal-meta">
+                        <span>${news.tanggal}</span>
+                        <span>•</span>
+                        <span>${news.jenis}</span>
+                    </div>
+                    <div class="news-image">
+                        <img src="${news.modal_image}" alt="${news.judul}" style="width:100%; border-radius:8px;">
+                    </div>
+                    <div class="news-modal-body">
+                        <p>${news.isi}</p>
+                    </div>
+                `;
+                
+                modal.classList.add('active');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            } catch (error) {
+                console.error('Error opening news modal:', error);
+                alert('Gagal memuat detail berita');
+            }
         }
-        
+
         function closeNewsModal() {
             const modal = document.getElementById('news-modal');
             const overlay = document.getElementById('modal-overlay');
@@ -1195,13 +749,14 @@
             overlay.classList.remove('active');
             document.body.style.overflow = 'auto';
         }
+
+        // [Kode JavaScript lainnya tetap sama]
         
-        // Close modal when pressing Escape key
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                closeModal();
-                closeNewsModal();
-            }
+        // Panggil loadNews saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            loadNews();
+            
+            // [Kode carousel dan lainnya tetap sama]
         });
     </script>
 </body>
