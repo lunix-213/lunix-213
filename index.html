@@ -667,7 +667,7 @@
                 <li><a href="#characters">Worlds</a></li>
                 <li><a href="#features">Features</a></li>
                 <li><a href="#news">News</a></li>
-                <li id="musicToggle" onclick="toggleMusic()">Play the Music!</li>
+                <li id="musicToggle" onclick="toggleMusic()" class="btn">Play the Music!</li>
             </ul>
         </nav>
     </header>
@@ -1093,19 +1093,19 @@
             initCarousel();
         });
 
-        // music
-         const audio = document.getElementById("bgMusic");
-          const toggleButton = document.getElementById("musicToggle");
+        // music play
+        const audio = document.getElementById("bgMusic");
+        const toggleBtn = document.getElementById("musicToggle");
 
-      function toggleMusic() {
-    if (audio.paused) {
-      audio.play().catch(e => console.log("Playback failed:", e));
-      toggleButton.textContent = "Pause Music";
-    } else {
-      audio.pause();
-      toggleButton.textContent = "Play Music";
-    }
-  }
+        toggleBtn.addEventListener("click", () => {
+        if (audio.paused) {
+        audio.play().catch(e => console.log("Playback blocked. Click again."));
+        toggleBtn.textContent = "Pause Music";
+        } else {
+        audio.pause();
+        toggleBtn.textContent = "Play Music";
+        }
+      });
     </script>
 </body>
 </html>
