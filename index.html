@@ -655,6 +655,11 @@
 </head>
 <body>
     <header>
+        <!-- music -->
+        <audio id="bgMusic" loop>
+        <source src="music/beethoven_virus.mp3" type="audio/mpeg">
+        </audio>
+        
         <div class="logo">LUNIX</div>
         <nav>
             <ul>
@@ -662,7 +667,7 @@
                 <li><a href="#characters">Worlds</a></li>
                 <li><a href="#features">Features</a></li>
                 <li><a href="#news">News</a></li>
-                <li><a href="#" class="btn">Contact Me</a></li>
+                <li id="musicToggle" onclick="toggleMusic()">Play the Music!</li>
             </ul>
         </nav>
     </header>
@@ -1087,6 +1092,20 @@
             loadNews();
             initCarousel();
         });
+
+        // music
+         const audio = document.getElementById("bgMusic");
+          const toggleButton = document.getElementById("musicToggle");
+
+      function toggleMusic() {
+    if (audio.paused) {
+      audio.play().catch(e => console.log("Playback failed:", e));
+      toggleButton.textContent = "Pause Music";
+    } else {
+      audio.pause();
+      toggleButton.textContent = "Play Music";
+    }
+  }
     </script>
 </body>
 </html>
