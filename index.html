@@ -441,6 +441,216 @@
                 width: 80%;
             }
         }
+
+        .carousel-light-swirl {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 150%;
+        height: 150%;
+        background: 
+            radial-gradient(circle at 75% 25%, rgba(255,51,102,0.4) 0%, transparent 50%),
+            radial-gradient(circle at 25% 75%, rgba(255,153,102,0.3) 0%, transparent 50%);
+        transform: translate(-50%, -50%);
+        z-index: 1;
+        pointer-events: none;
+        animation: swirl 20s infinite linear;
+        opacity: 0.6;
+        mix-blend-mode: screen;
+        will-change: transform, opacity;
+    }
+    
+    @keyframes swirl {
+        0% { transform: translate(-50%, -50%) rotate(0deg); }
+        100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 999;
+        display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.active {
+        display: block;
+        opacity: 1;
+    }
+
+    .modal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.9);
+        background-color: #1a1a2e;
+        border-radius: 10px;
+        padding: 2rem;
+        z-index: 1000;
+        width: 80%;
+        max-width: 800px;
+        max-height: 80vh;
+        overflow-y: auto;
+        display: none;
+        opacity: 0;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 51, 102, 0.3);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal.active {
+        display: block;
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    .close-modal {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: #ff3366;
+        cursor: pointer;
+        transition: transform 0.3s;
+    }
+
+    .close-modal:hover {
+        transform: scale(1.2);
+    }
+
+    .character-modal-img {
+        width: 100%;
+        height: 300px;
+        overflow: hidden;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+    }
+
+    .character-modal-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .character-modal-info h2 {
+        font-size: 2rem;
+        color: #ff3366;
+        margin-bottom: 0.5rem;
+    }
+
+    .character-modal-element {
+        display: inline-block;
+        padding: 0.3rem 1rem;
+        background-color: rgba(255, 51, 102, 0.2);
+        border-radius: 20px;
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        color: #ff3366;
+        border: 1px solid rgba(255, 51, 102, 0.3);
+    }
+
+    /* Link Blocks */
+    .link-blocks {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    .link-block {
+        background-color: rgba(255, 51, 102, 0.1);
+        border: 1px solid rgba(255, 51, 102, 0.3);
+        border-radius: 8px;
+        padding: 1rem;
+        text-align: center;
+        transition: all 0.3s;
+        cursor: pointer;
+    }
+
+    .link-block:hover {
+        background-color: rgba(255, 51, 102, 0.2);
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(255, 51, 102, 0.2);
+    }
+
+    .link-block a {
+        color: #e0e0e0;
+        text-decoration: none;
+        font-weight: 500;
+        display: block;
+        height: 100%;
+        width: 100%;
+    }
+
+    .link-block:hover a {
+        color: #ff3366;
+    }
+
+    @media (max-width: 768px) {
+        .modal {
+            width: 95%;
+            padding: 1rem;
+        }
+        
+        .character-modal-img {
+            height: 200px;
+        }
+
+        .link-blocks {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 480px) {
+        .link-blocks {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Footer Styles */
+    footer {
+        background-color: rgba(26, 26, 46, 0.8);
+        padding: 2rem;
+        text-align: center;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-logo {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: #ff3366;
+        margin-bottom: 1rem;
+    }
+
+    .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .social-links a {
+        color: #e0e0e0;
+        font-size: 1.2rem;
+        transition: color 0.3s;
+    }
+
+    .social-links a:hover {
+        color: #ff3366;
+    }
+
+    .copyright {
+        color: #7a7a8c;
+        font-size: 0.9rem;
+    }
     </style>
 </head>
 <body>
@@ -661,6 +871,95 @@
             }
         ];
 
+        // Character Modal Functionality
+        function openModal(characterId) {
+            try {
+                // Character data
+                const characters = {
+                    'aether': {
+                        name: 'LuniX - GAJI',
+                        element: 'Spreadsheet',
+                        description: 'Spreadsheet khusus untuk pengelolaan Gaji RSUD dr. Soekardjo kota Tasikmalaya (2025)',
+                        image: 'img/char005.jpg'
+                    },
+                    'lumine': {
+                        name: 'LuniX - TPP',
+                        element: 'Spreadsheet',
+                        description: 'Spreadsheet khusus untuk pengelolaan TPP RSUD dr. Soekardjo kota Tasikmalaya (2025)',
+                        image: 'img/char002.jpg'
+                    },
+                    'ventus': {
+                        name: 'LuniX Pemberkasan Obat',
+                        element: 'Anemo',
+                        description: 'A carefree bard who seems to know more than he lets on.',
+                        image: 'img/char003.jpg'
+                    },
+                    'pyra': {
+                        name: 'LuniX - Lainnya',
+                        element: 'Pyro',
+                        description: 'A fiery warrior with a strong sense of justice and loyalty.',
+                        image: 'img/char004.jpg'
+                    },
+                    'lux': {
+                        name: 'Coming Soon',
+                        element: 'Pyro',
+                        description: 'A fiery warrior with a strong sense of justice and loyalty.',
+                        image: 'img/char001.jpg'
+                    }
+                };
+
+                const character = characters[characterId];
+                if (!character) {
+                    console.error('Character not found:', characterId);
+                    return;
+                }
+
+                const modal = document.getElementById('character-modal');
+                const overlay = document.getElementById('modal-overlay');
+                const content = document.getElementById('modal-content');
+
+                content.innerHTML = `
+                    <div class="character-modal-img">
+                        <img src="${character.image}" alt="${character.name}">
+                    </div>
+                    <div class="character-modal-info">
+                        <h2>${character.name}</h2>
+                        <span class="character-modal-element">${character.element}</span>
+                        <p>${character.description}</p>
+                    </div>
+                    <div class="link-blocks">
+                        <div class="link-block"><a href="#ref">Link 1</a></div>
+                        <div class="link-block"><a href="#ref">Link 2</a></div>
+                        <div class="link-block"><a href="#ref">Link 3</a></div>
+                        <div class="link-block"><a href="#ref">Link 4</a></div>
+                        <div class="link-block"><a href="#ref">Link 5</a></div>
+                        <div class="link-block"><a href="#ref">Link 6</a></div>
+                        <div class="link-block"><a href="#ref">Link 7</a></div>
+                        <div class="link-block"><a href="#ref">Link 8</a></div>
+                        <div class="link-block"><a href="#ref">Link 9</a></div>
+                        <div class="link-block"><a href="#ref">Link 10</a></div>
+                        <div class="link-block"><a href="#ref">Link 11</a></div>
+                        <div class="link-block"><a href="#ref">Link 12</a></div>
+                    </div>
+                `;
+
+                modal.classList.add('active');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            } catch (error) {
+                console.error('Error opening character modal:', error);
+            }
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('character-modal');
+            const overlay = document.getElementById('modal-overlay');
+            
+            modal.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
         // News functionality
         function loadNews() {
             try {
@@ -750,13 +1049,43 @@
             document.body.style.overflow = 'auto';
         }
 
-        // [Kode JavaScript lainnya tetap sama]
-        
-        // Panggil loadNews saat halaman dimuat
+        // Carousel functionality
+        function initCarousel() {
+            const carousel = document.querySelector('.carousel');
+            const dots = document.querySelectorAll('.carousel-dot');
+            let currentIndex = 0;
+            const totalSlides = document.querySelectorAll('.carousel img').length;
+            
+            function updateCarousel() {
+                carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
+                
+                dots.forEach((dot, index) => {
+                    if (index === currentIndex) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+            }
+            
+            dots.forEach(dot => {
+                dot.addEventListener('click', () => {
+                    currentIndex = parseInt(dot.getAttribute('data-index'));
+                    updateCarousel();
+                });
+            });
+            
+            // Auto-rotate carousel
+            setInterval(() => {
+                currentIndex = (currentIndex + 1) % totalSlides;
+                updateCarousel();
+            }, 5000);
+        }
+
+        // Initialize everything when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
             loadNews();
-            
-            // [Kode carousel dan lainnya tetap sama]
+            initCarousel();
         });
     </script>
 </body>
