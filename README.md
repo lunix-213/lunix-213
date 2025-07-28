@@ -1,4 +1,4 @@
-## hanya untuk belajar
+## Menjelajah Luasnya angkasa!
 
 <!--
 **lunix-213/lunix-213** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
