@@ -950,8 +950,354 @@
 #equalizer.playing span {
     animation-play-state: running;
 }
+
+/* === Fix for gallery overlay blocking Swiper interactions === */
+#gallery::before {
+    pointer-events: none !important;
+    z-index: 0 !important;
+}
+#gallery { position: relative; }
+#gallery .swiper { position: relative; z-index: 1; }
+#gallery .swiper-button-next, 
+#gallery .swiper-button-prev, 
+#gallery .swiper-pagination { z-index: 3; }
+
+/* === Remove gradient/overlay on active slide === */
+.swiper-slide-active::before,
+.swiper-slide-active .game-info {
+    background: none !important;
+    box-shadow: none !important;
+}
+.swiper-slide-active .game-info h3,
+.swiper-slide-active .game-info p,
+.swiper-slide-active .game-info span {
+    color: #fff !important;
+}
+
+/* === Adjust swiper navigation buttons === */
+.swiper-button-next,
+.swiper-button-prev {
+    top: 50% !important;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 50%;
+    z-index: 5;
+}
+.swiper-button-next:after,
+.swiper-button-prev:after {
+    font-size: 18px !important;
+    color: #00f7ff;
+}
+.swiper-button-prev { left: 10px !important; }
+.swiper-button-next { right: 10px !important; }
 </style>
-</head>
+<link href="lib/swiper-bundle.min.css" rel="stylesheet"/><script src="lib/swiper-bundle.min.js"></script><style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&display=swap');
+    
+    :root {
+      --neon-blue: #0ff0fc;
+      --neon-purple: #bc13fe;
+      --dark-bg: #0a0a15;
+      --card-bg: rgba(20, 20, 40, 0.8);
+    }
+    
+    body {
+      margin: 0;
+      background: var(--dark-bg);
+      font-family: 'Rajdhani', sans-serif;
+      color: #fff;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(11, 11, 25, 0.8) 0%, transparent 80%),
+        radial-gradient(circle at 90% 80%, rgba(11, 11, 25, 0.8) 0%, transparent 20%),
+        linear-gradient(to bottom, #0a0a15 0%, #141428 100%);
+    }
+    
+    .swiper {
+      width: 100%;
+      height: 100vh;
+      padding-top: 80px;
+    }
+    
+    .swiper-slide {
+      background-position: center;
+      background-size: cover;
+      width: 800px;
+      height: 450px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 0 30px rgba(0,0,0,0.9);
+      position: relative;
+      transition: all 0.5s ease;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      transform: scale(0.95);
+    }
+    
+    .swiper-slide-active {
+      transform: scale(1.05);
+      z-index: 10;
+    }
+    
+    .swiper-slide::after {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .swiper-slide-active::after {
+      opacity: 1;
+      animation: pulse 2s infinite;
+    }
+    
+    .game-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px;
+      background: linear-gradient(to top, rgba(0,0,0,0.9) 30%, transparent 100%);
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+      z-index: 2;
+    }
+    
+    .swiper-slide-active .game-info {
+      transform: translateY(0);
+    }
+    
+    .game-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2rem;
+      margin: 0 0 10px 0;
+      text-shadow: 0 0 10px var(--neon-blue);
+      color: white;
+      font-weight: 700;
+    }
+    
+    .game-description {
+      font-size: 1rem;
+      margin: 0;
+      line-height: 1.4;
+    }
+    
+    .game-tag {
+      display: inline-block;
+      background: var(--neon-purple);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      margin-right: 8px;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    
+    .swiper-pagination-bullet {
+      background: white;
+      width: 12px;
+      height: 12px;
+      opacity: 0.5;
+      transition: all 0.3s ease;
+    }
+    
+    .swiper-pagination-bullet-active {
+      background: var(--neon-blue);
+      opacity: 1;
+      transform: scale(1.2);
+      box-shadow: 0 0 10px var(--neon-blue);
+    }
+    
+    .swiper-button-next, .swiper-button-prev {
+      color: white;
+      width: 50px;
+      height: 50px;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 50%;
+      backdrop-filter: blur(5px);
+      transition: all 0.3s ease;
+      border: 2px solid var(--neon-blue);
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: 0.8;
+    }
+    
+    .swiper-button-next {
+      right: 20px;
+    }
+    
+    .swiper-button-prev {
+      left: 20px;
+    }
+    
+    .swiper-button-next:hover, .swiper-button-prev:hover {
+      background: var(--neon-purple);
+      transform: translateY(-50%) scale(1.1);
+      opacity: 1;
+    }
+    
+    .swiper-button-next::after, .swiper-button-prev::after {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    
+    .corner-decoration {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      z-index: 3;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    
+    .swiper-slide-active .corner-decoration {
+      opacity: 1;
+    }
+    
+    .corner-decoration::before, .corner-decoration::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+    }
+    
+    .corner-decoration.top-left {
+      top: 10px;
+      left: 10px;
+    }
+    
+    .corner-decoration.top-left::before {
+      top: 0;
+      left: 0;
+      border-top-color: var(--neon-blue);
+      border-left-color: var(--neon-blue);
+    }
+    
+    .corner-decoration.top-left::after {
+      bottom: 0;
+      right: 0;
+      border-bottom-color: var(--neon-purple);
+      border-right-color: var(--neon-purple);
+      animation: cornerPulse 2s infinite 0.5s;
+    }
+    
+    .corner-decoration.top-right {
+      top: 10px;
+      right: 10px;
+    }
+    
+    .corner-decoration.top-right::before {
+      top: 0;
+      right: 0;
+      border-top-color: var(--neon-blue);
+      border-right-color: var(--neon-blue);
+    }
+    
+    .corner-decoration.top-right::after {
+      bottom: 0;
+      left: 0;
+      border-bottom-color: var(--neon-purple);
+      border-left-color: var(--neon-purple);
+      animation: cornerPulse 2s infinite 0.5s;
+    }
+    
+    .corner-decoration.bottom-left {
+      bottom: 10px;
+      left: 10px;
+    }
+    
+    .corner-decoration.bottom-left::before {
+      bottom: 0;
+      left: 0;
+      border-bottom-color: var(--neon-blue);
+      border-left-color: var(--neon-blue);
+    }
+    
+    .corner-decoration.bottom-left::after {
+      top: 0;
+      right: 0;
+      border-top-color: var(--neon-purple);
+      border-right-color: var(--neon-purple);
+      animation: cornerPulse 2s infinite 0.5s;
+    }
+    
+    .corner-decoration.bottom-right {
+      bottom: 10px;
+      right: 10px;
+    }
+    
+    .corner-decoration.bottom-right::before {
+      bottom: 0;
+      right: 0;
+      border-bottom-color: var(--neon-blue);
+      border-right-color: var(--neon-blue);
+    }
+    
+    .corner-decoration.bottom-right::after {
+      top: 0;
+      left: 0;
+      border-top-color: var(--neon-purple);
+      border-left-color: var(--neon-purple);
+      animation: cornerPulse 2s infinite 0.5s;
+    }
+    
+    @keyframes pulse {
+      0% { opacity: 0.8; }
+      50% { opacity: 1; }
+      100% { opacity: 0.8; }
+    }
+    
+    @keyframes cornerPulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.7; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    
+    @keyframes zoomIn {
+      0% { transform: scale(0.95); }
+      100% { transform: scale(1.05); }
+    }
+    
+    @keyframes zoomOut {
+      0% { transform: scale(1.05); }
+      100% { transform: scale(0.95); }
+    }
+    
+    .header {
+      position: absolute;
+      top: 20px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      z-index: 10;
+    }
+    
+    .header h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.5rem;
+      margin: 0;
+      color: white;
+      text-shadow: 0 0 15px var(--neon-blue), 0 0 30px var(--neon-purple);
+      letter-spacing: 2px;
+    }
+    
+    .header p {
+      margin: 5px 0 0;
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+  </style></head>
 <body>
 <!-- Navigation -->
 <nav>
@@ -970,7 +1316,7 @@
 </div>
 <span id="music-label" style="color:#0ff;font-weight:bold;">Play Music</span>
 <audio id="bg-music" loop="">
-<source src="music/beethoven_virus.mp3" type="audio/mpeg"/>
+<source src="music/Stellar Pulse.mp3" type="audio/mpeg"/>
             Your browser does not support the audio element.
         </audio>
 </div>
@@ -1180,53 +1526,94 @@
 </div>
 </div>
 <!-- Gallery Section -->
-<section id="gallery">
-<h2 class="section-title">LUNIX Showcase</h2>
-<div class="gallery-grid">
-<div class="gallery-item">
-<img alt="Accounting Master" src="img/SC_001-min.jpg"/>
-<div class="gallery-caption">
-<h3>Just me and my PC!</h3>
-<p>Untuk saat ini solo player dengan tekad yang kuat! </p>
+<section id="gallery"><div class="swiper">
+<div class="swiper-wrapper">
+<!-- Slides with gaming content -->
+<div class="swiper-slide" style="background-image:url('img/SC_001-min.jpg')">
+<div class="corner-decoration top-left"></div>
+<div class="corner-decoration top-right"></div>
+<div class="corner-decoration bottom-left"></div>
+<div class="corner-decoration bottom-right"></div>
+<div class="game-info">
+<h3 class="game-title">Just me and my PC!</h3>
+<p class="game-description">Untuk saat ini solo player dengan tekad yang kuat!</p>
+<span class="game-tag">RPG</span>
+<span class="game-tag">Open World</span>
+<span class="game-tag">FPS</span>
 </div>
 </div>
-<div class="gallery-item">
-<img alt="Payroll Pro" src="img/SC_002-min.jpg"/>
-<div class="gallery-caption">
-<h3>LuniX Save You</h3>
-<p>Dibuat untuk mempermudah pekerjaan yang sifatnya lama jadi cepat, supaya jam santaimu bertambah ~</p>
+<div class="swiper-slide" style="background-image:url('img/SC_002-min.jpg')">
+<div class="corner-decoration top-left"></div>
+<div class="corner-decoration top-right"></div>
+<div class="corner-decoration bottom-left"></div>
+<div class="corner-decoration bottom-right"></div>
+<div class="game-info">
+<h3 class="game-title">LuniX Save You</h3>
+<p class="game-description">Dibuat untuk mempermudah pekerjaan yang sifatnya lama jadi cepat, supaya jam santaimu bertambah ~</p>
+<span class="game-tag">Space</span>
+<span class="game-tag">RPG</span>
+<span class="game-tag">Exploration</span>
 </div>
 </div>
-<div class="gallery-item">
-<img alt="Inventory Tracker" src="img/SC_006-min.jpg"/>
-<div class="gallery-caption">
-<h3>LuniX Keep Growing</h3>
-<p>Tetap tumbuh karena tidak berhenti belajar dan melangkah maju!</p>
+<div class="swiper-slide" style="background-image:url('img/SC_006-min.jpg')">
+<div class="corner-decoration top-left"></div>
+<div class="corner-decoration top-right"></div>
+<div class="corner-decoration bottom-left"></div>
+<div class="corner-decoration bottom-right"></div>
+<div class="game-info">
+<h3 class="game-title">LuniX Keep Growing</h3>
+<p class="game-description">Tetap tumbuh karena tidak berhenti belajar dan melangkah maju!</p>
+<span class="game-tag">Souls-like</span>
+<span class="game-tag">Open World</span>
+<span class="game-tag">RPG</span>
 </div>
 </div>
-<div class="gallery-item">
-<img alt="Financial Dashboard" src="img/SC_005-min.jpg"/>
-<div class="gallery-caption">
-<h3>LuniX For You</h3>
-<p>Memahamimu karena belajar dari apa yang kamu inginkan!</p>
+<div class="swiper-slide" style="background-image:url('img/SC_005-min.jpg')">
+<div class="corner-decoration top-left"></div>
+<div class="corner-decoration top-right"></div>
+<div class="corner-decoration bottom-left"></div>
+<div class="corner-decoration bottom-right"></div>
+<div class="game-info">
+<h3 class="game-title">LuniX For You</h3>
+<p class="game-description">Memahamimu karena belajar dari apa yang kamu inginkan!</p>
+<span class="game-tag">Action</span>
+<span class="game-tag">Adventure</span>
+<span class="game-tag">Open World</span>
+</div>
+</div>
+<div class="swiper-slide" style="background-image:url('img/SC_004-min.jpg')">
+<div class="corner-decoration top-left"></div>
+<div class="corner-decoration top-right"></div>
+<div class="corner-decoration bottom-left"></div>
+<div class="corner-decoration bottom-right"></div>
+<div class="game-info">
+<h3 class="game-title">New Content Coming soon!</h3>
+<p class="game-description">Always dreaming and keep forward!</p>
+<span class="game-tag">Action</span>
+<span class="game-tag">Adventure</span>
+<span class="game-tag">Story-Driven</span>
 </div>
 </div>
 </div>
-</section>
+<!-- Pagination & Navigation -->
+<div class="swiper-pagination"></div>
+<div class="swiper-button-next"></div>
+<div class="swiper-button-prev"></div>
+</div></section>
 <!-- Credits Section -->
 <section id="credits">
 <div class="game-ui">
 <div class="game-header">
 <div class="game-title">DEVELOPER TERMINAL</div>
 <div class="game-tabs">
-<div class="game-tab active">CONTACT</div>
-<div class="game-tab">CREDITS</div>
-<div class="game-tab">LICENSE</div>
+<div class="game-tab active">LUNIX</div>
+<div class="game-tab">LUNIX</div>
+<div class="game-tab">LUNIX</div>
 </div>
 </div>
 <div class="game-content">
 <div class="character-display">
-<i>👨‍💻</i>
+<img src="img/SC_003-min.jpg" alt="Character" style="width:250px; height:250px; object-fit:cover;" >
 </div>
 <div class="info-panel">
 <h3>CONTACT ME!</h3>
@@ -1349,5 +1736,35 @@ document.querySelectorAll('.download-btn').forEach(btn => {
     });
 });
 </script>
-</body>
+<script src="lib/swiper-bundle.min.js"></script><script>
+document.addEventListener('DOMContentLoaded', function() {
+  const swiper = new Swiper('.swiper', {
+    effect: 'coverflow',
+    grabCursor: true,
+    centeredSlides: true,
+    slidesPerView: 'auto',
+    loop: true,
+    speed: 800,
+    coverflowEffect: {
+      rotate: 15,
+      stretch: -50,
+      depth: 300,
+      modifier: 1.5,
+      slideShadows: true,
+    },
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+    },
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+    autoplay: {
+      delay: 5000,
+      disableOnInteraction: false,
+    }
+  });
+});
+</script></body>
 </html>
