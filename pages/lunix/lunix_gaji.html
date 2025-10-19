@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="img/favicon-32x32.png" rel="icon"/>
+    <title>LUNIX - GAJI (COLLABSPACE)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* Dark theme */
+            --primary-color: #7c3aed;
+            --secondary-color: #ec4899;
+            --accent-color: #06b6d4;
+            --dark-bg: #0f0f23;
+            --light-bg: #1a1a3e;
+            --text-light: #e0e7ff;
+            --glow-color: #a78bfa;
+            --shelf-bg: rgba(30, 30, 60, 0.7);
+            --button-bg: rgba(124, 58, 237, 0.3);
+            --button-hover: rgba(124, 58, 237, 0.6);
+            --particle-color: #a78bfa;
+            --available-color: #10b981;
+            --unavailable-color: #ef4444;
+        }
+
+        /* Light theme (now default) */
+        [data-theme="light"] {
+            --primary-color: #6366f1;
+            --secondary-color: #ec4899;
+            --accent-color: #0891b2;
+            --dark-bg: #f8fafc;
+            --light-bg: #e0e7ff;
+            --text-light: #1e293b;
+            --glow-color: #818cf8;
+            --shelf-bg: rgba(224, 231, 255, 0.7);
+            --button-bg: rgba(99, 102, 241, 0.2);
+            --button-hover: rgba(99, 102, 241, 0.4);
+            --particle-color: #818cf8;
+            --available-color: #059669;
+            --unavailable-color: #dc2626;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--light-bg) 50%, var(--primary-color) 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        /* Animated background particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--particle-color);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        /* Top Panel */
+        .top-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(15, 15, 35, 0.7);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(167, 139, 250, 0.2);
+        }
+
+        [data-theme="light"] .top-panel {
+            background: rgba(248, 250, 252, 0.8);
+            box-shadow: 0 4px 20px rgba(129, 140, 248, 0.2);
+        }
+
+        .top-panel.scrolled {
+            padding: 15px 40px;
+            background: rgba(15, 15, 35, 0.9);
+            box-shadow: 0 8px 30px rgba(167, 139, 250, 0.3);
+        }
+
+        [data-theme="light"] .top-panel.scrolled {
+            background: rgba(248, 250, 252, 0.95);
+            box-shadow: 0 8px 30px rgba(129, 140, 248, 0.3);
+        }
+
+        .logo-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 20px rgba(167, 139, 250, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                filter: drop-shadow(0 0 5px rgba(167, 139, 250, 0.5));
+            }
+            to {
+                filter: drop-shadow(0 0 15px rgba(236, 72, 153, 0.8));
+            }
+        }
+
+        .top-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .top-btn {
+            padding: 10px 20px;
+            background: var(--button-bg);
+            border: 1px solid var(--glow-color);
+            border-radius: 30px;
+            color: var(--text-light);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+        }
+
+        .top-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s;
+        }
+
+        .top-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .top-btn:hover {
+            background: var(--button-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(167, 139, 250, 0.4);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 100px;
+            padding: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Shelf Container */
+        .shelf-container {
+            display: flex;
+            flex-direction: column;
+            gap: 60px; /* Increased gap between shelves */
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Individual Shelf */
+        .shelf {
+            background: var(--shelf-bg);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(167, 139, 250, 0.2);
+            position: relative;
+            overflow: visible; /* Changed to visible to allow character to extend beyond */
+            transition: transform 0.3s ease;
+        }
+
+        [data-theme="light"] .shelf {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .shelf::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            border-radius: 15px;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+        }
+
+        .shelf:hover::before {
+            opacity: 0.3;
+        }
+
+        .shelf:hover {
+            transform: translateY(-5px);
+        }
+
+        .shelf-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .shelf-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 10px rgba(167, 139, 250, 0.3);
+        }
+
+        .shelf-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .shelf-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+            flex: 1;
+        }
+
+        .month-btn {
+            padding: 15px 10px;
+            background: var(--button-bg);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            border-radius: 10px;
+            color: var(--text-light);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+        }
+
+        /* Simple glow hover effect for default buttons */
+        .month-btn:hover {
+            background: var(--button-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(167, 139, 250, 0.5);
+            border-color: var(--glow-color);
+        }
+
+        /* Available Button Class (Class A) */
+        .month-btn.available {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid var(--available-color);
+            color: var(--text-light);
+            position: relative;
+        }
+
+        [data-theme="light"] .month-btn.available {
+            background: rgba(5, 150, 105, 0.15);
+        }
+
+        .month-btn.available:hover {
+            background: rgba(16, 185, 129, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+            border-color: var(--available-color);
+        }
+
+        .month-btn.available::after {
+            content: '✓';
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 0.8rem;
+            color: var(--available-color);
+            z-index: 2;
+        }
+
+        /* Unavailable Button Class (Class B) */
+        .month-btn.unavailable {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid var(--unavailable-color);
+            color: rgba(224, 231, 255, 0.5);
+            cursor: not-allowed;
+            position: relative;
+        }
+
+        [data-theme="light"] .month-btn.unavailable {
+            background: rgba(220, 38, 38, 0.15);
+            color: rgba(30, 41, 59, 0.5);
+        }
+
+        .month-btn.unavailable::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 5px,
+                rgba(239, 68, 68, 0.1) 5px,
+                rgba(239, 68, 68, 0.1) 10px
+            );
+            border-radius: 10px;
+            z-index: 1;
+        }
+
+        .month-btn.unavailable:hover {
+            transform: none;
+            background: rgba(239, 68, 68, 0.2);
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+            border-color: var(--unavailable-color);
+        }
+
+        .month-btn.unavailable:hover::before {
+            content: 'Locked';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.7rem;
+            color: var(--unavailable-color);
+            z-index: 2;
+            width: 100%;
+            text-align: center;
+            background: none;
+        }
+
+        .month-btn.unavailable .status-icon {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 0.8rem;
+            color: var(--unavailable-color);
+            z-index: 2;
+        }
+
+        /* Enhanced Character Placeholder */
+        .character-placeholder {
+            width: 220px; /* Increased from 150px */
+            height: 220px; /* Increased from 150px */
+            background: rgba(167, 139, 250, 0.1);
+            border: 2px dashed rgba(167, 139, 250, 0.3);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(224, 231, 255, 0.5);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 10; /* Higher z-index to appear in front */
+            margin-top: -30px; /* Negative margin to blend with shelf */
+            margin-bottom: -30px; /* Negative margin to blend with shelf */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="light"] .character-placeholder {
+            color: rgba(30, 41, 59, 0.5);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .character-placeholder:hover {
+            border-color: var(--glow-color);
+            background: rgba(167, 139, 250, 0.2);
+            transform: scale(1.05);
+        }
+
+        /* News Shelf */
+        .news-board {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 150px;
+            border: 1px solid rgba(167, 139, 250, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        [data-theme="light"] .news-board {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .news-board::before {
+            content: '📢';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5rem;
+            opacity: 0.5;
+        }
+
+        .news-content {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: rgba(224, 231, 255, 0.9);
+        }
+
+        [data-theme="light"] .news-content {
+            color: rgba(30, 41, 59, 0.9);
+        }
+
+        /* Floating Character */
+        .floating-character {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 120px;
+            height: 120px;
+            background: rgba(167, 139, 250, 0.1);
+            border: 2px solid rgba(167, 139, 250, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            animation: float-character 3s ease-in-out infinite;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        @keyframes float-character {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .floating-character:hover {
+            transform: scale(1.1);
+            border-color: var(--glow-color);
+            box-shadow: 0 0 20px rgba(167, 139, 250, 0.5);
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 80px; /* Increased margin for more spacing */
+            padding: 30px;
+            text-align: center;
+            background: rgba(15, 15, 35, 0.7);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(167, 139, 250, 0.2);
+        }
+
+        [data-theme="light"] footer {
+            background: rgba(248, 250, 252, 0.8);
+            border-top: 1px solid rgba(129, 140, 248, 0.2);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-text {
+            font-size: 0.9rem;
+            color: rgba(224, 231, 255, 0.7);
+            margin-bottom: 15px;
+        }
+
+        [data-theme="light"] .footer-text {
+            color: rgba(30, 41, 59, 0.7);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .footer-link {
+            color: rgba(224, 231, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="light"] .footer-link {
+            color: rgba(30, 41, 59, 0.7);
+        }
+
+        .footer-link:hover {
+            color: var(--text-light);
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--button-bg);
+            border: 2px solid var(--glow-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 999;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(167, 139, 250, 0.4);
+        }
+
+        .theme-icon {
+            font-size: 1.5rem;
+            color: var(--text-light);
+        }
+
+        /* Button State Legend */
+        .button-legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px; /* Increased margin */
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        [data-theme="light"] .button-legend {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: rgba(224, 231, 255, 0.8);
+        }
+
+        [data-theme="light"] .legend-item {
+            color: rgba(30, 41, 59, 0.8);
+        }
+
+        .legend-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .legend-available {
+            background: rgba(16, 185, 129, 0.3);
+            border: 1px solid var(--available-color);
+            color: var(--available-color);
+        }
+
+        .legend-unavailable {
+            background: rgba(239, 68, 68, 0.3);
+            border: 1px solid var(--unavailable-color);
+            color: var(--unavailable-color);
+            cursor: not-allowed;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .top-panel {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .logo-title {
+                font-size: 1.5rem;
+            }
+
+            .top-buttons {
+                width: 100%;
+                justify-content: space-around;
+            }
+
+            .main-content {
+                padding: 20px;
+                margin-top: 140px;
+            }
+
+            .shelf-container {
+                gap: 40px; /* Slightly smaller gap on mobile */
+            }
+
+            .shelf-content {
+                flex-direction: column;
+            }
+
+            .shelf-items {
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            }
+
+            .character-placeholder {
+                width: 180px; /* Slightly smaller on mobile */
+                height: 180px;
+                margin-top: -20px;
+                margin-bottom: -20px;
+            }
+
+            .floating-character {
+                width: 80px;
+                height: 80px;
+            }
+
+            .theme-toggle {
+                width: 50px;
+                height: 50px;
+            }
+
+            .button-legend {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        /* Music toggle animation */
+        .music-toggle {
+            position: relative;
+        }
+
+        .music-toggle.playing::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(2);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <!-- Animated Background Particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Top Panel -->
+    <header class="top-panel" id="topPanel">
+        <h1 class="logo-title">LUNIX - GAJI</h1>
+        <div class="top-buttons">
+            <button class="top-btn" id="contactBtn">
+                <i class="fas fa-envelope"></i> Coming Soon
+            </button>
+            <button class="top-btn music-toggle" id="musicToggle">
+                <i class="fas fa-music"></i> Coming Soon
+            </button>
+                <a href="https://lunix-213.github.io/lunix-213/" class="top-btn" target="_blank">
+                <i class="fas fa-rocket"></i> GO TO LUNIX
+                </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Button State Legend -->
+        <div class="button-legend">
+            <div class="legend-item">
+                <div class="legend-btn legend-available">✓</div>
+                <span>Available (Tersedia)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-btn legend-unavailable">✕</div>
+                <span>Unavailable (Belum Tersedia)</span>
+            </div>
+        </div>
+
+        <div class="shelf-container">
+            <!-- News Shelf -->
+            <section class="shelf">
+                <div class="shelf-header">
+                    <h2 class="shelf-title">News</h2>
+                </div>
+                <div class="shelf-content">
+                    <div class="news-board">
+                        <div class="news-content">
+                            <h3>Latest Announcement</h3>
+                            <h3>18 Oktober 2025</h3>
+                            <p>Kini, LuniX Gaji hadir dengan tampilan dan gaya terbaru yang lebih modern, intuitif, dan memanjakan mata. Navigasi antar bulan kini menjadi jauh lebih mudah berkat desain rak interaktif yang memudahkan Anda menemukan data sesuai periode waktu yang diinginkan!</p>
+                            <p>Stay tuned for upcoming events and collaboration opportunities!</p>
+                        </div>
+                    </div>
+                    <div class="character-placeholder">
+                        <span><img src="img/image_04.png" alt="Character" style="width: 100%; height: 100%; object-fit: contain; border-radius: 0px;"></span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2025 Shelf -->
+            <section class="shelf">
+                <div class="shelf-header">
+                    <h2 class="shelf-title">2025</h2>
+                </div>
+                <div class="shelf-content">
+                    <div class="shelf-items">
+                        <a href="https://docs.google.com/spreadsheets/d/1jHwsw7uarpl2oHwIkXqHh5PIcFeAmAPXMMXxXjT7qBE/edit?usp=sharing" class="month-btn available" target="_blank">Februari</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1GFLK67gcgl-83dFQY4xxmDpo5B7IsKJxub41tUp7Swg/edit?usp=sharing" class="month-btn available" target="_blank">Maret</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1Tv7bivgQH4hG3eZSuTUiq7SxE9wWeIwPIu_l8dYLHRw/edit?usp=sharing" class="month-btn available" target="_blank">April</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1Z9TCKs-zu6Pne1J7515UmC9oq30vuwFDznYGEBKIW34/edit?usp=sharing" class="month-btn available" target="_blank">Mei</a>
+                        <a href="https://docs.google.com/spreadsheets/d/167UfILtq8SDT2kRpetLoeIiZmN7wxLxW7Wn_IFxAQaI/edit?usp=sharing" class="month-btn available" target="_blank">Juni</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1KItEDBEOx_axy6T7OGkLyOwyltgaAUA7FoegueEpXmY/edit?usp=sharing" class="month-btn available" target="_blank">Juli</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1-j6eH50SKcqQEzUCUcBCZc9Y6XwVPFQ0lyTmTvwRgBg/edit?usp=sharing" class="month-btn available" target="_blank">Agustus</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1S3wDWSAMrTcsv7LWOzc5Quzj7fWPhVW6IrLt7DFkyj0/edit?usp=sharing" class="month-btn available" target="_blank">September</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1FlDIi8uTDL7fWZHRizIIqJMI48ckEMH4eFyuK95nwJY/edit?usp=sharing" class="month-btn available" target="_blank">Oktober</a>
+                        <a href="#" class="month-btn unavailable">November<span class="status-icon">✕</span></a>
+                        <a href="#" class="month-btn unavailable">Desember<span class="status-icon">✕</span></a>
+                        <a href="https://docs.google.com/spreadsheets/d/1DDOV4_L9WK_5vc_E67VPReBNoZ2_qBS5zOnCkb9Aot8/edit?usp=sharing" class="month-btn available" target="_blank">Gaji ke-13</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1P7OeZSt6Q5FMPE1FiYspiWaknerRI1TzAgRTJ2kGHQs/edit?usp=sharing" class="month-btn available" target="_blank">THR</a>
+                    </div>
+                    <div class="character-placeholder">
+                        <span><img src="img/laniakea_1.png" alt="Character" style="width: 100%; height: 100%; object-fit: contain; border-radius: 0px;"></span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2026 Shelf -->
+            <section class="shelf">
+                <div class="shelf-header">
+                    <h2 class="shelf-title">2026</h2>
+                </div>
+                <div class="shelf-content">
+                    <div class="shelf-items">
+                        <a href="#" class="month-btn unavailable">January<span class="status-icon">✕</span></a>
+                        <a href="#" class="month-btn unavailable">February<span class="status-icon">✕</span></a>
+                        <a href="#" class="month-btn unavailable">March<span class="status-icon">✕</span></a>
+                        <a href="#" class="month-btn unavailable">April<span class="status-icon">✕</span></a>
+                        <a href="#" class="month-btn unavailable">May<span class="status-icon">✕</span></a>
+                        <a href="#" class="month-btn unavailable">June<span class="status-icon">✕</span></a>
+                        <a href="#" class="month-btn unavailable">July<span class="status-icon">✕</span></a>
+                        <a href="#" class="month-btn unavailable">August<span class="status-icon">✕</span></a>
+                        <a href="#" class="month-btn unavailable">September<span class="status-icon">✕</span></a>
+                        <a href="#" class="month-btn unavailable">October<span class="status-icon">✕</span></a>
+                        <a href="#" class="month-btn unavailable">November<span class="status-icon">✕</span></a>
+                        <a href="#" class="month-btn unavailable">December<span class="status-icon">✕</span></a>
+                    </div>
+                    <div class="character-placeholder">
+                        <span><img src="img/image_03.png" alt="Character" style="width: 100%; height: 100%; object-fit: contain; border-radius: 0px;"></span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2027 Shelf -->
+            <!-- <section class="shelf">
+                <div class="shelf-header">
+                    <h2 class="shelf-title">2027</h2>
+                </div>
+                <div class="shelf-content">
+                    <div class="shelf-items">
+                        <a href="#" class="month-btn unavailable">January<span class="status-icon">✕</span></a>
+                        <a href="#" class="month-btn unavailable">February<span class="status-icon">✕</span></a>
+                        <a href="#" class="month-btn unavailable">March<span class="status-icon">✕</span></a>
+                        <a href="#" class="month-btn unavailable">April<span class="status-icon">✕</span></a>
+                        <a href="#" class="month-btn unavailable">May<span class="status-icon">✕</span></a>
+                        <a href="#" class="month-btn unavailable">June<span class="status-icon">✕</span></a>
+                        <a href="#" class="month-btn unavailable">July<span class="status-icon">✕</span></a>
+                        <a href="#" class="month-btn unavailable">August<span class="status-icon">✕</span></a>
+                        <a href="#" class="month-btn unavailable">September<span class="status-icon">✕</span></a>
+                        <a href="#" class="month-btn unavailable">October<span class="status-icon">✕</span></a>
+                        <a href="#" class="month-btn unavailable">November<span class="status-icon">✕</span></a>
+                        <a href="#" class="month-btn unavailable">December<span class="status-icon">✕</span></a>
+                    </div>
+                    <div class="character-placeholder">
+                        <span><img src="img/image_03.png" alt="Character" style="width: 100%; height: 100%; object-fit: contain; border-radius: 0px;"></span>
+                    </div>
+                </div>
+            </section> -->
+
+
+            <!-- Archieve Shelf -->
+            <section class="shelf">
+                <div class="shelf-header">
+                    <h2 class="shelf-title">Arsip (file dibawah Februari 2025)</h2>
+                </div>
+                <div class="shelf-content">
+                    <div class="shelf-items">
+                        <a href="https://drive.google.com/drive/u/2/folders/1GnPVWz5yRD_HQY5trNEX54BtNzjA-0Yg" class="month-btn available" target="_blank">Archive Gaji PNS/PPPK</a>
+                        <a href="https://drive.google.com/drive/u/2/folders/1aJmJwAVpSx3dAHXVifh7JxcBE43O5dxI" class="month-btn available" target="_blank">Archive Gaji Non ASN</a>
+
+                    </div>
+                    <div class="character-placeholder">
+                        <span><img src="img/archieve_01.png" alt="Character" style="width: 100%; height: 100%; object-fit: contain; border-radius: 0px;"></span>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Floating Character -->
+    <div class="floating-character" id="floatingCharacter">
+        <img src="img/image_02.png" alt="Character" style="width: 100%; height: 100%; object-fit: contain; border-radius: 0px;">
+    </div>
+
+    <!-- Theme Toggle Button -->
+    <div class="theme-toggle" id="themeToggle">
+        <i class="fas fa-sun theme-icon" id="themeIcon"></i>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p class="footer-text">LUNIX</p>
+            <div class="footer-links">
+                <a href="#" class="footer-link">2</a>
+                <a href="#" class="footer-link">1</a>
+                <a href="#" class="footer-link">3</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Create animated particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random position
+                particle.style.left = Math.random() * 100 + '%';
+                
+                // Random animation delay
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                
+                // Random size
+                const size = Math.random() * 4 + 2;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                
+                // Random color
+                const colors = ['#7c3aed', '#ec4899', '#06b6d4', '#a78bfa'];
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+// Theme toggle functionality
+const themeToggle = document.getElementById('themeToggle');
+const themeIcon = document.getElementById('themeIcon');
+const bodyElement = document.body; // Perbaikan di sini
+
+// Check for saved theme preference or default to light mode
+const currentTheme = localStorage.getItem('theme') || 'light';
+bodyElement.setAttribute('data-theme', currentTheme);
+
+if (currentTheme === 'dark') {
+    themeIcon.classList.remove('fa-sun');
+    themeIcon.classList.add('fa-moon');
+}
+
+themeToggle.addEventListener('click', () => {
+    const theme = bodyElement.getAttribute('data-theme'); // Perbaikan di sini
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    
+    bodyElement.setAttribute('data-theme', newTheme); // Perbaikan di sini
+    localStorage.setItem('theme', newTheme);
+    
+    // Update icon
+    if (newTheme === 'light') {
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+    } else {
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon');
+    }
+});
+
+        // Scroll effect for top panel
+        window.addEventListener('scroll', () => {
+            const topPanel = document.getElementById('topPanel');
+            if (window.scrollY > 50) {
+                topPanel.classList.add('scrolled');
+            } else {
+                topPanel.classList.remove('scrolled');
+            }
+        });
+
+        // Music toggle functionality
+        let isMusicPlaying = false;
+        const musicToggle = document.getElementById('musicToggle');
+        
+        musicToggle.addEventListener('click', () => {
+            isMusicPlaying = !isMusicPlaying;
+            if (isMusicPlaying) {
+                musicToggle.classList.add('playing');
+                musicToggle.innerHTML = '<i class="fas fa-pause"></i> Music';
+                // Here you would add actual music playing logic
+            } else {
+                musicToggle.classList.remove('playing');
+                musicToggle.innerHTML = '<i class="fas fa-music"></i> Music';
+                // Here you would add actual music pausing logic
+            }
+        });
+
+        // Contact button functionality
+        document.getElementById('contactBtn').addEventListener('click', () => {
+            // Create a simple modal for contact
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 2000;
+            `;
+            
+            const modalContent = document.createElement('div');
+            modalContent.style.cssText = `
+                background: linear-gradient(135deg, #1a1a3e, #2d1b69);
+                padding: 30px;
+                border-radius: 15px;
+                max-width: 500px;
+                width: 90%;
+                border: 1px solid rgba(167, 139, 250, 0.3);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            `;
+            
+            // Adjust modal content for light theme
+            if (htmlElement.getAttribute('data-theme') === 'light') {
+                modalContent.style.background = 'linear-gradient(135deg, #e0e7ff, #f1f5f9)';
+                modalContent.style.color = '#1e293b';
+            }
+            
+            modalContent.innerHTML = `
+                <h2 style="color: var(--text-light); margin-bottom: 20px;">Contact Us</h2>
+                <p style="color: rgba(224, 231, 255, 0.8); margin-bottom: 20px;">Feel free to reach out to us at:</p>
+                <p style="color: var(--glow-color); margin-bottom: 20px;">contact@lunix-collabspace.com</p>
+                <button id="closeModal" style="
+                    padding: 10px 20px;
+                    background: var(--button-bg);
+                    border: 1px solid var(--glow-color);
+                    border-radius: 30px;
+                    color: var(--text-light);
+                    font-weight: 600;
+                    cursor: pointer;
+                ">Close</button>
+            `;
+            
+            modal.appendChild(modalContent);
+            document.body.appendChild(modal);
+            
+            document.getElementById('closeModal').addEventListener('click', () => {
+                document.body.removeChild(modal);
+            });
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    document.body.removeChild(modal);
+                }
+            });
+        });
+
+        // Floating character interaction
+        document.getElementById('floatingCharacter').addEventListener('click', () => {
+            // Create a fun animation when clicked
+            const character = document.getElementById('floatingCharacter');
+            character.style.animation = 'none';
+            setTimeout(() => {
+                character.style.animation = 'float-character 3s ease-in-out infinite, spin 0.5s ease';
+            }, 10);
+            
+            // Add spin animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes spin {
+                    0% { transform: rotate(0deg) scale(1); }
+                    50% { transform: rotate(180deg) scale(1.2); }
+                    100% { transform: rotate(360deg) scale(1); }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            setTimeout(() => {
+                character.style.animation = 'float-character 3s ease-in-out infinite';
+            }, 500);
+        });
+
+        // Prevent default action for unavailable buttons
+        document.querySelectorAll('.month-btn.unavailable').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Create a toast notification
+                const toast = document.createElement('div');
+                toast.style.cssText = `
+                    position: fixed;
+                    bottom: 100px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: rgba(239, 68, 68, 0.9);
+                    color: white;
+                    padding: 15px 25px;
+                    border-radius: 30px;
+                    font-weight: 600;
+                    z-index: 2000;
+                    animation: slideUp 0.3s ease;
+                `;
+                toast.textContent = 'Konten ini belum tersedia!';
+                
+                // Add animation
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes slideUp {
+                        from {
+                            transform: translateX(-50%) translateY(20px);
+                            opacity: 0;
+                        }
+                        to {
+                            transform: translateX(-50%) translateY(0);
+                            opacity: 1;
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+                
+                document.body.appendChild(toast);
+                
+                // Remove toast after 3 seconds
+                setTimeout(() => {
+                    toast.style.animation = 'slideDown 0.3s ease';
+                    setTimeout(() => {
+                        document.body.removeChild(toast);
+                    }, 300);
+                }, 3000);
+            });
+        });
+
+        // Add ripple effect to available buttons
+        document.querySelectorAll('.month-btn.available, .month-btn:not(.unavailable)').forEach(button => {
+            button.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.cssText = `
+                    position: absolute;
+                    width: ${size}px;
+                    height: ${size}px;
+                    border-radius: 50%;
+                    background: rgba(255, 255, 255, 0.5);
+                    left: ${x}px;
+                    top: ${y}px;
+                    pointer-events: none;
+                    transform: scale(0);
+                    animation: ripple 0.6s ease-out;
+                `;
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+
+        // Add ripple animation
+        const rippleStyle = document.createElement('style');
+        rippleStyle.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+            @keyframes slideDown {
+                from {
+                    transform: translateX(-50%) translateY(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(-50%) translateY(20px);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(rippleStyle);
+
+        // Initialize particles on page load
+        document.addEventListener('DOMContentLoaded', createParticles);
+    </script>
+</body>
+</html>
