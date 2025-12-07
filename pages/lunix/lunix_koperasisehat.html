@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUNIX KOPERASI SEHAT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #151520;
+            --bg-card: rgba(25, 30, 45, 0.8);
+            --text-primary: #ffffff;
+            --text-secondary: #b8b8d0;
+            --accent-purple: #8b5cf6;
+            --accent-pink: #ec4899;
+            --accent-blue: #3b82f6;
+            --accent-teal: #14b8a6;
+            --accent-yellow: #fbbf24;
+            --glow-color: rgba(139, 92, 246, 0.4);
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --transition-speed: 0.3s;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f8f9fc;
+            --bg-secondary: #ffffff;
+            --bg-card: rgba(255, 255, 255, 0.9);
+            --text-primary: #1a1a2e;
+            --text-secondary: #6b7280;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+        }
+
+        /* Animated gradient background */
+        .gradient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
+            opacity: 0.05;
+            z-index: -2;
+            animation: gradient-shift 15s ease infinite;
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        /* Animated background particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: float-particle 20s infinite linear;
+        }
+
+        .particle:nth-child(odd) {
+            background: linear-gradient(45deg, var(--accent-purple), var(--accent-pink));
+        }
+
+        .particle:nth-child(even) {
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-teal));
+        }
+
+        @keyframes float-particle {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+                transform: translateY(80vh) translateX(10px) scale(1);
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('/img/bg-004-edt.jpg');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.2) saturate(1.2);
+            z-index: -1;
+            animation: slow-zoom 30s infinite alternate;
+        }
+
+        @keyframes slow-zoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(10, 10, 15, 0.3) 0%, rgba(10, 10, 15, 0.9) 100%);
+            z-index: -1;
+        }
+
+        .logo {
+            font-size: 4.5rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink), var(--accent-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 40px rgba(139, 92, 246, 0.5);
+            animation: float 6s ease-in-out infinite, pulse-glow 3s infinite alternate;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pulse-glow {
+            0% { filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.4)); }
+            100% { filter: drop-shadow(0 0 25px rgba(236, 72, 153, 0.6)); }
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            animation: slide-in-from-top 1s ease-out;
+        }
+
+        @keyframes slide-in-from-top {
+            0% {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-tagline {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 800px;
+            animation: slide-in-from-bottom 1s ease-out 0.3s both;
+        }
+
+        @keyframes slide-in-from-bottom {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 16px 48px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all var(--transition-speed);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
+            position: relative;
+            overflow: hidden;
+            animation: slide-in-from-bottom 1s ease-out 0.6s both;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(139, 92, 246, 0.5);
+        }
+
+        /* News Section */
+        .news-section {
+            padding: 120px 20px;
+            background-color: var(--bg-secondary);
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            animation: glow-text 2s infinite alternate;
+        }
+
+        @keyframes glow-text {
+            0% { 
+                background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+            }
+            100% { 
+                background: linear-gradient(135deg, var(--accent-blue), var(--accent-teal));
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+            }
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-pink), var(--accent-blue));
+            border-radius: 3px;
+            box-shadow: 0 0 20px var(--glow-color);
+            animation: expand-line 2s infinite alternate;
+        }
+
+        @keyframes expand-line {
+            0% { width: 150px; opacity: 0.7; }
+            100% { width: 300px; opacity: 1; }
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .news-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all var(--transition-speed);
+            box-shadow: 0 10px 30px var(--shadow-color);
+            border: 1px solid rgba(139, 92, 246, 0.1);
+            backdrop-filter: blur(20px);
+            position: relative;
+            transform-style: preserve-3d;
+            animation: card-float 6s infinite ease-in-out;
+            animation-delay: calc(var(--card-index) * 0.3s);
+        }
+
+        @keyframes card-float {
+            0%, 100% { transform: translateY(0) rotateX(0); }
+            50% { transform: translateY(-8px) rotateX(2deg); }
+        }
+
+        .news-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-pink), var(--accent-blue));
+            opacity: 0;
+            transition: opacity var(--transition-speed);
+        }
+
+        .news-card:hover::before {
+            opacity: 1;
+        }
+
+        .news-card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.3);
+        }
+
+        .news-image-container {
+            position: relative;
+            overflow: hidden;
+            height: 220px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.1));
+        }
+
+        /* Enhanced Animated Frame */
+        .news-image-container::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            right: -8px;
+            bottom: -8px;
+            background: linear-gradient(45deg, var(--accent-purple), var(--accent-pink), var(--accent-blue), var(--accent-teal));
+            border-radius: 20px;
+            opacity: 0;
+            z-index: -1;
+            animation: rotate-border 4s linear infinite;
+            transition: opacity 0.3s;
+        }
+
+        .news-image-container::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink), var(--accent-blue));
+            border-radius: 18px;
+            opacity: 0;
+            z-index: -1;
+            animation: rotate-border-reverse 3s linear infinite;
+            transition: opacity 0.3s;
+        }
+
+        .news-card:hover .news-image-container::before,
+        .news-card:hover .news-image-container::after {
+            opacity: 0.8;
+        }
+
+        @keyframes rotate-border {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.05); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        @keyframes rotate-border-reverse {
+            0% { transform: rotate(360deg) scale(1); }
+            50% { transform: rotate(180deg) scale(0.95); }
+            100% { transform: rotate(0deg) scale(1); }
+        }
+
+        .news-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .news-card:hover .news-image {
+            transform: scale(1.1) rotate(1deg);
+            filter: brightness(1.2) saturate(1.2);
+        }
+
+        .news-content {
+            padding: 2rem;
+        }
+
+        .news-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            color: var(--text-primary);
+        }
+
+        .news-title a {
+            color: inherit;
+            text-decoration: none;
+            transition: all var(--transition-speed);
+            position: relative;
+        }
+
+        .news-title a::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-pink));
+            transition: width 0.4s;
+        }
+
+        .news-title a:hover::after {
+            width: 100%;
+        }
+
+        .news-title a:hover {
+            color: var(--accent-purple);
+        }
+
+        .news-summary {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Services Section */
+        .services-section {
+            padding: 120px 20px;
+            background-color: var(--bg-primary);
+            position: relative;
+        }
+
+        .services-container {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .service {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 40px var(--shadow-color);
+            border: 1px solid rgba(139, 92, 246, 0.1);
+            backdrop-filter: blur(20px);
+            display: flex;
+            gap: 2.5rem;
+            transition: all var(--transition-speed);
+            position: relative;
+            overflow: hidden;
+            animation: slide-in 0.8s ease-out;
+            animation-fill-mode: both;
+            animation-delay: calc(var(--service-index) * 0.2s);
+        }
+
+        @keyframes slide-in {
+            0% {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .service::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--accent-purple), var(--accent-pink), var(--accent-blue));
+            opacity: 0.8;
+            animation: pulse-vertical 2s infinite alternate;
+        }
+
+        @keyframes pulse-vertical {
+            0% { opacity: 0.5; transform: scaleY(0.95); }
+            100% { opacity: 1; transform: scaleY(1); }
+        }
+
+        .service:hover {
+            transform: translateX(10px);
+            box-shadow: 0 20px 50px rgba(139, 92, 246, 0.3);
+        }
+
+        .service:nth-child(even) {
+            flex-direction: row-reverse;
+            animation-name: slide-in-right;
+        }
+
+        @keyframes slide-in-right {
+            0% {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .service:nth-child(even)::before {
+            left: auto;
+            right: 0;
+        }
+
+        .service:nth-child(even):hover {
+            transform: translateX(-10px);
+        }
+
+        .service-image {
+            flex: 0 0 350px;
+            height: 240px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            position: relative;
+        }
+
+        .service-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent, rgba(139, 92, 246, 0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.8s;
+        }
+
+        .service-image:hover::after {
+            transform: translateX(100%);
+        }
+
+        .service-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--transition-speed);
+        }
+
+        .service-image:hover img {
+            transform: scale(1.08);
+        }
+
+        .service-content {
+            flex: 1;
+        }
+
+        .service-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: glow-text 2s infinite alternate;
+        }
+
+        .service-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 1rem;
+        }
+
+        .service-button {
+            padding: 0.8rem 1rem;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.1));
+            border: 2px solid rgba(139, 92, 246, 0.2);
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: center;
+            transition: all var(--transition-speed);
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .service-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+            opacity: 0;
+            transition: opacity var(--transition-speed);
+            z-index: -1;
+        }
+
+        .service-button:hover::before {
+            opacity: 0.2;
+        }
+
+        .service-button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+            border-color: var(--accent-purple);
+            color: var(--accent-purple);
+        }
+
+        .service-button:active {
+            transform: translateY(-2px);
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 120px 20px;
+            background-color: var(--bg-secondary);
+            position: relative;
+        }
+
+        .contact-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .contact-info {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 40px var(--shadow-color);
+            border: 1px solid rgba(139, 92, 246, 0.1);
+            backdrop-filter: blur(20px);
+        }
+
+        .contact-form {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 40px var(--shadow-color);
+            border: 1px solid rgba(139, 92, 246, 0.1);
+            backdrop-filter: blur(20px);
+        }
+
+        .contact-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.8rem;
+            color: var(--text-secondary);
+            transition: all var(--transition-speed);
+            padding: 0.5rem;
+            border-radius: 12px;
+        }
+
+        .contact-item:hover {
+            color: var(--accent-purple);
+            background: rgba(139, 92, 246, 0.05);
+            transform: translateX(5px);
+        }
+
+        .contact-item i {
+            font-size: 1.3rem;
+            margin-right: 1.2rem;
+            color: var(--accent-purple);
+            width: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.6rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(139, 92, 246, 0.1);
+            border-radius: 12px;
+            color: var(--text-primary);
+            transition: all var(--transition-speed);
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-speed);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .submit-button:hover::before {
+            left: 100%;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+        }
+
+        .map-container {
+            margin-top: 2rem;
+            border-radius: 20px;
+            overflow: hidden;
+            height: 320px;
+            position: relative;
+            box-shadow: 0 10px 30px var(--shadow-color);
+        }
+
+        .map-placeholder {
+            width: 100%;
+            height: 100%;
+            background-image: url('img/lunix.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .map-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(236, 72, 153, 0.3));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.3s;
+        }
+
+        .map-overlay:hover {
+            opacity: 0.7;
+        }
+
+        .map-text {
+            color: white;
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Bottom Bar */
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(25, 30, 45, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -10px 30px var(--shadow-color);
+            border-top: 1px solid rgba(139, 92, 246, 0.1);
+            z-index: 1000;
+        }
+
+        .bottom-logo {
+            font-size: 1.3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: pulse-glow 3s infinite alternate;
+        }
+
+        .center-button {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.6rem;
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);
+            transition: all var(--transition-speed);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .center-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .center-button:hover::before {
+            width: 120px;
+            height: 120px;
+        }
+
+        .center-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 35px rgba(139, 92, 246, 0.6);
+        }
+
+        .right-controls {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
+
+        .contact-button {
+            padding: 0.6rem 1.8rem;
+            background: transparent;
+            border: 2px solid var(--accent-purple);
+            color: var(--accent-purple);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all var(--transition-speed);
+            font-size: 0.95rem;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--accent-purple);
+            transition: left 0.5s;
+            z-index: -1;
+        }
+
+        .contact-button:hover::before {
+            left: 0;
+        }
+
+        .contact-button:hover {
+            color: white;
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
+        }
+
+        .theme-toggle {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: transparent;
+            border: 2px solid var(--text-secondary);
+            color: var(--text-secondary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all var(--transition-speed);
+            position: relative;
+            font-size: 1.1rem;
+        }
+
+        .theme-toggle::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: var(--accent-purple);
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+            z-index: -1;
+        }
+
+        .theme-toggle:hover::before {
+            width: 45px;
+            height: 45px;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent-purple);
+            color: white;
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 3.5rem;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .service {
+                flex-direction: column !important;
+            }
+
+            .service:nth-child(even) {
+                flex-direction: column !important;
+            }
+
+            .service-image {
+                flex: 0 0 auto;
+                width: 100%;
+            }
+
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            .bottom-bar {
+                padding: 1rem;
+            }
+
+            .bottom-logo {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body data-theme="dark">
+    <!-- Animated Gradient Background -->
+    <div class="gradient-bg"></div>
+    
+    <!-- Animated Particles Background -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <h1 class="logo">KOPERASI SEHAT</h1>
+        <h2 class="hero-title">RSUD DR SOEKARDJO KOTA TASIKMALAYA</h2>
+        <p class="hero-tagline">Koperasi Sehat Warga RSUD dr. Soekardjo adalah koperasi yang dibentuk untuk mendukung kesejahteraan seluruh pegawai dan warga RSUD dr. Soekardjo. Melalui layanan simpan pinjam, kebutuhan harian, serta berbagai program kesejahteraan, koperasi ini hadir sebagai wadah kebersamaan, kemandirian, dan peningkatan kualitas hidup anggotanya. Dengan prinsip transparansi dan gotong royong, Koperasi Sehat berkomitmen memberikan pelayanan yang aman, mudah, dan bermanfaat bagi seluruh anggota.</p>
+        <a href="#" class="cta-button">Bergabung Bersama</a>
+    </section>
+
+    <!-- News Section -->
+    <section class="news-section">
+        <h2 class="section-title">SEKILAS KOPERASI SEHAT</h2>
+        <div class="news-grid">
+            <div class="news-card" style="--card-index: 0;">
+                <div class="news-image-container">
+                    <img src="img/koperasi_01.jpg" alt="Market 1" class="news-image">
+                </div>
+                <div class="news-content">
+                    <h3 class="news-title"><a href="#">Mendukung Kesejahteraan Pegawai</a></h3>
+                    <p class="news-summary">Koperasi ini hadir untuk meningkatkan kesejahteraan seluruh pegawai RSUD dr. Soekardjo melalui layanan yang aman, mudah, dan transparan.</p>
+                </div>
+            </div>
+            <div class="news-card" style="--card-index: 1;">
+                <div class="news-image-container">
+                    <img src="img/koperasi_04.jpg" alt="Market 2" class="news-image">
+                </div>
+                <div class="news-content">
+                    <h3 class="news-title"><a href="#">Layanan Simpan Pinjam yang Terpercaya</a></h3>
+                    <p class="news-summary">Menyediakan fasilitas simpan pinjam dengan proses yang jelas dan terjangkau sehingga membantu kebutuhan finansial anggotanya.</p>
+                </div>
+            </div>
+            <div class="news-card" style="--card-index: 2;">
+                <div class="news-image-container">
+                    <img src="img/koperasi_03.jpg" alt="Market 3" class="news-image">
+                </div>
+                <div class="news-content">
+                    <h3 class="news-title"><a href="#">Dikelola Secara Profesional</a></h3>
+                    <p class="news-summary">Pengelolaan koperasi dilakukan secara tertib, akuntabel, dan sesuai dengan aturan yang berlaku demi menjaga kepercayaan anggota.</p>
+                </div>
+            </div>
+            <div class="news-card" style="--card-index: 3;">
+                <div class="news-image-container">
+                    <img src="img/koperasi_05.jpg" alt="Market 4" class="news-image">
+                </div>
+                <div class="news-content">
+                    <h3 class="news-title"><a href="#">Berbasis Kebersamaan & Gotong Royong</a></h3>
+                    <p class="news-summary">Setiap aktivitas koperasi berlandaskan prinsip saling membantu, menguatkan, dan membangun solidaritas antar pegawai.</p>
+                </div>
+            </div>
+            <div class="news-card" style="--card-index: 4;">
+                <div class="news-image-container">
+                    <img src="img/koperasi_02.jpg" alt="Market 5" class="news-image">
+                </div>
+                <div class="news-content">
+                    <h3 class="news-title"><a href="#">Memberikan Manfaat Nyata</a></h3>
+                    <p class="news-summary">Melalui berbagai program dan fasilitas, koperasi berkomitmen memberikan manfaat langsung bagi anggotanya, baik secara finansial maupun keseharian.</p>
+                </div>
+            </div>
+            <div class="news-card" style="--card-index: 5;">
+                <div class="news-image-container">
+                    <img src="img/koperasi_06.jpg" alt="Market 6" class="news-image">
+                </div>
+                <div class="news-content">
+                    <h3 class="news-title"><a href="#">Mendorong Pertumbuhan Ekonomi Anggota</a></h3>
+                    <p class="news-summary">Koperasi berperan sebagai sarana untuk memperkuat stabilitas dan pertumbuhan ekonomi anggotanya melalui pengelolaan dana yang bijak dan berkelanjutan.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services-section">
+        <h2 class="section-title">DATA KOPERASI</h2>
+        <div class="services-container">
+            <div class="service" style="--service-index: 0;">
+                <div class="service-image">
+                    <img src="img/chibi_02.jpg" alt="Data Potongan Pegawai">
+                </div>
+                <div class="service-content">
+                    <h3 class="service-title">DATA POTONGAN PEGAWAI</h3>
+                    <div class="service-buttons">
+                        <a href="#" class="service-button">Blank</a>
+                        <a href="#" class="service-button">Blank</a>
+                        <a href="#" class="service-button">Blank</a>
+                        <a href="#" class="service-button">Blank</a>
+                        <a href="#" class="service-button">Blank</a>
+                        <a href="#" class="service-button">Blank</a>
+                        <a href="#" class="service-button">Blank</a>
+                        <a href="#" class="service-button">Blank</a>
+                        <a href="#" class="service-button">Blank</a>
+                        <a href="#" class="service-button">Blank</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="service" style="--service-index: 1;">
+                <div class="service-image">
+                    <img src="img/chibi_03.jpg" alt="Data Potongan Tekstil dan Kelontong">
+                </div>
+                <div class="service-content">
+                    <h3 class="service-title">Data Potongan Pegawai (Tekstil dan Kelontong)</h3>
+                    <div class="service-buttons">
+                        <a href="https://docs.google.com/spreadsheets/d/17Ab13vXU6AUolt7K3QEa7gR55Kw2bUvD0Pu6JLiF84c/edit?usp=drive_link" class="service-button" target="_blank">2015</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1e7ju_Z-6x7tzZ-hRbL5KIKoH11eXxMYCA9_74JelIwA/edit?usp=drive_link" class="service-button" target="_blank">2016</a>
+                        <a href="https://docs.google.com/spreadsheets/d/161-pehlvauyzFHzJamUQSglJ8YvL0fudlZUCu0lrWUs/edit?usp=drive_link" class="service-button" target="_blank">2017</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1ELjTIRHL-zGta5NSV9jUN7C07CTE-ZddNPBcgTKw084/edit?usp=drive_link" class="service-button" target="_blank">2018</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1XkMMw6Qwfz3_w2FZRPRdxuVSPngCpYBiVw-3FtBaMqo/edit?usp=drive_link" class="service-button" target="_blank">2019</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1X3_91Yp9epLJyW8jDq4d_imLa_ie07Aj72U7Ck6dV9M/edit?usp=drive_link" class="service-button" target="_blank">2020</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1WmcfYAMGUTRL1JCTUfTr1hGPzcj0PPZANs-eouDxBq4/edit?usp=drive_link" class="service-button" target="_blank">2021</a>
+                        <a href="https://docs.google.com/spreadsheets/d/19RzCRfjchteT-5sxHvwvK6SWQ8n4shCcs_qQh12-3Rw/edit?usp=drive_link" class="service-button" target="_blank">2022</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1LWc9joX0v_JbQz1_m_iTwHR_iSQf6-R0hTclpyiN8vo/edit?usp=drive_link" class="service-button" target="_blank">2023</a>
+                        <a href="https://docs.google.com/spreadsheets/d/18Cvg0v7i0HTV7Iw8butE-NZGQtDB7eM4KRaROXfIcJY/edit?usp=drive_link" class="service-button" target="_blank">2024</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1GHKQPjx5vXCZL-1QAiQBUuUoFxxa9fimp_KAH22weRI/edit?usp=drive_link" class="service-button" target="_blank">2025</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="service" style="--service-index: 2;">
+                <div class="service-image">
+                    <img src="img/chibi_04.jpg" alt="Data Stok Barang/Kelontong">
+                </div>
+                <div class="service-content">
+                    <h3 class="service-title">Data Stok Barang / Kelontong</h3>
+                    <div class="service-buttons">
+                        <a href="https://docs.google.com/spreadsheets/d/1M5ZvGEenY0YuCnJ97EQXVLpu3huVRSeh43-5BC1NS0w/edit?usp=drive_link" class="service-button" target="_blank">2014</a>
+                        <a href="https://docs.google.com/spreadsheets/d/18GdT_Mn7AlGa0h6sdBNhj2sk_EmZyrTDQjRPZbmY2EY/edit?usp=drive_link" class="service-button" target="_blank">2015</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1DjQqMAmOr13NJ3HFZ-wScYWHSYHdQzg4Gw3dMZce68Q/edit?usp=drive_link" class="service-button" target="_blank">2016</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1j85D_QIdSKtIcpze0No2EiOGaxk2XfrL4GA5eZa1UQU/edit?usp=drive_link" class="service-button" target="_blank">2017</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1vZx7j9ynjc1oWJFNKbGEibaV-3J_wkF_lhv4VbnKCtI/edit?usp=drive_link" class="service-button" target="_blank">2018</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1gC1v6qhGrkFSUR_piA-RzkcsSjvlBVxIYvaob0JHCTI/edit?usp=drive_link" class="service-button" target="_blank">2019</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1RX-9rvNmjmcWQ_FkNSykKx8Q-DHdt6TaClpntzuD3_0/edit?usp=drive_link" class="service-button" target="_blank">2020</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1uLjxKgWlPZHNuvMbbKejdFNdC-e4NaFsS1HJVvKix9k/edit?usp=drive_link" class="service-button" target="_blank">2021</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1ddIenuALqWUGVUMKx_ksQQHMH7bwERHLPCKcwZBPUdM/edit?usp=drive_link" class="service-button" target="_blank">2022</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1bCahYx_FKfNPl3v-i0lvdoUhHQ1-AImz3DHYtCKwdSI/edit?usp=drive_link" class="service-button" target="_blank">2023</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1aCkgymM46l81UP70ZTwuaGq704b6vwG3JSxS3Y8b4uI/edit?usp=drive_link" class="service-button" target="_blank">2024</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1obOFM3yTLjy5h__QD_KZoSR0myoncFldu3OTq_v258U/edit?usp=drive_link" class="service-button" target="_blank">2025</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="service" style="--service-index: 3;">
+                <div class="service-image">
+                    <img src="img/chibi_05.jpg" alt="Rekap Data Stok Barang / Kelontong">
+                </div>
+                <div class="service-content">
+                    <h3 class="service-title">Rekap Data Stok Barang / Kelontong</h3>
+                    <div class="service-buttons">
+                        <a href="https://docs.google.com/spreadsheets/d/1bub2bphYhRmcVMvfIme3nLGGyVsjEWKJB8HdSssiNF4/edit?usp=drive_link" class="service-button" target="_blank">2014</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1pYaUIr7ZzQRfjxtvT52iTcA-BkBtFtqDJaq_LAG2E6E/edit?usp=drive_link" class="service-button" target="_blank">2015</a>
+                        <a href="https://docs.google.com/spreadsheets/d/12YyZzO0803CWS2QcEmZ6qaCuoRJqm6d0QOZuvBNbFk4/edit?usp=drive_link" class="service-button" target="_blank">2016</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1jOWITCpfFwX_tDZ5YvJVq1bsARD0U8DI7fswNKPot9Y/edit?usp=drive_link" class="service-button" target="_blank">2017</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1zXu6sx4x80RaPDx7hkqnoLKL-vuvPLsCkQPsjugWnQ0/edit?usp=drive_link" class="service-button" target="_blank">2018</a>
+                        <a href="https://docs.google.com/spreadsheets/d/18RHle5cIFDuCGMhphsdg5CYPxYiL4x5OmLopG5OSmYg/edit?usp=drive_link" class="service-button" target="_blank">2019</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1rr3Ok3Q_Ndyon5tYPtK8gcrMGHK4HBMq5hAYRZ9onwc/edit?usp=drive_link" class="service-button" target="_blank">2020</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1dyYPp8MlVXj3LSIaFXlaXdlqyoXrWl0IcTg7WUiNlzM/edit?usp=drive_link" class="service-button" target="_blank">2021</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1LKxEB1fcu0SuoaY8a5Bf67MObuv-FbsETZxdhQOWfFk/edit?usp=drive_link" class="service-button" target="_blank">2022</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1PcY3ruSKgWo_xeEV9K9wBkzqi2v_il1CbZTjNfKwhPQ/edit?usp=drive_link" class="service-button" target="_blank">2023</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1KzVnp72TnpvO1MbIlkuAFodvAAl87Q-2YWmQqVZ3AA0/edit?usp=drive_link" class="service-button" target="_blank">2024</a>
+                        <a href="https://docs.google.com/spreadsheets/d/1Pt5bY-Mqp42uH0MzogyP5I8LxwEvVASnl_Ic5gRgd7s/edit?usp=drive_link" class="service-button" target="_blank">2025</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="service" style="--service-index: 4;">
+                <div class="service-image">
+                    <img src="img/chibi_01.jpg" alt="Template">
+                </div>
+                <div class="service-content">
+                    <h3 class="service-title">Coming Soon!</h3>
+                    <div class="service-buttons">
+                        <a href="#" class="service-button" target="_blank">button</a>
+                        <a href="#" class="service-button" target="_blank">button</a>
+                        <a href="#" class="service-button" target="_blank">button</a>
+                        <a href="#" class="service-button" target="_blank">button</a>
+                        <a href="#" class="service-button" target="_blank">button</a>
+                        <a href="#" class="service-button" target="_blank">button</a>
+                        <a href="#" class="service-button" target="_blank">button</a>
+                        <a href="#" class="service-button" target="_blank">button</a>
+                        <a href="#" class="service-button" target="_blank">button</a>
+                        <a href="#" class="service-button" target="_blank">button</a>
+                        <a href="#" class="service-button" target="_blank">button</a>
+                        <a href="#" class="service-button" target="_blank">button</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <h2 class="section-title">CONNECT WITH US</h2>
+        <div class="contact-container">
+            <div class="contact-info">
+                <h3 class="contact-title">Get in Touch</h3>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Jl. Rumah Sakit No.33, Empangsari, Kec. Tawang, Tasikmalaya</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>+62 - 00000000000</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>Coming Soon!</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-clock"></i>
+                    <span>Senin - Jumat : 8:00 Pagi - 2:00 Siang WIB</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-globe"></i>
+                    <span>Coming Soon!</span>
+                </div>
+                <div class="map-container">
+                    <div class="map-placeholder">
+                        <div class="map-overlay">
+                            <span class="map-text">More Coming Soon!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-form">
+                <h3 class="contact-title">Send Message</h3>
+                <form>
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-button">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottom Bar -->
+    <div class="bottom-bar">
+        <div class="bottom-logo">NOVA</div>
+        <div class="center-button">
+            <i class="fas fa-home"></i>
+        </div>
+        <div class="right-controls">
+            <button class="contact-button">Contact</button>
+            <button class="theme-toggle" id="theme-toggle">
+                <i class="fas fa-moon" id="theme-icon"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Create floating particles with colors
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 60;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.animationDelay = `${Math.random() * 20}s`;
+                particle.style.animationDuration = `${15 + Math.random() * 10}s`;
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        createParticles();
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const body = document.body;
+
+        themeToggle.addEventListener('click', () => {
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.setAttribute('data-theme', 'light');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add parallax effect to hero background
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const heroBg = document.querySelector('.hero-bg');
+            if (heroBg) {
+                heroBg.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+
+        // Add subtle animation to cards on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.news-card, .service').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+
+        // Add interactive hover effect to center button
+        const centerButton = document.querySelector('.center-button');
+        centerButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Form submission handler
+        document.querySelector('form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const submitButton = document.querySelector('.submit-button');
+            const originalText = submitButton.textContent;
+            submitButton.textContent = '✓ Message Sent!';
+            submitButton.style.background = 'linear-gradient(135deg, #10b981, #14b8a6)';
+            
+            setTimeout(() => {
+                submitButton.textContent = originalText;
+                submitButton.style.background = '';
+                e.target.reset();
+            }, 3000);
+        });
+
+        // Contact button scroll to contact section
+        document.querySelector('.contact-button').addEventListener('click', () => {
+            document.querySelector('.contact-section').scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>
