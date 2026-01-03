@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <link href="img/favicon-32x32.png" rel="icon"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUNIX STARLIGHT</title>
+    
+    <!-- Fonts: Space Grotesk (Futuristic Headings) & Inter (Clean Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* =========================================
+           CSS VARIABLES (FINANCE THEME)
+           ========================================= */
+        :root {
+            /* Light Theme (Clean Finance) */
+            --bg-primary: #f8fafc;
+            --bg-gradient: radial-gradient(circle at 50% 50%, #f1f5f9, #e2e8f0);
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --accent: #059669; /* Emerald Green (Money/Profit) */
+            --accent-glow: rgba(5, 150, 105, 0.4);
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --card-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+            --blob-1: #10b981;
+            --blob-2: #3b82f6; /* Blue */
+        }
+
+        [data-theme="dark"] {
+            /* Dark Theme (Cyber Finance) */
+            --bg-primary: #020617;
+            --bg-gradient: radial-gradient(circle at 15% 50%, #111827, #020617);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent: #34d399; /* Bright Neon Green */
+            --accent-glow: rgba(52, 211, 153, 0.4);
+            --glass-bg: rgba(15, 23, 42, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+            --blob-1: #059669;
+            --blob-2: #2563eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            background-image: var(--bg-gradient);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            transition: background 0.5s ease, color 0.5s ease;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4, .logo, .nav-link {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        /* Noise Texture */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* =========================================
+           UTILITIES
+           ========================================= */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-padding {
+            padding: 8rem 0;
+            position: relative;
+        }
+
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--card-shadow);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, var(--accent), #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-glow {
+            background: linear-gradient(90deg, var(--accent), #059669);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none; /* For links */
+            display: flex;           /* For links */
+            justify-content: center; /* For links */
+            align-items: center;     /* For links */
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+        
+        .btn-glow:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px var(--accent-glow);
+        }
+
+        /* Background Blobs */
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.3;
+            z-index: 0;
+            animation: float 10s infinite alternate;
+        }
+        .blob-1 { top: 10%; left: -10%; width: 500px; height: 500px; background: var(--blob-1); }
+        .blob-2 { bottom: 10%; right: -10%; width: 400px; height: 400px; background: var(--blob-2); animation-delay: -5s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(30px, 50px); }
+        }
+
+        /* Wave Dividers */
+        .wave-separator {
+            position: absolute;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+            bottom: -1px;
+            left: 0;
+            z-index: 1;
+        }
+        .wave-separator svg {
+            display: block;
+            width: calc(100% + 1.3px);
+            height: 60px;
+            fill: var(--bg-primary);
+        }
+        .wave-top {
+            top: -1px; bottom: auto;
+            transform: rotate(180deg);
+        }
+
+        /* =========================================
+           NAVBAR
+           ========================================= */
+        .navbar {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1200px;
+            height: 70px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        .navbar.scrolled {
+            background: rgba(var(--glass-bg), 0.9);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .logo { font-size: 1.8rem; font-weight: 700; letter-spacing: -1px; color: var(--text-primary); }
+        .nav-links { display: flex; gap: 2rem; }
+        .nav-link { font-size: 0.95rem; font-weight: 500; color: var(--text-secondary); text-decoration: none; position: relative; transition: 0.3s; }
+        .nav-link:hover { color: var(--accent); }
+        .nav-link::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 50%;
+            background: var(--accent); transition: 0.3s; transform: translateX(-50%);
+        }
+        .nav-link:hover::after { width: 100%; }
+        .theme-btn {
+            background: none; border: 1px solid var(--glass-border);
+            width: 40px; height: 40px; border-radius: 50%;
+            color: var(--text-primary); cursor: pointer;
+            display: flex; align-items: center; justify-content: center; transition: 0.3s;
+        }
+        .theme-btn:hover { background: var(--accent); color: white; border-color: var(--accent); }
+
+        /* =========================================
+           HERO SECTION (NEWS / MARKET)
+           ========================================= */
+        .hero-section {
+            min-height: 100vh; display: flex; align-items: center; padding-top: 100px;
+        }
+        .finance-3d-card {
+            display: grid; grid-template-columns: 1fr 1fr; border-radius: 24px; overflow: hidden;
+            transform-style: preserve-3d; transform: perspective(1000px);
+            transition: transform 0.1s;
+        }
+        .news-visual { height: 500px; position: relative; overflow: hidden; }
+        .news-visual img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
+        .finance-3d-card:hover .news-visual img { transform: scale(1.1); }
+        .news-content { padding: 3rem; display: flex; flex-direction: column; justify-content: center; }
+        .news-badge {
+            display: inline-block; background: var(--accent); color: white;
+            padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; text-transform: uppercase;
+            letter-spacing: 1px; margin-bottom: 1rem; width: fit-content;
+        }
+        .news-title { font-size: 3rem; line-height: 1.1; margin-bottom: 1.5rem; font-weight: 700; }
+
+        /* =========================================
+           SERVICES / FEATURES SECTION
+           ========================================= */
+        .services-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem; margin-top: 3rem;
+        }
+        .service-card {
+            border-radius: 20px; padding: 2rem; text-align: center;
+            transition: 0.4s ease; position: relative; overflow: hidden;
+            transform-style: preserve-3d;
+        }
+        .service-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px;
+            background: linear-gradient(90deg, var(--accent), #3b82f6);
+        }
+        .service-card:hover { transform: translateY(-15px) scale(1.02); box-shadow: 0 20px 40px -10px var(--accent-glow); }
+        .service-icon {
+            width: 80px; height: 80px; margin: 0 auto 1.5rem;
+            background: rgba(16, 185, 129, 0.1); border-radius: 20px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2rem; color: var(--accent);
+        }
+        .service-name { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .service-desc { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.5; }
+        
+        /* ROI Stats Bar */
+        .service-stats { width: 100%; margin-bottom: 1.5rem; text-align: left; }
+        .stat-row { display: flex; align-items: center; margin-bottom: 8px; font-size: 0.8rem; color: var(--text-secondary); }
+        .stat-label { width: 60px; font-weight: bold; }
+        .stat-bar-bg { flex: 1; height: 6px; background: rgba(128,128,128,0.2); border-radius: 3px; margin-left: 10px; overflow: hidden; }
+        .stat-bar-fill { height: 100%; background: var(--accent); border-radius: 3px; }
+
+        /* =========================================
+           GALLERY / STATS SECTION
+           ========================================= */
+        .gallery-wrapper {
+            position: relative; border-radius: 20px; overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3); border: 1px solid var(--glass-border);
+        }
+        .carousel-track { display: flex; transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1); }
+        .carousel-slide { min-width: 100%; height: 500px; position: relative; }
+        .carousel-slide img { width: 100%; height: 100%; object-fit: cover; }
+        .gallery-overlay {
+            position: absolute; bottom: 0; left: 0; width: 100%; padding: 2rem;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: white;
+        }
+        .gallery-nav {
+            position: absolute; top: 50%; width: 100%; display: flex; justify-content: space-between;
+            padding: 0 1rem; transform: translateY(-50%); pointer-events: none;
+        }
+        .g-btn {
+            width: 50px; height: 50px; background: rgba(255,255,255,0.1); backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 50%;
+            cursor: pointer; pointer-events: auto; transition: 0.3s;
+        }
+        .g-btn:hover { background: var(--accent); }
+
+        /* =========================================
+           CONTACT
+           ========================================= */
+        .contact-card {
+            text-align: center; padding: 4rem 2rem; border-radius: 30px; max-width: 600px; margin: 0 auto;
+        }
+        .social-icons { display: flex; justify-content: center; gap: 1.5rem; margin-top: 2rem; }
+        .social-icon {
+            width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; transition: 0.3s; cursor: pointer; color: var(--text-primary);
+        }
+        .social-icon:hover { background: var(--accent); color: white; transform: translateY(-5px); }
+
+        /* =========================================
+           RESPONSIVE
+           ========================================= */
+        @media (max-width: 768px) {
+            .navbar { width: 95%; top: 10px; border-radius: 15px; }
+            .nav-links { display: none; }
+            .finance-3d-card { grid-template-columns: 1fr; }
+            .news-visual { height: 250px; }
+            .news-title { font-size: 2rem; }
+            .blob { display: none; }
+            .wave-separator svg { height: 30px; }
+        }
+
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body data-theme="dark">
+
+    <!-- Ambient Blobs -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar glass-panel" id="navbar">
+        <a href="#" class="logo">LUNIX<span style="color:var(--accent)"> STARLIGHT</span></a>
+        <ul class="nav-links">
+            <li><a href="#news" class="nav-link">Main</a></li>
+            <li><a href="#services" class="nav-link">Menu</a></li>
+            <li><a href="#portfolio" class="nav-link">Gallery</a></li>
+            <li><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+        <button class="theme-btn" id="themeToggle">
+            <svg class="sun-icon" style="display:none" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+    </nav>
+
+    <!-- HERO SECTION (MARKET UPDATE) -->
+    <section id="news" class="hero-section">
+        <div class="container">
+            <div class="finance-3d-card glass-panel" id="tiltCard">
+                <div class="news-visual">
+                    <img src="img/lunix_starlight.jpg" alt="Stock Market">
+                    <div style="position: absolute; bottom: 0; width: 100%; height: 50%; background: linear-gradient(transparent, var(--bg-primary));"></div>
+                </div>
+                <div class="news-content">
+                    <span class="news-badge">LUNIX STARLIGHT</span>
+                    <h1 class="news-title text-gradient">Menerangi Pengelolaan Kas Kecil Anda</h1>
+                    <p style="color: var(--text-secondary); margin-bottom: 2rem; line-height: 1.6;">
+                        Satu sistem spreadsheet modern untuk entri kuitansi, cetak kuitansi, buku kas kecil umum, dan laporan pendukung—lebih rapi, cepat, dan terkontrol.
+                    </p>
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                        <span style="font-size: 0.8rem; color: var(--text-secondary);">Updated 1 January 2026</span>
+                        <span style="color: var(--accent); font-weight: bold;">▲ +100%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wave Divider -->
+        <div class="wave-separator">
+            <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.11,140.83,94.17,208.18,70.28, c46.77-16.45,90.37-38.32,113.21-13.84Z"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- SERVICES SECTION (LINKS) -->
+    <section id="services" class="section-padding" style="background: rgba(0,0,0,0.2);">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 3rem;">
+                <h2 class="text-gradient" style="font-size: 2.5rem;">LUNIX STARLIGHT</h2>
+                <p style="color: var(--text-secondary);">Silahkan pilih tahun pengelolaan anda.</p>
+            </div>
+
+            <div class="services-grid">
+                <!-- SERVICE 1: 2025 -->
+                <div class="service-card glass-panel">
+                    <div class="service-icon">😺</div>
+                    <h3 class="service-name">2025</h3>
+                    <p class="service-desc">Versi 2025, Awal yang menjadi permulaan.</p>
+                    
+                    <div class="service-stats">
+                        <div class="stat-row">
+                            <span class="stat-label">RATING</span>
+                            <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 85%;"></div></div>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">UPD</span>
+                            <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 30%; background: #ef4444;"></div></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Link Button (Opens new tab) -->
+                    <a href="https://docs.google.com/spreadsheets/d/1fZfXUds0IP4VHzWaA2bMFBsepn5H916KR32rdx2NV4I/edit?usp=sharing" target="_blank" class="btn-glow" style="width: 100%;">BUKA</a>
+                </div>
+
+                <!-- SERVICE 2: 2026 -->
+                <div class="service-card glass-panel">
+                    <div class="service-icon">😼</div>
+                    <h3 class="service-name">2026</h3>
+                    <p class="service-desc">Versi 2026 dengan pembaruan update dan perapihan pada spreadsheet.</p>
+                    
+                    <div class="service-stats">
+                        <div class="stat-row">
+                            <span class="stat-label">RATING</span>
+                            <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 90%;"></div></div>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">UPD</span>
+                            <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 80%; background: #08eac4;"></div></div>
+                        </div>
+                    </div>
+                    
+                    <a href="https://docs.google.com/spreadsheets/d/14uVe3KE8eIXKVl8kzqPJmJh62ClrKT8pWvgCtcgmLLY/edit?usp=sharing" target="_blank" class="btn-glow" style="width: 100%;">BUKA</a>
+                </div>
+
+                <!-- SERVICE 3: 2027 -->
+                <div class="service-card glass-panel">
+                    <div class="service-icon">🐈</div>
+                    <h3 class="service-name">2027</h3>
+                    <p class="service-desc">Coming Soon!.</p>
+                    
+                    <div class="service-stats">
+                        <div class="stat-row">
+                            <span class="stat-label">RATING</span>
+                            <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 10%;"></div></div>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">UPD</span>
+                            <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 10%; background: #10b981;"></div></div>
+                        </div>
+                    </div>
+                    
+                    <!-- <a href="#" target="_blank" class="btn-glow" style="width: 100%;">BUKA</a> -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Wave Divider -->
+        <div class="wave-separator wave-top">
+            <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- PORTFOLIO / GALLERY SECTION -->
+    <section id="portfolio" class="section-padding">
+        <div class="container">
+            <h2 class="text-gradient" style="font-size: 2.5rem; margin-bottom: 2rem;">Gallery</h2>
+            
+            <div class="gallery-wrapper">
+                <div class="carousel-track" id="track">
+                    <div class="carousel-slide">
+                        <img src="img/lunix_cat_01.jpg" alt="2025">
+                        <div class="gallery-overlay">
+                            <h3>2025</h3>
+                            <p>Successfully make the first version.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="img/lunix_cat_02.jpg" alt="2026">
+                        <div class="gallery-overlay">
+                            <h3>2026</h3>
+                            <p>Pembaruan dan perapihan akan beberapa aspek dan hal.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="img/lunix_cat_03.jpg" alt="2027">
+                        <div class="gallery-overlay">
+                            <h3>2027</h3>
+                            <p>Masih misteri~.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-nav">
+                    <button class="g-btn" id="prevBtn">&#10094;</button>
+                    <button class="g-btn" id="nextBtn">&#10095;</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="section-padding" style="margin-bottom: 4rem;">
+        <div class="container">
+            <div class="contact-card glass-panel">
+                <h2 style="font-size: 2rem; margin-bottom: 1rem;">Meet me!</h2>
+                <p style="color: var(--text-secondary);">Seekor kucing yang lebih senang bertahan dalam kerumitan dan kesulitan demi membuat waktu luang yang lebih banyak~</p>
+                
+                <div class="social-icons">
+                    <div class="social-icon glass-panel">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    </div>
+                    <div class="social-icon glass-panel">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+                    </div>
+                    <div class="social-icon glass-panel">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 2rem; font-size: 1.2rem; font-weight: 600; color: var(--accent);">
+                    LUNIX
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- <footer>
+        <div class="container">
+            <p>LUNIX.</p>
+        </div>
+    </footer> -->
+
+    <!-- SCRIPTS -->
+    <script>
+        // 1. THEME TOGGLE
+        const body = document.body;
+        const toggleBtn = document.getElementById('themeToggle');
+        const sunIcon = document.querySelector('.sun-icon');
+        const moonIcon = document.querySelector('.moon-icon');
+        const navbar = document.getElementById('navbar');
+
+        function updateIcons(theme) {
+            if (theme === 'dark') {
+                sunIcon.style.display = 'block';
+                moonIcon.style.display = 'none';
+            } else {
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'block';
+            }
+        }
+
+        // Initialize (Default Dark for Finance vibe)
+        if (localStorage.getItem('theme') === 'light') {
+            body.setAttribute('data-theme', 'light');
+            updateIcons('light');
+        } else {
+            updateIcons('dark');
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            const current = body.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+            updateIcons(next);
+        });
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // 2. 3D TILT EFFECT
+        const card = document.getElementById('tiltCard');
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const xRotation = -1 * ((y - rect.height/2) / 20);
+            const yRotation = (x - rect.width/2) / 20;
+            card.style.transform = `perspective(1000px) rotateX(${xRotation}deg) rotateY(${yRotation}deg)`;
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+        });
+
+        // 3. CAROUSEL LOGIC
+        const track = document.getElementById('track');
+        const slides = document.querySelectorAll('.carousel-slide');
+        const nextBtn = document.getElementById('nextBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        let currentIndex = 0;
+
+        function updateCarousel() {
+            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        }
+
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % slides.length;
+            updateCarousel();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+            updateCarousel();
+        });
+
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % slides.length;
+            updateCarousel();
+        }, 5000);
+    </script>
+</body>
+</html>
