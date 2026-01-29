@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="img/favicon-32x32.png" rel="icon"/>
+    <title>LUNIX | Analisa Data</title>
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --bg-dark: #0a0f1c;
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --bg-card-hover: rgba(255, 255, 255, 0.07);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            
+            /* Pastel Accents */
+            --accent-mint: #64ffda;
+            --accent-cyan: #00d2ff;
+            --accent-lavender: #b388ff;
+            --accent-blue: #82b1ff;
+            
+            /* Typography */
+            --text-main: #ffffff;
+            --text-muted: #a0aab5;
+            
+            --transition-speed: 0.4s;
+            --font-main: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition-speed);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* --- BACKGROUND GLOW EFFECTS --- */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -20%;
+            left: -10%;
+            width: 50%;
+            height: 50%;
+            background: radial-gradient(circle, rgba(0, 210, 255, 0.15), transparent 70%);
+            z-index: -1;
+            filter: blur(80px);
+            pointer-events: none;
+        }
+        
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -20%;
+            right: -10%;
+            width: 50%;
+            height: 50%;
+            background: radial-gradient(circle, rgba(179, 136, 255, 0.1), transparent 70%);
+            z-index: -1;
+            filter: blur(80px);
+            pointer-events: none;
+        }
+
+        /* --- NAVIGATION BAR --- */
+        .navbar {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            height: 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            background: rgba(10, 15, 28, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--text-main);
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.3);
+        }
+
+        .nav-brand img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent-cyan);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-link {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            position: relative;
+            padding: 5px 0;
+        }
+
+        /* Hover Glow Underline */
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-mint));
+            box-shadow: 0 0 10px var(--accent-cyan);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--text-main);
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* --- SECTION 1: OVERVIEW VISUAL --- */
+        .section-overview {
+            min-height: 80vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            flex-direction: column;
+        }
+
+        .overview-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            aspect-ratio: 16 / 9;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.02);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Floating Animation */
+            animation: float 6s ease-in-out infinite;
+            /* Soft Gradient Glowing Border */
+            box-shadow: 0 0 30px rgba(0, 210, 255, 0.1), inset 0 0 20px rgba(0, 210, 255, 0.05);
+            overflow: hidden;
+        }
+
+        .overview-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Membuat gambar utuh tanpa terpotong */
+            border-radius: 18px; /* Agar sudut gambar melengkung mengikuti kotak */
+            z-index: 1; /* Agar gambar berada di atas background */
+            padding: 20px; /* Opsional: Memberi jarak agar gambar tidak nempel di border */
+        }
+
+        /* Border Glow Gradient Animation */
+        .overview-container::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, var(--accent-cyan), var(--accent-mint), var(--accent-lavender), var(--accent-blue));
+            z-index: -1;
+            border-radius: 22px;
+            opacity: 0.6;
+            animation: borderRotate 4s linear infinite;
+            background-size: 400%;
+        }
+
+        @keyframes borderRotate {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .overview-text {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        /* --- SECTION 2: HERO LIST CARDS --- */
+        .section-services {
+            padding: 80px 10%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .hero-card {
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 30px;
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            overflow: hidden;
+        }
+
+        /* Glassmorphism feel */
+        .hero-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03));
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        /* Hover Effects */
+        .hero-card:hover {
+            transform: translateX(20px);
+            background: var(--bg-card-hover);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 10px 30px -10px rgba(0, 210, 255, 0.3);
+        }
+
+        .hero-card:hover::after {
+            opacity: 1;
+        }
+
+        .hero-icon {
+            flex-shrink: 0;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 25px;
+            color: var(--accent-mint);
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            transition: 0.4s;
+        }
+
+        .hero-card:hover .hero-icon {
+            background: var(--accent-cyan);
+            color: #000;
+            box-shadow: 0 0 20px var(--accent-cyan);
+        }
+
+        .hero-content {
+            flex-grow: 1;
+        }
+
+        .hero-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--text-main);
+            transition: 0.4s;
+        }
+
+        .hero-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            transition: 0.4s;
+        }
+
+        .hero-card:hover .hero-title {
+            color: var(--accent-cyan);
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
+        }
+
+        .hero-indicator {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.4s ease;
+        }
+
+        .hero-card:hover .hero-indicator {
+            opacity: 1;
+            transform: translateX(0);
+            color: var(--accent-mint);
+        }
+
+        /* --- SECTION 3: GALLERY CAROUSEL --- */
+        .section-gallery {
+            padding: 80px 0;
+            background: rgba(0,0,0,0.2);
+            border-top: 1px solid var(--glass-border);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .carousel-container {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 20px;
+            aspect-ratio: 16 / 9;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            border: 1px solid var(--glass-border);
+        }
+
+        .carousel-track {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.6);
+            transition: filter 0.5s;
+        }
+
+        .carousel-container:hover .carousel-slide img {
+            filter: brightness(0.8);
+        }
+
+        .carousel-caption {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            z-index: 2;
+        }
+
+        .carousel-caption h3 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+            background: linear-gradient(90deg, #fff, var(--accent-mint));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .carousel-caption p {
+            color: #ddd;
+            font-size: 1rem;
+        }
+
+        /* Carousel Controls */
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.3s;
+        }
+
+        .carousel-btn:hover {
+            background: var(--accent-cyan);
+            color: #000;
+            box-shadow: 0 0 15px var(--accent-cyan);
+        }
+
+        .prev-btn { left: 20px; }
+        .next-btn { right: 20px; }
+
+        .carousel-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .dot.active {
+            background: var(--accent-mint);
+            box-shadow: 0 0 10px var(--accent-mint);
+            transform: scale(1.2);
+        }
+
+        /* --- SECTION 4: FOOTER --- */
+        .section-footer {
+            padding: 100px 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle at center, #1a2333 0%, var(--bg-dark) 70%);
+        }
+
+        .footer-logo {
+            font-size: 4rem;
+            font-weight: 800;
+            letter-spacing: 5px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ffffff 30%, var(--accent-lavender) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(179, 136, 255, 0.3);
+        }
+
+        .footer-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 500px;
+            position: relative;
+            padding: 10px;
+        }
+        
+        .footer-subtitle::before, .footer-subtitle::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 40px;
+            height: 1px;
+            background: var(--accent-mint);
+            opacity: 0.5;
+        }
+        
+        .footer-subtitle::before { left: -50px; }
+        .footer-subtitle::after { right: -50px; }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0 20px;
+            }
+            
+            .nav-menu {
+                display: none; /* In a real app, this would be a hamburger menu */
+            }
+
+            .hero-card {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero-icon {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+
+            .hero-indicator {
+                display: none;
+            }
+            
+            .hero-card:hover {
+                transform: translateY(-5px);
+            }
+            
+            .footer-logo {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION BAR -->
+    <nav class="navbar">
+        <a href="#" class="nav-brand">
+            <!-- Placeholder Logo Image -->
+            <img src="img/image_04.png" alt="LUNIX Logo">
+            LUNIX
+        </a>
+        <ul class="nav-menu">
+            <li><a href="#overview" class="nav-link">Beranda</a></li>
+            <li><a href="#services" class="nav-link">Laporan</a></li>
+            <li><a href="#gallery" class="nav-link">Galeri</a></li>
+            <li><a href="#contact" class="nav-link">LUNIX</a></li>
+        </ul>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main>
+        <!-- SECTION 1: OVERVIEW VISUAL -->
+        <section id="overview" class="section-overview">
+            <div class="overview-container">
+                <img src="img/pic_01.jpg" alt="LuniX Keuangan Rumah Sakit" class="overview-img">
+            </div>
+        </section>
+
+        <!-- SECTION 2: HERO LIST CARDS -->
+        <section id="services" class="section-services">
+            <div class="hero-list">
+                
+                <!-- Card 1 -->
+                <a href="https://docs.google.com/spreadsheets/d/1Jy_W1bOioOC2ZZF2O98qIfOKnF9XHV7dB3A_OGu4wJI/edit?usp=sharing" class="hero-card" target="_blank">
+                    <div class="hero-icon">
+                        <!-- SVG Chart Icon -->
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                    </div>
+                    <div class="hero-content">
+                        <h3 class="hero-title">8. Analisa Agustus 2025 Tahap 1</h3>
+                        <p class="hero-desc">Analisa data pendapatan dari SIMRS GOS dan Data Klaim BPJS bulan Agustus 2025 untuk tahap klaim 1</p>
+                    </div>
+                    <div class="hero-indicator">Go →</div>
+                </a>
+
+                <!-- Card 2 -->
+                <a href="https://docs.google.com/spreadsheets/d/1G_2MJZOPX7pgG25g-i0jV5IH4OCemRKNGvWdGjV0V30/edit?usp=sharing" class="hero-card" target="_blank">
+                    <div class="hero-icon">
+                        <!-- SVG Chart Icon -->
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                        <!-- SVG Archive Icon -->
+                        <!-- <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="1" y="3" width="22" height="5"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg> -->
+                    </div>
+                    <div class="hero-content">
+                        <h3 class="hero-title">9. Analisa September 2025 Tahap 1 dan 2</h3>
+                        <p class="hero-desc">Analisa data pendapatan dari SIMRS GOS dan Data Klaim BPJS bulan September 2025 untuk tahap klaim 1 dan 2</p>
+                    </div>
+                    <div class="hero-indicator">Go →</div>
+                </a>
+
+                <!-- Card 3 -->
+                <a href="#" class="hero-card">
+                    <div class="hero-icon">
+                        <!-- SVG Wallet/Cost Icon -->
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                    </div>
+                    <div class="hero-content">
+                        <h3 class="hero-title">Coming Soon!</h3>
+                        <p class="hero-desc">Data belum tersedia</p>
+                    </div>
+                    <div class="hero-indicator">Go →</div>
+                </a>
+
+                <!-- Card 4 -->
+                <a href="#" class="hero-card">
+                    <div class="hero-icon">
+                        <!-- SVG Growth/Graph Icon -->
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="12" x2="2" y2="12"></line><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path><line x1="6" y1="16" x2="6.01" y2="16"></line><line x1="10" y1="16" x2="10.01" y2="16"></line></svg>
+                    </div>
+                    <div class="hero-content">
+                        <h3 class="hero-title">Coming Soon!</h3>
+                        <p class="hero-desc">Data belum tersedia</p>
+                    </div>
+                    <div class="hero-indicator">Go →</div>
+                </a>
+
+            </div>
+        </section>
+
+        <!-- SECTION 3: GALLERY CAROUSEL -->
+        <section id="gallery" class="section-gallery">
+            <div class="carousel-container">
+                <div class="carousel-track" id="track">
+                    <!-- Slide 1 -->
+                    <div class="carousel-slide">
+                        <img src="img/pic_02.jpg" alt="Bagian Keuangan">
+                        <div class="carousel-caption">
+                            <h3>Kolaborasi Bagian Keuangan</h3>
+                            <p>Analisa untuk menentukan hal positif bagi Tempat Kerja</p>
+                        </div>
+                    </div>
+                    <!-- Slide 2 -->
+                    <div class="carousel-slide">
+                        <img src="img/pic_03.jpg" alt="SIMRS GOS">
+                        <div class="carousel-caption">
+                            <h3>Data dari sistem SIMRS GOS</h3>
+                            <p>Data yang digunakan adalah data pendapatan di pasien pulang pada aplikasi SIMRS GOS</p>
+                        </div>
+                    </div>
+                    <!-- Slide 3 -->
+                    <div class="carousel-slide">
+                        <img src="img/pic_04.jpg" alt="Analisa">
+                        <div class="carousel-caption">
+                            <h3>Analisa Data Pendapatan</h3>
+                            <p>Analisa pada Data SIMRS GOS dan data Klaim</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Controls -->
+                <button class="carousel-btn prev-btn" id="prevBtn">❮</button>
+                <button class="carousel-btn next-btn" id="nextBtn">❯</button>
+
+                <!-- Dots -->
+                <div class="carousel-dots" id="dotsContainer">
+                    <div class="dot active" data-index="0"></div>
+                    <div class="dot" data-index="1"></div>
+                    <div class="dot" data-index="2"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer id="contact" class="section-footer">
+        <div class="footer-logo">LUNIX</div>
+        <div class="footer-subtitle">
+            Love Cat, Love Code
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            /* --- CAROUSEL LOGIC --- */
+            const track = document.getElementById('track');
+            const slides = Array.from(track.children);
+            const nextBtn = document.getElementById('nextBtn');
+            const prevBtn = document.getElementById('prevBtn');
+            const dotsContainer = document.getElementById('dotsContainer');
+            const dots = Array.from(dotsContainer.children);
+
+            let currentIndex = 0;
+            const slideCount = slides.length;
+            let autoSlideInterval;
+
+            const updateCarousel = (index) => {
+                // Move track
+                track.style.transform = `translateX(-${index * 100}%)`;
+                
+                // Update dots
+                dots.forEach(dot => dot.classList.remove('active'));
+                dots[index].classList.add('active');
+                
+                currentIndex = index;
+            };
+
+            const nextSlide = () => {
+                const nextIndex = (currentIndex + 1) % slideCount;
+                updateCarousel(nextIndex);
+            };
+
+            const prevSlide = () => {
+                const prevIndex = (currentIndex - 1 + slideCount) % slideCount;
+                updateCarousel(prevIndex);
+            };
+
+            // Event Listeners
+            nextBtn.addEventListener('click', () => {
+                nextSlide();
+                resetTimer();
+            });
+
+            prevBtn.addEventListener('click', () => {
+                prevSlide();
+                resetTimer();
+            });
+
+            dots.forEach(dot => {
+                dot.addEventListener('click', (e) => {
+                    const index = parseInt(e.target.dataset.index);
+                    updateCarousel(index);
+                    resetTimer();
+                });
+            });
+
+            // Auto-slide logic
+            const startTimer = () => {
+                autoSlideInterval = setInterval(nextSlide, 5000); // 5 seconds per slide
+            };
+
+            const resetTimer = () => {
+                clearInterval(autoSlideInterval);
+                startTimer();
+            };
+
+            // Initialize
+            startTimer();
+
+            /* --- SMOOTH SCROLL FOR ANCHOR LINKS --- */
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
