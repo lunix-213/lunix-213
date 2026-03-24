@@ -4,762 +4,440 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="img/favicon-32x32.png" rel="icon"/>
-    <title>LUNIX | Analisa Data</title>
+    <title>LUNIX - Analisa Data</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
     <style>
-        /* --- CSS VARIABLES & RESET --- */
         :root {
-            --bg-dark: #0a0f1c;
-            --bg-card: rgba(255, 255, 255, 0.03);
-            --bg-card-hover: rgba(255, 255, 255, 0.07);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            
-            /* Pastel Accents */
-            --accent-mint: #64ffda;
-            --accent-cyan: #00d2ff;
-            --accent-lavender: #b388ff;
-            --accent-blue: #82b1ff;
-            
-            /* Typography */
-            --text-main: #ffffff;
-            --text-muted: #a0aab5;
-            
-            --transition-speed: 0.4s;
-            --font-main: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            --bg: #06080d;
+            --bg-secondary: #0a0d14;
+            --fg: #e8eaed;
+            --muted: #5a6270;
+            --accent: #3b82f6;
+            --accent-secondary: #8b5cf6;
+            --card: rgba(255, 255, 255, 0.02);
+            --border: rgba(255, 255, 255, 0.05);
+            --glass: rgba(12, 16, 24, 0.7);
         }
-
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            font-family: var(--font-main);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-            transition: var(--transition-speed);
-        }
-
-        ul {
-            list-style: none;
-        }
-
-        /* --- BACKGROUND GLOW EFFECTS --- */
-        body::before {
-            content: '';
-            position: fixed;
-            top: -20%;
-            left: -10%;
-            width: 50%;
-            height: 50%;
-            background: radial-gradient(circle, rgba(0, 210, 255, 0.15), transparent 70%);
-            z-index: -1;
-            filter: blur(80px);
-            pointer-events: none;
+        
+        html {
+            scroll-behavior: smooth;
         }
         
-        body::after {
-            content: '';
-            position: fixed;
-            bottom: -20%;
-            right: -10%;
-            width: 50%;
-            height: 50%;
-            background: radial-gradient(circle, rgba(179, 136, 255, 0.1), transparent 70%);
-            z-index: -1;
-            filter: blur(80px);
-            pointer-events: none;
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            overflow-x: hidden;
+            line-height: 1.6;
         }
-
-        /* --- NAVIGATION BAR --- */
-        .navbar {
-            position: sticky;
-            top: 0;
-            width: 100%;
-            height: 80px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 5%;
-            background: rgba(10, 15, 28, 0.85);
+        
+        .font-display {
+            font-family: 'Space Mono', monospace;
+        }
+        
+        /* Grid background */
+        .bg-grid {
+            background-image: 
+                linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+            background-size: 80px 80px;
+            background-position: center center;
+        }
+        
+        /* Gradient mesh background */
+        .gradient-mesh {
+            background: 
+                radial-gradient(ellipse 80% 50% at 20% 20%, rgba(59, 130, 246, 0.08), transparent),
+                radial-gradient(ellipse 60% 40% at 80% 80%, rgba(139, 92, 246, 0.06), transparent),
+                radial-gradient(ellipse 50% 50% at 50% 50%, rgba(59, 130, 246, 0.03), transparent);
+        }
+        
+        /* Glass effect */
+        .glass {
+            background: var(--glass);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--border);
+        }
+        
+        .glass-subtle {
+            background: rgba(255, 255, 255, 0.02);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--glass-border);
-            z-index: 1000;
-        }
-
-        .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            color: var(--text-main);
-            text-shadow: 0 0 10px rgba(0, 210, 255, 0.3);
-        }
-
-        .nav-brand img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--accent-cyan);
-            box-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
-        }
-
-        .nav-menu {
-            display: flex;
-            gap: 40px;
-        }
-
-        .nav-link {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            position: relative;
-            padding: 5px 0;
-        }
-
-        /* Hover Glow Underline */
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-mint));
-            box-shadow: 0 0 10px var(--accent-cyan);
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover {
-            color: var(--text-main);
-            text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        /* --- SECTION 1: OVERVIEW VISUAL --- */
-        .section-overview {
-            min-height: 80vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 40px 20px;
-            flex-direction: column;
-        }
-
-        .overview-container {
-            position: relative;
-            width: 100%;
-            max-width: 900px;
-            aspect-ratio: 16 / 9;
-            border-radius: 20px;
-            border: 1px solid var(--glass-border);
-            background: rgba(255, 255, 255, 0.02);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            /* Floating Animation */
-            animation: float 6s ease-in-out infinite;
-            /* Soft Gradient Glowing Border */
-            box-shadow: 0 0 30px rgba(0, 210, 255, 0.1), inset 0 0 20px rgba(0, 210, 255, 0.05);
-            overflow: hidden;
-        }
-
-        .overview-img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain; /* Membuat gambar utuh tanpa terpotong */
-            border-radius: 18px; /* Agar sudut gambar melengkung mengikuti kotak */
-            z-index: 1; /* Agar gambar berada di atas background */
-            padding: 20px; /* Opsional: Memberi jarak agar gambar tidak nempel di border */
-        }
-
-        /* Border Glow Gradient Animation */
-        .overview-container::before {
-            content: '';
-            position: absolute;
-            top: -2px; left: -2px; right: -2px; bottom: -2px;
-            background: linear-gradient(45deg, var(--accent-cyan), var(--accent-mint), var(--accent-lavender), var(--accent-blue));
-            z-index: -1;
-            border-radius: 22px;
-            opacity: 0.6;
-            animation: borderRotate 4s linear infinite;
-            background-size: 400%;
-        }
-
-        @keyframes borderRotate {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
-        }
-
-        .overview-text {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-align: center;
-        }
-
-        /* --- SECTION 2: HERO LIST CARDS --- */
-        .section-services {
-            padding: 80px 10%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .hero-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .hero-card {
-            position: relative;
-            display: flex;
-            align-items: center;
-            padding: 30px;
-            background: var(--bg-card);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            overflow: hidden;
-        }
-
-        /* Glassmorphism feel */
-        .hero-card::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03));
-            opacity: 0;
-            transition: opacity 0.4s;
-        }
-
-        /* Hover Effects */
-        .hero-card:hover {
-            transform: translateX(20px);
-            background: var(--bg-card-hover);
-            border-color: var(--accent-cyan);
-            box-shadow: 0 10px 30px -10px rgba(0, 210, 255, 0.3);
-        }
-
-        .hero-card:hover::after {
-            opacity: 1;
-        }
-
-        .hero-icon {
-            flex-shrink: 0;
-            width: 60px;
-            height: 60px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-right: 25px;
-            color: var(--accent-mint);
-            border: 1px solid rgba(100, 255, 218, 0.2);
-            transition: 0.4s;
-        }
-
-        .hero-card:hover .hero-icon {
-            background: var(--accent-cyan);
-            color: #000;
-            box-shadow: 0 0 20px var(--accent-cyan);
-        }
-
-        .hero-content {
-            flex-grow: 1;
-        }
-
-        .hero-title {
-            font-size: 1.4rem;
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: var(--text-main);
-            transition: 0.4s;
-        }
-
-        .hero-desc {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            transition: 0.4s;
-        }
-
-        .hero-card:hover .hero-title {
-            color: var(--accent-cyan);
-            text-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
-        }
-
-        .hero-indicator {
-            font-size: 1.5rem;
-            color: var(--text-muted);
-            opacity: 0;
-            transform: translateX(-10px);
-            transition: all 0.4s ease;
-        }
-
-        .hero-card:hover .hero-indicator {
-            opacity: 1;
-            transform: translateX(0);
-            color: var(--accent-mint);
-        }
-
-        /* --- SECTION 3: GALLERY CAROUSEL --- */
-        .section-gallery {
-            padding: 80px 0;
-            background: rgba(0,0,0,0.2);
-            border-top: 1px solid var(--glass-border);
-            border-bottom: 1px solid var(--glass-border);
-        }
-
-        .carousel-container {
-            position: relative;
-            max-width: 1000px;
-            margin: 0 auto;
-            overflow: hidden;
-            border-radius: 20px;
-            aspect-ratio: 16 / 9;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            border: 1px solid var(--glass-border);
-        }
-
-        .carousel-track {
-            display: flex;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .carousel-slide {
-            min-width: 100%;
-            height: 100%;
-            position: relative;
-        }
-
-        .carousel-slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: brightness(0.6);
-            transition: filter 0.5s;
-        }
-
-        .carousel-container:hover .carousel-slide img {
-            filter: brightness(0.8);
-        }
-
-        .carousel-caption {
-            position: absolute;
-            bottom: 30px;
-            left: 30px;
-            z-index: 2;
-        }
-
-        .carousel-caption h3 {
-            font-size: 2rem;
-            margin-bottom: 5px;
-            background: linear-gradient(90deg, #fff, var(--accent-mint));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .carousel-caption p {
-            color: #ddd;
-            font-size: 1rem;
-        }
-
-        /* Carousel Controls */
-        .carousel-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(5px);
-            color: white;
-            border: 1px solid rgba(255,255,255,0.2);
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 10;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: 0.3s;
-        }
-
-        .carousel-btn:hover {
-            background: var(--accent-cyan);
-            color: #000;
-            box-shadow: 0 0 15px var(--accent-cyan);
-        }
-
-        .prev-btn { left: 20px; }
-        .next-btn { right: 20px; }
-
-        .carousel-dots {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 10px;
-            z-index: 10;
-        }
-
-        .dot {
-            width: 12px;
-            height: 12px;
-            background: rgba(255,255,255,0.3);
-            border-radius: 50%;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .dot.active {
-            background: var(--accent-mint);
-            box-shadow: 0 0 10px var(--accent-mint);
-            transform: scale(1.2);
-        }
-
-        /* --- SECTION 4: FOOTER --- */
-        .section-footer {
-            padding: 100px 20px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: radial-gradient(circle at center, #1a2333 0%, var(--bg-dark) 70%);
-        }
-
-        .footer-logo {
-            font-size: 4rem;
-            font-weight: 800;
-            letter-spacing: 5px;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #ffffff 30%, var(--accent-lavender) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px rgba(179, 136, 255, 0.3);
-        }
-
-        .footer-subtitle {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            max-width: 500px;
-            position: relative;
-            padding: 10px;
+            border: 1px solid var(--border);
         }
         
-        .footer-subtitle::before, .footer-subtitle::after {
+        /* Reveal animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            .reveal {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+        }
+        
+        /* Card animations */
+        .card-interactive {
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                        box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .card-interactive:hover {
+            transform: translateY(-6px);
+        }
+        
+        /* Button styles */
+        .btn-glow {
+            position: relative;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            transition: all 0.3s ease;
+        }
+        
+        .btn-glow::before {
             content: '';
             position: absolute;
-            top: 50%;
-            width: 40px;
-            height: 1px;
-            background: var(--accent-mint);
+            inset: -1px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            border-radius: inherit;
+            filter: blur(12px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+        
+        .btn-glow:hover::before {
             opacity: 0.5;
         }
         
-        .footer-subtitle::before { left: -50px; }
-        .footer-subtitle::after { right: -50px; }
-
-        /* --- RESPONSIVE --- */
-        @media (max-width: 768px) {
-            .navbar {
-                padding: 0 20px;
-            }
-            
-            .nav-menu {
-                display: none; /* In a real app, this would be a hamburger menu */
-            }
-
-            .hero-card {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .hero-icon {
-                margin-right: 0;
-                margin-bottom: 15px;
-            }
-
-            .hero-indicator {
-                display: none;
-            }
-            
-            .hero-card:hover {
-                transform: translateY(-5px);
-            }
-            
-            .footer-logo {
-                font-size: 2.5rem;
-            }
+        .btn-glow:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* Status indicator */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        
+        .status-pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        /* Border gradient */
+        .border-gradient {
+            position: relative;
+        }
+        
+        .border-gradient::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(139, 92, 246, 0.2), transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        
+        /* Focus states */
+        *:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 3px;
+        }
+        
+        /* Navbar states */
+        .navbar-default {
+            background: transparent;
+        }
+        
+        .navbar-scrolled {
+            background: rgba(6, 8, 13, 0.85);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        /* Decorative line */
+        .line-gradient {
+            background: linear-gradient(90deg, transparent, var(--accent), var(--accent-secondary), transparent);
         }
     </style>
 </head>
 <body>
-
-    <!-- NAVIGATION BAR -->
-    <nav class="navbar">
-        <a href="#" class="nav-brand">
-            <!-- Placeholder Logo Image -->
-            <img src="img/image_04.png" alt="LUNIX Logo">
-            LUNIX
-        </a>
-        <ul class="nav-menu">
-            <li><a href="#overview" class="nav-link">Beranda</a></li>
-            <li><a href="#services" class="nav-link">Laporan</a></li>
-            <li><a href="#gallery" class="nav-link">Galeri</a></li>
-            <li><a href="#contact" class="nav-link">LUNIX</a></li>
-        </ul>
+    <!-- Background layers -->
+    <div class="fixed inset-0 bg-grid pointer-events-none"></div>
+    <div class="fixed inset-0 gradient-mesh pointer-events-none"></div>
+    
+    <!-- Decorative blobs -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+        <div class="absolute w-[600px] h-[600px] rounded-full opacity-30" style="background: radial-gradient(circle, rgba(59, 130, 246, 0.15), transparent 70%); top: -200px; left: -200px;"></div>
+        <div class="absolute w-[500px] h-[500px] rounded-full opacity-20" style="background: radial-gradient(circle, rgba(139, 92, 246, 0.12), transparent 70%); bottom: -100px; right: -150px;"></div>
+    </div>
+    
+    <!-- Navbar -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 navbar-default">
+        <div class="max-w-6xl mx-auto px-6 py-6">
+            <div class="flex items-center justify-center">
+                <a href="#" class="font-display text-lg tracking-[0.3em] font-bold relative group" style="color: var(--fg);">
+                    <span class="relative z-10">LUNIX</span>
+                    <span class="absolute -bottom-1 left-0 w-0 h-px transition-all duration-300 group-hover:w-full" style="background: linear-gradient(90deg, var(--accent), var(--accent-secondary));"></span>
+                </a>
+            </div>
+        </div>
     </nav>
-
-    <!-- MAIN CONTENT -->
+    
     <main>
-        <!-- SECTION 1: OVERVIEW VISUAL -->
-        <section id="overview" class="section-overview">
-            <div class="overview-container">
-                <img src="img/pic_01.jpg" alt="LuniX Keuangan Rumah Sakit" class="overview-img">
-            </div>
-        </section>
-
-        <!-- SECTION 2: HERO LIST CARDS -->
-        <section id="services" class="section-services">
-            <div class="hero-list">
-                
-                <!-- Card 1 -->
-                <a href="https://docs.google.com/spreadsheets/d/1Jy_W1bOioOC2ZZF2O98qIfOKnF9XHV7dB3A_OGu4wJI/edit?usp=sharing" class="hero-card" target="_blank">
-                    <div class="hero-icon">
-                        <!-- SVG Chart Icon -->
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-                    </div>
-                    <div class="hero-content">
-                        <h3 class="hero-title">8. Analisa Agustus 2025 Tahap 1</h3>
-                        <p class="hero-desc">Analisa data pendapatan dari SIMRS GOS dan Data Klaim BPJS Rawat Inap bulan Agustus 2025 untuk tahap klaim 1</p>
-                    </div>
-                    <div class="hero-indicator">Go →</div>
-                </a>
-
-                <!-- Card 2 -->
-                <a href="https://docs.google.com/spreadsheets/d/1G_2MJZOPX7pgG25g-i0jV5IH4OCemRKNGvWdGjV0V30/edit?usp=sharing" class="hero-card" target="_blank">
-                    <div class="hero-icon">
-                        <!-- SVG Chart Icon -->
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-                        <!-- SVG Archive Icon -->
-                        <!-- <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="1" y="3" width="22" height="5"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg> -->
-                    </div>
-                    <div class="hero-content">
-                        <h3 class="hero-title">9. Analisa September 2025 Tahap 1 dan 2</h3>
-                        <p class="hero-desc">Analisa data pendapatan dari SIMRS GOS dan Data Klaim BPJS Rawat Inap bulan September 2025 untuk tahap klaim 1 dan 2</p>
-                    </div>
-                    <div class="hero-indicator">Go →</div>
-                </a>
-
-                 <!-- Card 3 -->
-                <a href="https://docs.google.com/spreadsheets/d/1Uu0b96P4PPKBxmBR33XSp37Rj68XZ314K3VmqM2ygik/edit?usp=sharing" class="hero-card" target="_blank">
-                    <div class="hero-icon">
-                        <!-- SVG Chart Icon -->
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-                        <!-- SVG Archive Icon -->
-                        <!-- <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="1" y="3" width="22" height="5"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg> -->
-                    </div>
-                    <div class="hero-content">
-                        <h3 class="hero-title">10. Analisa Oktober 2025 Tahap 1 dan 2</h3>
-                        <p class="hero-desc">Analisa data pendapatan dari SIMRS GOS dan Data Klaim BPJS Rawat Inap bulan Oktober 2025 untuk tahap klaim 1 dan 2</p>
-                    </div>
-                    <div class="hero-indicator">Go →</div>
-                </a>
-
-
-                <!-- Card x -->
-                <a href="#" class="hero-card">
-                    <div class="hero-icon">
-                        <!-- SVG Wallet/Cost Icon -->
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
-                    </div>
-                    <div class="hero-content">
-                        <h3 class="hero-title">Coming Soon!</h3>
-                        <p class="hero-desc">Data belum tersedia</p>
-                    </div>
-                    <div class="hero-indicator">Go →</div>
-                </a>
-
-                <!-- Card x -->
-                <a href="#" class="hero-card">
-                    <div class="hero-icon">
-                        <!-- SVG Growth/Graph Icon -->
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="12" x2="2" y2="12"></line><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path><line x1="6" y1="16" x2="6.01" y2="16"></line><line x1="10" y1="16" x2="10.01" y2="16"></line></svg>
-                    </div>
-                    <div class="hero-content">
-                        <h3 class="hero-title">Coming Soon!</h3>
-                        <p class="hero-desc">Data belum tersedia</p>
-                    </div>
-                    <div class="hero-indicator">Go →</div>
-                </a>
-
-            </div>
-        </section>
-
-        <!-- SECTION 3: GALLERY CAROUSEL -->
-        <section id="gallery" class="section-gallery">
-            <div class="carousel-container">
-                <div class="carousel-track" id="track">
-                    <!-- Slide 1 -->
-                    <div class="carousel-slide">
-                        <img src="img/pic_02.jpg" alt="Bagian Keuangan">
-                        <div class="carousel-caption">
-                            <h3>Kolaborasi Bagian Keuangan</h3>
-                            <p>Analisa untuk menentukan hal positif bagi Tempat Kerja</p>
+        <!-- Hero Section -->
+        <section class="min-h-screen flex items-center pt-32 pb-24 px-6 relative">
+            <div class="max-w-6xl mx-auto w-full">
+                <div class="grid lg:grid-cols-5 gap-12 lg:gap-20 items-center">
+                    <!-- Left content -->
+                    <div class="lg:col-span-3 space-y-10">
+                        <div class="reveal space-y-6">
+                            <div class="inline-flex items-center gap-3 glass-subtle rounded-full px-4 py-2">
+                                <span class="w-2 h-2 rounded-full status-pulse" style="background: #22c55e;"></span>
+                                <span class="text-xs tracking-widest uppercase" style="color: var(--muted);">System Online</span>
+                            </div>
+                            
+                            <h1 class="text-5xl sm:text-6xl lg:text-7xl font-semibold leading-[1.1] tracking-tight">
+                                LUNIX<br>
+                                <span style="color: var(--accent);">ANALISA DATA</span>
+                            </h1>
+                        </div>
+                        
+                        <div class="reveal" style="transition-delay: 0.1s;">
+                            <p class="text-lg sm:text-xl font-light tracking-wide" style="color: var(--muted);">
+                                Personal analysis and observation interface
+                            </p>
+                        </div>
+                        
+                        <div class="reveal space-y-4" style="transition-delay: 0.15s;">
+                            <p class="text-base leading-relaxed max-w-lg" style="color: var(--muted); opacity: 0.8;">
+                                LUNIX Analisa data dibuat hanya untuk kebutuhan personal. 
+                                Dibuat untuk analisa data pada Klaim BPJS Kesehatan atas Rumah Sakit.
+                            </p>
+                        </div>
+                        
+                        <div class="reveal flex flex-wrap gap-4" style="transition-delay: 0.2s;">
+                            <button class="btn-glow px-8 py-4 rounded-xl font-medium text-white tracking-wide">
+                                Initialize System
+                            </button>
+                            <button class="glass-subtle px-8 py-4 rounded-xl font-medium tracking-wide hover:bg-white/5 transition-colors" style="color: var(--fg);">
+                                Learn More
+                            </button>
                         </div>
                     </div>
-                    <!-- Slide 2 -->
-                    <div class="carousel-slide">
-                        <img src="img/pic_03.jpg" alt="SIMRS GOS">
-                        <div class="carousel-caption">
-                            <h3>Data dari sistem SIMRS GOS</h3>
-                            <p>Data yang digunakan adalah data pendapatan di pasien pulang pada aplikasi SIMRS GOS</p>
-                        </div>
-                    </div>
-                    <!-- Slide 3 -->
-                    <div class="carousel-slide">
-                        <img src="img/pic_04.jpg" alt="Analisa">
-                        <div class="carousel-caption">
-                            <h3>Analisa Data Pendapatan</h3>
-                            <p>Analisa pada Data SIMRS GOS dan data Klaim</p>
+                    
+                    <!-- Right visual -->
+                    <div class="lg:col-span-2 reveal" style="transition-delay: 0.25s;">
+                        <div class="relative">
+                            <!-- Main card -->
+                            <div class="glass rounded-2xl p-6 card-interactive border-gradient">
+                                <div class="aspect-[4/5] rounded-xl overflow-hidden relative" style="background: linear-gradient(180deg, var(--bg-secondary), rgba(59, 130, 246, 0.05));">
+                                    <!-- Placeholder content -->
+                                    <!-- Ganti src dengan path gambar Anda -->
+                                    <img src="img/lunix_badge.png" alt="System Visualization" class="absolute inset-0 w-full h-full object-cover">
+                                    
+                                    <!-- Decorative elements -->
+                                    <div class="absolute top-4 left-4 flex items-center gap-2">
+                                        <span class="w-2 h-2 rounded-full" style="background: var(--accent);"></span>
+                                        <span class="text-xs font-display" style="color: var(--muted);">LUNIX</span>
+                                    </div>
+                                    <div class="absolute bottom-4 right-4 text-xs font-display" style="color: var(--muted);">00:00:00</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Floating badge -->
+                            <div class="absolute -bottom-3 -left-3 glass rounded-xl px-4 py-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded-full status-pulse" style="background: var(--accent);"></span>
+                                    <span class="text-xs font-medium" style="color: var(--fg);">ACTIVE</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Controls -->
-                <button class="carousel-btn prev-btn" id="prevBtn">❮</button>
-                <button class="carousel-btn next-btn" id="nextBtn">❯</button>
-
-                <!-- Dots -->
-                <div class="carousel-dots" id="dotsContainer">
-                    <div class="dot active" data-index="0"></div>
-                    <div class="dot" data-index="1"></div>
-                    <div class="dot" data-index="2"></div>
+            </div>
+        </section>
+        
+        <!-- Character Card Section -->
+        <section class="py-32 px-6 relative">
+            <div class="max-w-md mx-auto">
+                <div class="reveal text-center mb-12 space-y-3">
+                    <p class="text-xs tracking-[0.25em] uppercase" style="color: var(--accent-secondary);">WELCOME</p>
+                    <h2 class="font-display text-2xl tracking-wide">System Interface</h2>
+                </div>
+                
+                <!-- Character Card -->
+                <div class="reveal" style="transition-delay: 0.1s;">
+                    <div class="glass rounded-3xl p-8 card-interactive border-gradient relative overflow-hidden group">
+                        <!-- Hover glow -->
+                        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700" style="background: radial-gradient(ellipse at center, rgba(59, 130, 246, 0.08), transparent 70%);"></div>
+                        
+                        <div class="relative z-10 space-y-6">
+                            <!-- Portrait -->
+                            <div class="flex justify-center">
+                                <div class="w-28 h-28 rounded-2xl overflow-hidden border-gradient" style="background: linear-gradient(135deg, var(--accent), var(--accent-secondary));">
+                                    <div class="w-full h-full flex items-center justify-center">
+                                        <svg class="w-12 h-12 text-white opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Info -->
+                            <div class="text-center space-y-2">
+                                <h3 class="font-display text-xl font-bold tracking-wide">LUNIX Analisa Data</h3>
+                                <p class="text-sm" style="color: var(--muted);">
+                                    Silahkan klik tombol dibawah untuk menuju analisa data versi terbaru.
+                                </p>
+                            </div>
+                            
+                            <!-- Stats -->
+                            <div class="grid grid-cols-3 gap-4 py-4">
+                                <div class="text-center">
+                                    <div class="font-display text-2xl font-bold" style="color: var(--accent);">ACTIVE</div>
+                                    <div class="text-xs mt-1" style="color: var(--muted);">WEB APP</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="font-display text-2xl font-bold" style="color: var(--accent-secondary);">24/7</div>
+                                    <div class="text-xs mt-1" style="color: var(--muted);">Online</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="font-display text-2xl font-bold" style="color: var(--accent);">V2.13</div>
+                                    <div class="text-xs mt-1" style="color: var(--muted);">Version</div>
+                                </div>
+                            </div>
+                            
+                            <!-- CTA -->
+                            <a href="https://script.google.com/macros/s/AKfycbzSiT7wTDRnML5SMXe2eBdBYTun8sbttLVuIKZOsGJH9iLQGh6RbgxPKTk0MvBa5GpO6g/exec" class="btn-glow block w-full text-center py-4 rounded-xl font-medium text-white tracking-wide" target="_blank">
+                                PERGI KE LUNIX
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Final Section -->
+        <section class="py-32 px-6 relative">
+            <div class="max-w-4xl mx-auto">
+                <div class="reveal text-center space-y-8">
+                    <!-- Decorative top line -->
+                    <div class="flex justify-center">
+                        <div class="w-16 h-px line-gradient"></div>
+                    </div>
+                    
+                    <h2 class="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight leading-tight">
+                        <span style="color: var(--fg);">LUNIX</span>
+                        <span style="color: var(--muted);"> — </span>
+                        <span style="color: var(--accent);">ANALISA DATA</span>
+                    </h2>
+                    
+                    <p class="text-lg sm:text-xl font-light tracking-wide" style="color: var(--muted);">
+                        Me and my AI Friend built this
+                    </p>
+                    
+                    <!-- Decorative bottom -->
+                    <div class="pt-8">
+                        <div class="inline-flex items-center gap-3 glass-subtle rounded-full px-5 py-3">
+                            <span class="w-1.5 h-1.5 rounded-full" style="background: var(--accent);"></span>
+                            <span class="text-xs tracking-widest uppercase" style="color: var(--muted);">Personal Project</span>
+                            <span class="w-1.5 h-1.5 rounded-full" style="background: var(--accent-secondary);"></span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
-
-    <!-- FOOTER -->
-    <footer id="contact" class="section-footer">
-        <div class="footer-logo">LUNIX</div>
-        <div class="footer-subtitle">
-            Love Cat, Love Code
+    
+    <!-- Footer -->
+    <footer class="py-8 px-6" style="border-top: 1px solid var(--border);">
+        <div class="max-w-6xl mx-auto text-center">
+            <p class="text-sm" style="color: var(--muted);">
+                LUNIX System Interface
+            </p>
         </div>
     </footer>
-
-    <!-- JAVASCRIPT -->
+    
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            /* --- CAROUSEL LOGIC --- */
-            const track = document.getElementById('track');
-            const slides = Array.from(track.children);
-            const nextBtn = document.getElementById('nextBtn');
-            const prevBtn = document.getElementById('prevBtn');
-            const dotsContainer = document.getElementById('dotsContainer');
-            const dots = Array.from(dotsContainer.children);
-
-            let currentIndex = 0;
-            const slideCount = slides.length;
-            let autoSlideInterval;
-
-            const updateCarousel = (index) => {
-                // Move track
-                track.style.transform = `translateX(-${index * 100}%)`;
-                
-                // Update dots
-                dots.forEach(dot => dot.classList.remove('active'));
-                dots[index].classList.add('active');
-                
-                currentIndex = index;
+        // Initialize all variables first
+        const navbar = document.getElementById('navbar');
+        const revealElements = document.querySelectorAll('.reveal');
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        
+        // Scroll reveal with IntersectionObserver
+        function initRevealAnimations() {
+            if (prefersReducedMotion) {
+                revealElements.forEach(el => el.classList.add('visible'));
+                return;
+            }
+            
+            const observerOptions = {
+                threshold: 0.15,
+                rootMargin: '0px 0px -60px 0px'
             };
-
-            const nextSlide = () => {
-                const nextIndex = (currentIndex + 1) % slideCount;
-                updateCarousel(nextIndex);
-            };
-
-            const prevSlide = () => {
-                const prevIndex = (currentIndex - 1 + slideCount) % slideCount;
-                updateCarousel(prevIndex);
-            };
-
-            // Event Listeners
-            nextBtn.addEventListener('click', () => {
-                nextSlide();
-                resetTimer();
-            });
-
-            prevBtn.addEventListener('click', () => {
-                prevSlide();
-                resetTimer();
-            });
-
-            dots.forEach(dot => {
-                dot.addEventListener('click', (e) => {
-                    const index = parseInt(e.target.dataset.index);
-                    updateCarousel(index);
-                    resetTimer();
-                });
-            });
-
-            // Auto-slide logic
-            const startTimer = () => {
-                autoSlideInterval = setInterval(nextSlide, 5000); // 5 seconds per slide
-            };
-
-            const resetTimer = () => {
-                clearInterval(autoSlideInterval);
-                startTimer();
-            };
-
-            // Initialize
-            startTimer();
-
-            /* --- SMOOTH SCROLL FOR ANCHOR LINKS --- */
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    if (targetId === '#') return;
-                    
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth'
-                        });
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
                     }
                 });
-            });
+            }, observerOptions);
+            
+            revealElements.forEach(el => observer.observe(el));
+        }
+        
+        // Navbar scroll behavior
+        function handleNavbarScroll() {
+            const scrollY = window.scrollY;
+            const scrollThreshold = 80;
+            
+            if (scrollY > scrollThreshold) {
+                navbar.classList.remove('navbar-default');
+                navbar.classList.add('navbar-scrolled');
+            } else {
+                navbar.classList.remove('navbar-scrolled');
+                navbar.classList.add('navbar-default');
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            initRevealAnimations();
+            
+            // Attach scroll listener
+            window.addEventListener('scroll', handleNavbarScroll, { passive: true });
+            
+            // Initial check
+            handleNavbarScroll();
         });
     </script>
 </body>
-
 </html>
