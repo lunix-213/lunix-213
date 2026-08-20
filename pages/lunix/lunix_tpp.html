@@ -1,1184 +1,2060 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="img/favicon-32x32.png" rel="icon"/>
-    <title>LUNIX - TPP (COLLABSPACE)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            /* Dark theme */
-            --primary-color: #7c3aed;
-            --secondary-color: #ec4899;
-            --accent-color: #06b6d4;
-            --dark-bg: #0f0f23;
-            --light-bg: #1a1a3e;
-            --text-light: #e0e7ff;
-            --glow-color: #a78bfa;
-            --shelf-bg: rgba(30, 30, 60, 0.7);
-            --button-bg: rgba(124, 58, 237, 0.3);
-            --button-hover: rgba(124, 58, 237, 0.6);
-            --particle-color: #a78bfa;
-            --available-color: #10b981;
-            --unavailable-color: #ef4444;
-        }
+    <link href="../../img/favicon-32x32.png" rel="icon"/>
+    <title>LUNIX TPP</title>
 
-        /* Light theme (now default) */
-        [data-theme="light"] {
-            --primary-color: #6366f1;
-            --secondary-color: #ec4899;
-            --accent-color: #0891b2;
-            --dark-bg: #f8fafc;
-            --light-bg: #e0e7ff;
-            --text-light: #1e293b;
-            --glow-color: #818cf8;
-            --shelf-bg: rgba(224, 231, 255, 0.7);
-            --button-bg: rgba(99, 102, 241, 0.2);
-            --button-hover: rgba(99, 102, 241, 0.4);
-            --particle-color: #818cf8;
-            --available-color: #059669;
-            --unavailable-color: #dc2626;
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Syne:wght@700;800&family=Italiana&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ========================================================= */
+        /* CLEAN PROFESSIONAL WHITE & LIGHT LUXURY DESIGN SYSTEM */
+        /* ========================================================= */
+        :root {
+            --bg-page: #f8fafc;
+            --bg-page-soft: #f1f5f9;
+            --bg-card: #ffffff;
+            --bg-card-subtle: #f8fafc;
+            
+            --border-subtle: #e2e8f0;
+            --border-hover: #cbd5e1;
+            
+            --primary-indigo: #4f46e5;
+            --indigo-glow: rgba(79, 70, 229, 0.18);
+            --emerald-accent: #059669;
+            --emerald-bg: rgba(5, 150, 105, 0.1);
+            --amber-accent: #d97706;
+            --amber-bg: rgba(217, 119, 6, 0.1);
+            
+            --text-title: #0f172a;
+            --text-body: #334155;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+
+            --shadow-subtle: 0 2px 5px rgba(0, 0, 0, 0.03);
+            --shadow-card: 0 10px 30px -4px rgba(15, 23, 42, 0.06), 0 4px 10px -2px rgba(15, 23, 42, 0.03);
+            --shadow-hover: 0 20px 40px -6px rgba(15, 23, 42, 0.1), 0 8px 16px -4px rgba(15, 23, 42, 0.04);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            scroll-behavior: smooth;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--light-bg) 50%, var(--primary-color) 100%);
-            color: var(--text-light);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-body);
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
-            transition: background 0.3s ease, color 0.3s ease;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(79, 70, 229, 0.035) 0%, transparent 45%),
+                radial-gradient(circle at 85% 35%, rgba(5, 150, 105, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 50% 85%, rgba(217, 119, 6, 0.025) 0%, transparent 55%),
+                radial-gradient(rgba(148, 163, 184, 0.22) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 100% 100%, 32px 32px;
+            background-attachment: fixed;
         }
 
-        /* Animated background particles */
-        .particles {
+        /* Ambient Light Particles Engine */
+        #ambient-canvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--particle-color);
-            border-radius: 50%;
-            opacity: 0.3;
-            animation: float 15s infinite linear;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(100vh) translateX(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.3;
-            }
-            90% {
-                opacity: 0.3;
-            }
-            100% {
-                transform: translateY(-100vh) translateX(100px);
-                opacity: 0;
-            }
-        }
-
-        /* Top Panel */
-        .top-panel {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 40px;
-            background: rgba(15, 15, 35, 0.7);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(167, 139, 250, 0.2);
-        }
-
-        [data-theme="light"] .top-panel {
-            background: rgba(248, 250, 252, 0.8);
-            box-shadow: 0 4px 20px rgba(129, 140, 248, 0.2);
-        }
-
-        .top-panel.scrolled {
-            padding: 15px 40px;
-            background: rgba(15, 15, 35, 0.9);
-            box-shadow: 0 8px 30px rgba(167, 139, 250, 0.3);
-        }
-
-        [data-theme="light"] .top-panel.scrolled {
-            background: rgba(248, 250, 252, 0.95);
-            box-shadow: 0 8px 30px rgba(129, 140, 248, 0.3);
-        }
-
-        .logo-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 0 20px rgba(167, 139, 250, 0.5);
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow {
-            from {
-                filter: drop-shadow(0 0 5px rgba(167, 139, 250, 0.5));
-            }
-            to {
-                filter: drop-shadow(0 0 15px rgba(236, 72, 153, 0.8));
-            }
-        }
-
-        .top-buttons {
-            display: flex;
-            gap: 15px;
-        }
-
-        .top-btn {
-            padding: 10px 20px;
-            background: var(--button-bg);
-            border: 1px solid var(--glow-color);
-            border-radius: 30px;
-            color: var(--text-light);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            text-decoration: none;
-        }
-
-        .top-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            transform: translate(-50%, -50%);
-            transition: width 0.5s, height 0.5s;
-        }
-
-        .top-btn:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        .top-btn:hover {
-            background: var(--button-hover);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(167, 139, 250, 0.4);
-        }
-
-        /* Main Content */
-        .main-content {
-            margin-top: 100px;
-            padding: 40px;
-            position: relative;
             z-index: 1;
         }
 
-        /* Shelf Container */
-        .shelf-container {
+        /* ========================================================= */
+        /* MINIMALIST & AESTHETIC NAVBAR */
+        /* ========================================================= */
+        #main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 16px 0;
+            transition: all 0.3s ease;
+        }
+
+        #main-header.scrolled {
+            padding: 10px 0;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-subtle);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-back-hub {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 8px;
+            background: #ffffff;
+            border: 1px solid var(--border-subtle);
+            color: var(--primary-indigo);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: var(--shadow-subtle);
+            transition: all 0.22s ease;
+        }
+
+        .nav-back-hub:hover {
+            background: var(--primary-indigo);
+            color: #ffffff;
+            border-color: var(--primary-indigo);
+            transform: translateX(-3px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+        }
+
+        .brand-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--text-title);
+            text-decoration: none;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand-title span {
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            list-style: none;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary-indigo);
+            background: rgba(79, 70, 229, 0.06);
+        }
+
+        /* ========================================================= */
+        /* 100VH ULTRA-AESTHETIC LANDING HERO */
+        /* ========================================================= */
+        #hero {
+            min-height: 100vh;
+            height: 100vh;
+            padding: 100px 24px 35px;
             display: flex;
             flex-direction: column;
-            gap: 60px; /* Increased gap between shelves */
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        /* Individual Shelf */
-        .shelf {
-            background: var(--shelf-bg);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(167, 139, 250, 0.2);
-            position: relative;
-            overflow: visible; /* Changed to visible to allow character to extend beyond */
-            transition: transform 0.3s ease;
-        }
-
-        [data-theme="light"] .shelf {
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .shelf::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-color));
-            border-radius: 15px;
-            opacity: 0;
-            z-index: -1;
-            transition: opacity 0.3s ease;
-        }
-
-        .shelf:hover::before {
-            opacity: 0.3;
-        }
-
-        .shelf:hover {
-            transform: translateY(-5px);
-        }
-
-        .shelf-header {
-            display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .shelf-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 0 10px rgba(167, 139, 250, 0.3);
-        }
-
-        .shelf-content {
-            display: flex;
             justify-content: space-between;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .shelf-items {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 15px;
-            flex: 1;
-        }
-
-        .month-btn {
-            padding: 15px 10px;
-            background: var(--button-bg);
-            border: 1px solid rgba(167, 139, 250, 0.3);
-            border-radius: 10px;
-            color: var(--text-light);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
             text-align: center;
             position: relative;
-            overflow: hidden;
-            text-decoration: none;
-        }
-
-        /* Simple glow hover effect for default buttons */
-        .month-btn:hover {
-            background: var(--button-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 0 20px rgba(167, 139, 250, 0.5);
-            border-color: var(--glow-color);
-        }
-
-        /* Available Button Class (Class A) */
-        .month-btn.available {
-            background: rgba(16, 185, 129, 0.2);
-            border: 1px solid var(--available-color);
-            color: var(--text-light);
-            position: relative;
-        }
-
-        [data-theme="light"] .month-btn.available {
-            background: rgba(5, 150, 105, 0.15);
-        }
-
-        .month-btn.available:hover {
-            background: rgba(16, 185, 129, 0.4);
-            transform: translateY(-2px);
-            box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
-            border-color: var(--available-color);
-        }
-
-        .month-btn.available::after {
-            content: '✓';
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            font-size: 0.8rem;
-            color: var(--available-color);
             z-index: 2;
+            overflow: hidden;
         }
 
-        /* Unavailable Button Class (Class B) */
-        .month-btn.unavailable {
-            background: rgba(239, 68, 68, 0.2);
-            border: 1px solid var(--unavailable-color);
-            color: rgba(224, 231, 255, 0.5);
-            cursor: not-allowed;
-            position: relative;
-        }
-
-        [data-theme="light"] .month-btn.unavailable {
-            background: rgba(220, 38, 38, 0.15);
-            color: rgba(30, 41, 59, 0.5);
-        }
-
-        .month-btn.unavailable::before {
+        /* Ambient Iridescent Center Glow */
+        #hero::before {
             content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: repeating-linear-gradient(
-                45deg,
-                transparent,
-                transparent 5px,
-                rgba(239, 68, 68, 0.1) 5px,
-                rgba(239, 68, 68, 0.1) 10px
-            );
-            border-radius: 10px;
-            z-index: 1;
-        }
-
-        .month-btn.unavailable:hover {
-            transform: none;
-            background: rgba(239, 68, 68, 0.2);
-            box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
-            border-color: var(--unavailable-color);
-        }
-
-        .month-btn.unavailable:hover::before {
-            content: 'Locked';
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 0.7rem;
-            color: var(--unavailable-color);
-            z-index: 2;
-            width: 100%;
-            text-align: center;
-            background: none;
+            width: 750px;
+            height: 550px;
+            background: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.07) 0%, rgba(236, 72, 153, 0.035) 45%, transparent 70%);
+            pointer-events: none;
+            z-index: -1;
+            filter: blur(40px);
         }
 
-        .month-btn.unavailable .status-icon {
+        /* Subtle Corner Geometric Crosses */
+        .hero-cross {
             position: absolute;
-            top: 5px;
-            right: 5px;
-            font-size: 0.8rem;
-            color: var(--unavailable-color);
-            z-index: 2;
-        }
-
-        /* Enhanced Character Placeholder */
-        .character-placeholder {
-            width: 220px; /* Increased from 150px */
-            height: 220px; /* Increased from 150px */
-            background: rgba(167, 139, 250, 0.1);
-            border: 2px dashed rgba(167, 139, 250, 0.3);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: rgba(224, 231, 255, 0.5);
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            position: relative;
-            z-index: 10; /* Higher z-index to appear in front */
-            margin-top: -30px; /* Negative margin to blend with shelf */
-            margin-bottom: -30px; /* Negative margin to blend with shelf */
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        [data-theme="light"] .character-placeholder {
-            color: rgba(30, 41, 59, 0.5);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-        }
-
-        .character-placeholder:hover {
-            border-color: var(--glow-color);
-            background: rgba(167, 139, 250, 0.2);
-            transform: scale(1.05);
-        }
-
-        /* News Shelf */
-        .news-board {
-            flex: 1;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-            padding: 20px;
-            min-height: 150px;
-            border: 1px solid rgba(167, 139, 250, 0.2);
-            position: relative;
-            overflow: hidden;
-        }
-
-        [data-theme="light"] .news-board {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .news-board::before {
-            content: '📢';
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 1.5rem;
-            opacity: 0.5;
-        }
-
-        .news-content {
+            font-family: 'JetBrains Mono', monospace;
             font-size: 1rem;
-            line-height: 1.6;
-            color: rgba(224, 231, 255, 0.9);
+            color: rgba(148, 163, 184, 0.35);
+            font-weight: 300;
+            pointer-events: none;
+        }
+        .cross-tl { top: 120px; left: 50px; }
+        .cross-tr { top: 120px; right: 50px; }
+        .cross-bl { bottom: 60px; left: 50px; }
+        .cross-br { bottom: 60px; right: 50px; }
+
+        .hero-center-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: auto 0;
+            max-width: 960px;
+            position: relative;
         }
 
-        [data-theme="light"] .news-content {
-            color: rgba(30, 41, 59, 0.9);
+        /* Shimmering Pill Badge */
+        .hero-badge-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 2.5px;
+            color: var(--primary-indigo);
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            padding: 8px 22px;
+            border-radius: 40px;
+            margin-bottom: 26px;
+            box-shadow: 0 4px 20px rgba(79, 70, 229, 0.08);
+            backdrop-filter: blur(10px);
+            position: relative;
         }
 
-        /* Floating Character */
-        .floating-character {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 120px;
-            height: 120px;
-            background: rgba(167, 139, 250, 0.1);
-            border: 2px solid rgba(167, 139, 250, 0.3);
+        .badge-dot {
+            width: 7px;
+            height: 7px;
             border-radius: 50%;
+            background: var(--primary-indigo);
+            box-shadow: 0 0 10px var(--primary-indigo);
+            animation: dotPulse 2s infinite;
+        }
+
+        @keyframes dotPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.6; }
+        }
+
+        /* Aesthetic Luxury Title */
+        .hero-title-main {
+            font-family: 'Syne', sans-serif;
+            font-size: 5.6rem;
+            font-weight: 800;
+            color: var(--text-title);
+            line-height: 1.05;
+            margin-bottom: 22px;
+            letter-spacing: -2px;
+            text-transform: uppercase;
+        }
+
+        .hero-title-main span {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            font-style: italic;
+            text-transform: none;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, #4f46e5 0%, #818cf8 50%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            padding-left: 8px;
+        }
+
+        .hero-subtitle-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 740px;
+            font-weight: 500;
+            line-height: 1.65;
+            margin-bottom: 32px;
+        }
+
+        .cyber-cursor {
+            display: inline-block;
+            width: 6px;
+            height: 18px;
+            background: var(--primary-indigo);
+            margin-left: 4px;
+            animation: cursorBlink 1s infinite;
+        }
+
+        @keyframes cursorBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Aesthetic Hero CTA Buttons */
+        .hero-actions-row {
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 999;
-            animation: float-character 3s ease-in-out infinite;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            gap: 14px;
+            margin-bottom: 28px;
         }
 
-        @keyframes float-character {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
+        .hero-primary-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 28px;
+            border-radius: 30px;
+            background: var(--primary-indigo);
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 4px 18px rgba(79, 70, 229, 0.3);
+            transition: all 0.25s ease;
         }
 
-        .floating-character:hover {
-            transform: scale(1.1);
-            border-color: var(--glow-color);
-            box-shadow: 0 0 20px rgba(167, 139, 250, 0.5);
+        .hero-primary-btn:hover {
+            background: #4338ca;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(79, 70, 229, 0.4);
         }
 
-        /* Footer */
-        footer {
-            margin-top: 80px; /* Increased margin for more spacing */
-            padding: 30px;
-            text-align: center;
-            background: rgba(15, 15, 35, 0.7);
-            backdrop-filter: blur(10px);
-            border-top: 1px solid rgba(167, 139, 250, 0.2);
+        /* Micro Stats Strip */
+        .hero-stats-strip {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
-        [data-theme="light"] footer {
-            background: rgba(248, 250, 252, 0.8);
-            border-top: 1px solid rgba(129, 140, 248, 0.2);
+        .hero-stat-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid var(--border-subtle);
+            padding: 4px 12px;
+            border-radius: 20px;
+            box-shadow: var(--shadow-subtle);
         }
 
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
+        .hero-stat-pill span.icon {
+            color: var(--emerald-accent);
         }
 
-        .footer-text {
-            font-size: 0.9rem;
-            color: rgba(224, 231, 255, 0.7);
+        /* Scroll Mouse Explorer Indicator */
+        .hero-scroll-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 2.5px;
+            transition: all 0.25s ease;
             margin-bottom: 15px;
         }
 
-        [data-theme="light"] .footer-text {
-            color: rgba(30, 41, 59, 0.7);
+        .hero-scroll-indicator:hover {
+            color: var(--primary-indigo);
+            transform: translateY(3px);
         }
 
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .footer-link {
-            color: rgba(224, 231, 255, 0.7);
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        [data-theme="light"] .footer-link {
-            color: rgba(30, 41, 59, 0.7);
-        }
-
-        .footer-link:hover {
-            color: var(--text-light);
-        }
-
-        /* Theme Toggle Button */
-        .theme-toggle {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: var(--button-bg);
-            border: 2px solid var(--glow-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 999;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .theme-toggle:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(167, 139, 250, 0.4);
-        }
-
-        .theme-icon {
-            font-size: 1.5rem;
-            color: var(--text-light);
-        }
-
-        /* Button State Legend */
-        .button-legend {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 30px; /* Increased margin */
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-        }
-
-        [data-theme="light"] .button-legend {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.9rem;
-            color: rgba(224, 231, 255, 0.8);
-        }
-
-        [data-theme="light"] .legend-item {
-            color: rgba(30, 41, 59, 0.8);
-        }
-
-        .legend-btn {
-            width: 30px;
-            height: 30px;
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-
-        .legend-available {
-            background: rgba(16, 185, 129, 0.3);
-            border: 1px solid var(--available-color);
-            color: var(--available-color);
-        }
-
-        .legend-unavailable {
-            background: rgba(239, 68, 68, 0.3);
-            border: 1px solid var(--unavailable-color);
-            color: var(--unavailable-color);
-            cursor: not-allowed;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .top-panel {
-                padding: 15px 20px;
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .logo-title {
-                font-size: 1.5rem;
-            }
-
-            .top-buttons {
-                width: 100%;
-                justify-content: space-around;
-            }
-
-            .main-content {
-                padding: 20px;
-                margin-top: 140px;
-            }
-
-            .shelf-container {
-                gap: 40px; /* Slightly smaller gap on mobile */
-            }
-
-            .shelf-content {
-                flex-direction: column;
-            }
-
-            .shelf-items {
-                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-            }
-
-            .character-placeholder {
-                width: 180px; /* Slightly smaller on mobile */
-                height: 180px;
-                margin-top: -20px;
-                margin-bottom: -20px;
-            }
-
-            .floating-character {
-                width: 80px;
-                height: 80px;
-            }
-
-            .theme-toggle {
-                width: 50px;
-                height: 50px;
-            }
-
-            .button-legend {
-                flex-direction: column;
-                gap: 10px;
-            }
-        }
-
-        /* Music toggle animation */
-        .music-toggle {
+        .hero-scroll-mouse {
+            width: 22px;
+            height: 36px;
+            border: 2px solid var(--border-hover);
+            border-radius: 14px;
             position: relative;
         }
 
-        .music-toggle.playing::before {
-            content: '';
+        .hero-scroll-wheel {
+            width: 4px;
+            height: 8px;
+            background: var(--primary-indigo);
+            border-radius: 2px;
             position: absolute;
-            top: 50%;
+            top: 6px;
             left: 50%;
-            transform: translate(-50%, -50%);
-            width: 10px;
-            height: 10px;
-            background: var(--accent-color);
-            border-radius: 50%;
-            animation: pulse 1s infinite;
+            transform: translateX(-50%);
+            animation: wheelScroll 1.8s infinite;
         }
 
-        @keyframes pulse {
-            0% {
-                transform: translate(-50%, -50%) scale(0);
-                opacity: 1;
+        @keyframes wheelScroll {
+            0% { top: 6px; opacity: 1; }
+            100% { top: 20px; opacity: 0; }
+        }
+
+        /* ========================================================= */
+        /* MAIN WORKSPACE WRAPPER */
+        /* ========================================================= */
+        .workspace-container {
+            max-width: 1260px;
+            margin: 0 auto;
+            padding: 0 20px 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 55px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-headline {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .section-icon-badge {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: #ffffff;
+            border: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .section-headline h2 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.55rem;
+            font-weight: 800;
+            color: var(--text-title);
+            letter-spacing: -0.3px;
+        }
+
+        .section-headline span {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        /* ========================================================= */
+        /* AUTHENTIC BULLETIN BOARD (EXECUTIVE PINBOARD STYLE) */
+        /* ========================================================= */
+        .bulletin-board-frame {
+            background: #ffffff;
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            padding: 36px 36px 32px;
+            box-shadow: var(--shadow-card);
+            position: relative;
+            background-image: 
+                radial-gradient(rgba(99, 102, 241, 0.04) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .bulletin-board-inner {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 32px;
+            align-items: start;
+        }
+
+        /* Main Official Notice Paper Sheet (Pinned Document) */
+        .notice-paper-sheet {
+            background: #ffffff;
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 32px 36px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .notice-paper-sheet:hover {
+            box-shadow: 0 15px 40px rgba(15, 23, 42, 0.08);
+        }
+
+        /* Top Pushpin */
+        .sheet-pushpin {
+            position: absolute;
+            top: -12px;
+            left: 40px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            border: 3px solid #ffffff;
+            box-shadow: 0 4px 10px rgba(220, 38, 38, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .sheet-pushpin::after {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Sheet Header Info Strip */
+        .sheet-header-strip {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid var(--bg-page-soft);
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .sheet-meta-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sheet-tag-priority {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #dc2626;
+            background: #fef2f2;
+            border: 1px solid #fee2e2;
+            padding: 4px 10px;
+            border-radius: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .sheet-doc-no {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+        }
+
+        .sheet-date-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--primary-indigo);
+            background: rgba(79, 70, 229, 0.08);
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .sheet-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: var(--text-title);
+            margin-bottom: 16px;
+            line-height: 1.3;
+        }
+
+        .sheet-body-lead {
+            font-size: 0.95rem;
+            line-height: 1.65;
+            color: var(--text-body);
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        /* Bullet Points Box for High Readability */
+        .sheet-points-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: var(--bg-page-soft);
+            border-radius: 12px;
+            padding: 18px 20px;
+            border-left: 4px solid var(--primary-indigo);
+            margin-bottom: 20px;
+        }
+
+        .sheet-point-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 0.9rem;
+            line-height: 1.55;
+            color: var(--text-body);
+        }
+
+        .point-icon {
+            color: var(--emerald-accent);
+            font-weight: 800;
+            font-size: 0.95rem;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .point-item-text strong {
+            color: var(--text-title);
+            font-weight: 700;
+        }
+
+        .sheet-footer-note {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            border-top: 1px dashed var(--border-subtle);
+            padding-top: 14px;
+        }
+
+        /* Right Side: Pinned Polaroid & Sticky Note Column */
+        .bulletin-side-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Pinned Polaroid Frame */
+        .pinned-polaroid {
+            background: #ffffff;
+            border: 1px solid var(--border-subtle);
+            padding: 10px 10px 18px;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+            position: relative;
+            transform: rotate(2deg);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .pinned-polaroid:hover {
+            transform: rotate(0deg) scale(1.03);
+            box-shadow: 0 14px 30px rgba(15, 23, 42, 0.12);
+        }
+
+        .polaroid-tape {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 22px;
+            background: rgba(226, 232, 240, 0.85);
+            border: 1px dashed rgba(148, 163, 184, 0.5);
+            border-radius: 2px;
+        }
+
+        .polaroid-image {
+            width: 100%;
+            height: 180px;
+            object-fit: contain;
+            background: var(--bg-page-soft);
+            border-radius: 4px;
+            display: block;
+        }
+
+        .polaroid-caption-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-title);
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        /* Sticky Memo Note */
+        .pinned-sticky-note {
+            background: #fef9c3;
+            border: 1px solid #fef08a;
+            border-radius: 4px 14px 14px 14px;
+            padding: 18px 20px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+            position: relative;
+            transform: rotate(-1.5deg);
+            transition: all 0.3s ease;
+        }
+
+        .pinned-sticky-note:hover {
+            transform: rotate(0deg) scale(1.02);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .sticky-pin {
+            position: absolute;
+            top: -8px;
+            right: 18px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #3b82f6;
+            border: 2px solid #ffffff;
+            box-shadow: 0 2px 6px rgba(59, 130, 246, 0.4);
+        }
+
+        .sticky-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 800;
+            color: #854d0e;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sticky-text {
+            font-size: 0.82rem;
+            line-height: 1.5;
+            color: #713f12;
+            font-weight: 500;
+        }
+
+        /* ========================================================= */
+        /* WEB APPLICATION FEATURED CARD */
+        /* ========================================================= */
+        .webapp-featured-card {
+            background: #ffffff;
+            border: 1px solid var(--border-subtle);
+            border-left: 4px solid var(--primary-indigo);
+            border-radius: 18px;
+            padding: 28px 32px;
+            box-shadow: var(--shadow-card);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .webapp-featured-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .webapp-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .webapp-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: var(--emerald-accent);
+            letter-spacing: 1px;
+        }
+
+        .webapp-badge.dev-badge {
+            color: var(--primary-indigo);
+        }
+
+        .webapp-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--text-title);
+            line-height: 1.2;
+        }
+
+        .webapp-desc {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            max-width: 680px;
+            line-height: 1.5;
+        }
+
+        .webapp-launch-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: 12px;
+            background: var(--primary-indigo);
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 800;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 18px rgba(79, 70, 229, 0.3);
+            transition: all 0.25s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .webapp-launch-btn:hover {
+            background: #4338ca;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(79, 70, 229, 0.4);
+        }
+
+        .webapp-launch-btn.in-development {
+            background: rgba(79, 70, 229, 0.1);
+            border: 1px solid rgba(79, 70, 229, 0.25);
+            color: var(--primary-indigo);
+            box-shadow: none;
+            cursor: pointer;
+        }
+
+        .webapp-launch-btn.in-development:hover {
+            background: rgba(79, 70, 229, 0.18);
+            border-color: var(--primary-indigo);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.15);
+        }
+
+        @media (max-width: 768px) {
+            .webapp-featured-card {
+                flex-direction: column;
+                align-items: flex-start;
             }
-            100% {
-                transform: translate(-50%, -50%) scale(2);
-                opacity: 0;
+            .webapp-launch-btn {
+                width: 100%;
+                justify-content: center;
             }
+        }
+
+        /* ========================================================= */
+        /* CLEAN PROFESSIONAL BENTO GRID */
+        /* ========================================================= */
+        .bento-year-station {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .bento-grid-wrapper {
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            gap: 22px;
+            align-items: stretch;
+        }
+
+        /* Left Column: Featured Hero Card */
+        .bento-hero-card {
+            background: #ffffff;
+            border: 1px solid var(--border-subtle);
+            border-radius: 18px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: var(--shadow-card);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 460px;
+            transition: all 0.3s ease;
+        }
+
+        .bento-hero-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(79, 70, 229, 0.35);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .bento-hero-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 25%;
+            transition: transform 0.6s ease;
+            display: block;
+        }
+
+        .bento-hero-card:hover .bento-hero-bg {
+            transform: scale(1.04);
+        }
+
+        .bento-hero-vignette {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.4) 0%, transparent 35%, transparent 60%, rgba(15, 23, 42, 0.88) 100%);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .bento-hero-top {
+            position: relative;
+            z-index: 5;
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .bento-hero-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #ffffff;
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 4px 10px;
+            border-radius: 6px;
+            backdrop-filter: blur(6px);
+        }
+
+        .bento-hero-bottom {
+            position: relative;
+            z-index: 5;
+            padding: 20px 18px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border-subtle);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .bento-hero-year {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--text-title);
+            line-height: 1.1;
+        }
+
+        .bento-hero-sub {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Right Column: Month Compartment */
+        .bento-content-column {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .bento-compartment {
+            background: #ffffff;
+            border: 1px solid var(--border-subtle);
+            border-radius: 18px;
+            padding: 20px 22px;
+            box-shadow: var(--shadow-card);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .compartment-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border-subtle);
+            padding-bottom: 8px;
+        }
+
+        .compartment-header span.tag {
+            color: var(--primary-indigo);
+            font-weight: 800;
+        }
+
+        /* Month Chips Grid */
+        .bento-month-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        /* Month Glass Card (Crisp White) */
+        .month-glass-card {
+            background: #ffffff;
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 10px 12px;
+            text-decoration: none;
+            color: var(--text-body);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 68px;
+            transition: all 0.22s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .month-glass-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--emerald-accent);
+            opacity: 0.7;
+        }
+
+        .month-glass-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--emerald-accent);
+            box-shadow: 0 6px 18px rgba(5, 150, 105, 0.12);
+            background: #fcfdfd;
+        }
+
+        .month-glass-card.locked {
+            opacity: 0.55;
+            cursor: not-allowed;
+            background: var(--bg-page-soft);
+            border-color: var(--border-subtle);
+        }
+
+        .month-glass-card.locked::before {
+            background: var(--text-muted);
+        }
+
+        .month-glass-card.locked:hover {
+            transform: none;
+            box-shadow: var(--shadow-subtle);
+            border-color: var(--border-subtle);
+        }
+
+        .month-name {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: var(--text-title);
+        }
+
+        .month-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--emerald-accent);
+            margin-top: 4px;
+        }
+
+        .month-glass-card.locked .month-meta {
+            color: var(--text-secondary);
+        }
+
+        .month-arrow {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            transition: transform 0.2s ease;
+        }
+
+        .month-glass-card:hover .month-arrow {
+            transform: translate(2px, -2px);
+        }
+
+        /* Special / Bonus Card (Champagne Gold Accent) */
+        .month-glass-card.special-card {
+            background: #ffffff;
+            border-color: rgba(217, 119, 6, 0.3);
+        }
+
+        .month-glass-card.special-card::before {
+            background: var(--amber-accent);
+        }
+
+        .month-glass-card.special-card .month-meta {
+            color: var(--amber-accent);
+        }
+
+        .month-glass-card.special-card:hover {
+            border-color: var(--amber-accent);
+            box-shadow: 0 6px 18px rgba(217, 119, 6, 0.15);
+        }
+
+        /* ========================================================= */
+        /* GOOGLE DRIVE VAULT DRAWER */
+        /* ========================================================= */
+        .vault-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 18px;
+        }
+
+        .vault-card {
+            background: #ffffff;
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 22px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            text-decoration: none;
+            color: var(--text-body);
+            box-shadow: var(--shadow-card);
+            transition: all 0.25s ease;
+        }
+
+        .vault-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary-indigo);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .vault-folder-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(79, 70, 229, 0.08);
+            border: 1px solid rgba(79, 70, 229, 0.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-indigo);
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .vault-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .vault-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-title);
+        }
+
+        .vault-sub {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .vault-arrow {
+            margin-left: auto;
+            color: var(--primary-indigo);
+            font-size: 1.1rem;
+            transition: transform 0.2s ease;
+        }
+
+        .vault-card:hover .vault-arrow {
+            transform: translateX(4px);
+        }
+
+        /* ========================================================= */
+        /* CAT ARCHITECT NOTE (CLEAN EXECUTIVE WHITE) */
+        /* ========================================================= */
+        #credits {
+            margin-top: 10px;
+        }
+
+        .cat-note-card {
+            background: #ffffff;
+            border: 1px solid var(--border-subtle);
+            border-radius: 18px;
+            padding: 32px 28px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .cat-badge-chip {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: var(--primary-indigo);
+            letter-spacing: 1.5px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: rgba(79, 70, 229, 0.08);
+            border: 1px solid rgba(79, 70, 229, 0.2);
+        }
+
+        .cat-ascii-art {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: var(--primary-indigo);
+            line-height: 1.2;
+            letter-spacing: 2px;
+        }
+
+        .cat-note-quote {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-title);
+            max-width: 620px;
+        }
+
+        .cat-social-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 4px;
+        }
+
+        .cat-social-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--bg-page-soft);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.22s ease;
+        }
+
+        .cat-social-btn:hover {
+            transform: translateY(-3px);
+            color: #ffffff;
+            background: var(--primary-indigo);
+            border-color: var(--primary-indigo);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+        }
+
+        .cat-note-footer {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        /* ========================================================= */
+        /* RESPONSIVE DESIGN */
+        /* ========================================================= */
+        @media (max-width: 1080px) {
+            .bento-month-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 960px) {
+            .bulletin-board-inner {
+                grid-template-columns: 1fr;
+            }
+            .bulletin-side-column {
+                flex-direction: row;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .pinned-polaroid, .pinned-sticky-note {
+                max-width: 260px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .hero-title-main { font-size: 3.4rem; }
+            .bento-grid-wrapper { grid-template-columns: 1fr; }
+            .bento-hero-card { min-height: 220px; }
+            .bento-month-grid { grid-template-columns: repeat(2, 1fr); }
+            .vault-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
         }
     </style>
 </head>
-<body data-theme="light">
-    <!-- Animated Background Particles -->
-    <div class="particles" id="particles"></div>
+<body>
 
-    <!-- Top Panel -->
-    <header class="top-panel" id="topPanel">
-        <h1 class="logo-title">LUNIX - TPP</h1>
-        <div class="top-buttons">
-            <button class="top-btn" id="contactBtn">
-                <i class="fas fa-envelope"></i> Coming Soon
-            </button>
-            <button class="top-btn music-toggle" id="musicToggle">
-                <i class="fas fa-music"></i> Coming Soon
-            </button>
-                <a href="https://lunix-213.github.io/lunix-213/" class="top-btn" target="_blank">
-                <i class="fas fa-rocket"></i> GO TO LUNIX
+    <!-- AMBIENT PARTICLES CANVAS -->
+    <canvas id="ambient-canvas"></canvas>
+
+    <!-- MINIMALIST AESTHETIC NAVBAR -->
+    <header id="main-header">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <a href="../../index.html" class="nav-back-hub" title="Kembali ke LUNIX Master Hub">
+                    <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    <span>← HUB</span>
                 </a>
+                <a href="#hero" class="brand-title">LUNIX // TPP <span>COLLABSPACE</span></a>
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="#hero" class="nav-link active" data-section="hero">Overview</a></li>
+                <li><a href="#bulletin" class="nav-link" data-section="bulletin">Bulletin</a></li>
+                <li><a href="#webapp" class="nav-link" data-section="webapp">App</a></li>
+                <li><a href="#year-2027" class="nav-link" data-section="year-2027">2027</a></li>
+                <li><a href="#year-2026" class="nav-link" data-section="year-2026">2026</a></li>
+                <li><a href="#year-2025" class="nav-link" data-section="year-2025">2025</a></li>
+                <li><a href="#vault" class="nav-link" data-section="vault">Drive</a></li>
+                <li><a href="#credits" class="nav-link" data-section="credits">Note</a></li>
+            </ul>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <!-- Button State Legend -->
-        <div class="button-legend">
-            <div class="legend-item">
-                <div class="legend-btn legend-available">✓</div>
-                <span>Available (Tersedia)</span>
+    <!-- 100VH ULTRA-AESTHETIC LANDING HERO -->
+    <section id="hero">
+        <!-- Corner Plus Marks -->
+        <span class="hero-cross cross-tl">+</span>
+        <span class="hero-cross cross-tr">+</span>
+        <span class="hero-cross cross-bl">+</span>
+        <span class="hero-cross cross-br">+</span>
+
+        <div></div> <!-- Top Balance Spacer -->
+
+        <div class="hero-center-content">
+            <!-- Shimmering Top Pill -->
+            <div class="hero-badge-tag">
+                <span class="badge-dot"></span>
+                <span>LUNIX TPP PORTAL // COLLABSPACE</span>
             </div>
-            <div class="legend-item">
-                <div class="legend-btn legend-unavailable">✕</div>
-                <span>Unavailable (Belum Tersedia)</span>
+
+            <!-- Grand Aesthetic Title -->
+            <h1 class="hero-title-main">LUNIX <span>TPP</span></h1>
+
+            <!-- Subtitle -->
+            <div class="hero-subtitle-box">
+                <span id="hero-typing-text">Portal arsip &amp; rekapitulasi Tambahan Penghasilan Pegawai (TPP) LUNIX — presisi, rapi, dan cepat.</span>
+                <span class="cyber-cursor"></span>
+            </div>
+
+            <!-- Aesthetic Actions -->
+            <div class="hero-actions-row">
+                <a href="#year-2026" class="hero-primary-btn">
+                    <span>Jelajahi Berkas ↓</span>
+                </a>
+            </div>
+
+            <!-- Micro Info Strip -->
+            <div class="hero-stats-strip">
+                <div class="hero-stat-pill"><span class="icon">●</span> TAHUN ARSIP TPP</div>
+                <div class="hero-stat-pill"><span class="icon">●</span> FORMULA OTOMATIS</div>
+                <div class="hero-stat-pill"><span class="icon">●</span> REKAPITULASI INSTAN</div>
             </div>
         </div>
 
-        <div class="shelf-container">
-            <!-- News Shelf -->
-            <section class="shelf">
-                <div class="shelf-header">
-                    <h2 class="shelf-title">News</h2>
+        <!-- Scroll Mouse Explorer Indicator -->
+        <a href="#bulletin" class="hero-scroll-indicator" aria-label="Scroll to explore">
+            <div class="hero-scroll-mouse">
+                <div class="hero-scroll-wheel"></div>
+            </div>
+            <span>EXPLORE</span>
+        </a>
+    </section>
+
+    <!-- MAIN WORKSPACE CONTAINER -->
+    <main class="workspace-container">
+
+        <!-- 1. AUTHENTIC BULLETIN BOARD (EXECUTIVE PINBOARD) -->
+        <section id="bulletin">
+            <div class="section-headline">
+                <div class="section-icon-badge">📌</div>
+                <h2>Bulletin Board</h2>
+                <span>// NOTICE &amp; ANNOUNCEMENT //</span>
+            </div>
+
+            <div class="bulletin-board-frame">
+                <div class="bulletin-board-inner">
+                    <!-- Left: Main Official Memo Sheet -->
+                    <article class="notice-paper-sheet">
+                        <div class="sheet-pushpin"></div>
+
+                        <div class="sheet-header-strip">
+                            <div class="sheet-meta-group">
+                                <span class="sheet-tag-priority">● MEMO RESMI</span>
+                                <span class="sheet-doc-no">REF: LNX-TPP/2026/01</span>
+                            </div>
+                            <span class="sheet-date-badge">21 FEBRUARI 2026</span>
+                        </div>
+
+                        <h3 class="sheet-title">Pembaruan Berkas &amp; Formula TPP Tahun 2026</h3>
+                        <p class="sheet-body-lead">
+                            Diberitahukan kepada seluruh pegawai ASN bahwa portal berkas Tambahan Penghasilan Pegawai (TPP) telah disinkronkan dengan rincian pembaruan:
+                        </p>
+
+                        <div class="sheet-points-list">
+                            <div class="sheet-point-item">
+                                <span class="point-icon">✓</span>
+                                <div class="point-item-text">
+                                    <strong>Sinkronisasi Spreadsheet 2026:</strong> Berkas TPP Januari s/d Juli 2026, TPP ke-14, dan TPP ke-13 telah terupdate dengan formula otomatis.
+                                </div>
+                            </div>
+
+                            <div class="sheet-point-item">
+                                <span class="point-icon">✓</span>
+                                <div class="point-item-text">
+                                    <strong>Akses Cepat Cloud Spreadsheet:</strong> Seluruh tautan dokumen Google Spreadsheet 2026 dapat diakses secara instan &amp; aman.
+                                </div>
+                            </div>
+
+                            <div class="sheet-point-item">
+                                <span class="point-icon">✓</span>
+                                <div class="point-item-text">
+                                    <strong>Brankas Arsip Digital:</strong> Berkas TPP tahun 2025 dan arsip sebelum Maret 2025 tersimpan aman dalam Google Drive Vault.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sheet-footer-note">
+                            * Catatan: Apabila terdapat kendala izin akses atau rincian TPP, tell me~.
+                        </div>
+                    </article>
+
+                    <!-- Right: Pinned Polaroid & Sticky Note -->
+                    <aside class="bulletin-side-column">
+                        <div class="pinned-polaroid">
+                            <div class="polaroid-tape"></div>
+                            <img src="img/image_04.png" alt="Laniakea Companion" class="polaroid-image" onerror="this.src='img/lunix.jpg'">
+                            <div class="polaroid-caption-text">Laniakea Admin Cat 🐾</div>
+                        </div>
+
+                        <div class="pinned-sticky-note">
+                            <div class="sticky-pin"></div>
+                            <div class="sticky-title">💡 Info Tambahan</div>
+                            <div class="sticky-text">
+                                Gunakan berkas simulasi <strong>LATIHAN</strong> di modul 2026 untuk menguji formula perhitungan TPP.
+                            </div>
+                        </div>
+                    </aside>
                 </div>
-                <div class="shelf-content">
-                    <div class="news-board">
-                        <div class="news-content">
-                            <h3>Latest Announcement</h3>
-                            <h3>21 Februari 2026</h3>
-                            <p>Pembaruan untuk file 2026 dengan update dan beberapa perbaikan!</p>
-                            <p>Stay tuned for upcoming events and collaboration opportunities!</p>
+            </div>
+        </section>
+
+        <!-- 2. WEB APPLICATION FEATURED CARD -->
+        <section id="webapp">
+            <div class="section-headline">
+                <div class="section-icon-badge">⚡</div>
+                <h2>Integrated Web Application</h2>
+                <span>// INSTANT TPP TOOL //</span>
+            </div>
+
+            <div class="webapp-featured-card">
+                <div class="webapp-info">
+                    <span class="webapp-badge dev-badge">● FUTURE MODULE // CLOUD APPS</span>
+                    <h3 class="webapp-title">CEK TPP 2026 (INTEGRATED WEB APP)</h3>
+                    <p class="webapp-desc">
+                        Aplikasi web mandiri berbasis Google Apps Script untuk pengecekan personal dan rekapitulasi Tambahan Penghasilan Pegawai secara instan, aman, dan presisi.
+                    </p>
+                </div>
+                <!-- Simpan tautan URL web app di href ini ketika sudah siap -->
+                <a href="javascript:void(0)" class="webapp-launch-btn in-development" title="Aplikasi sedang dalam tahap pengembangan">
+                    <span>IN DEVELOPMENT 🔒</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- 2. BENTO GRID: TAHUN 2027 (COMING SOON // ATAS) -->
+        <section id="year-2027" class="bento-year-station">
+            <div class="section-headline">
+                <div class="section-icon-badge">🚀</div>
+                <h2>Tahun 2027 (Future Protocol)</h2>
+                <span>// NEXT-GEN SUITE ARCHIVE //</span>
+            </div>
+
+            <div class="bento-grid-wrapper">
+                <!-- Left Column: Featured Hero Card -->
+                <div class="bento-hero-card">
+                    <img src="img/2027_gen.jpg" alt="Laniakea 2027" class="bento-hero-bg" onerror="this.src='img/lunix.jpg'">
+                    <div class="bento-hero-vignette"></div>
+
+                    <div class="bento-hero-top">
+                        <span class="bento-hero-badge" style="background: rgba(79, 70, 229, 0.75); color: #c7d2fe; border-color: rgba(199, 210, 254, 0.35);">✦ IN DEVELOPMENT</span>
+                    </div>
+
+                    <div class="bento-hero-bottom">
+                        <div class="bento-hero-year">LUNIX TPP 2027</div>
+                        <div class="bento-hero-sub">Rancangan konsep modul TPP generasi berikutnya dengan otomasi cerdas.</div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Month Cards Compartment (Locked / Coming Soon) -->
+                <div class="bento-content-column">
+                    <div class="bento-compartment" style="background: var(--bg-page-soft); border-style: dashed;">
+                        <div class="compartment-header">
+                            <span>📅 TPP Bulanan Reguler (2027)</span>
+                            <span class="tag" style="color: var(--text-muted);">SOON</span>
+                        </div>
+
+                        <div class="bento-month-grid">
+                            <div class="month-glass-card locked">
+                                <div class="month-name">Januari</div>
+                                <div class="month-meta"><span>🔒 COMING SOON</span></div>
+                            </div>
+                            <div class="month-glass-card locked">
+                                <div class="month-name">Februari</div>
+                                <div class="month-meta"><span>🔒 COMING SOON</span></div>
+                            </div>
+                            <div class="month-glass-card locked">
+                                <div class="month-name">Maret</div>
+                                <div class="month-meta"><span>🔒 COMING SOON</span></div>
+                            </div>
+                            <div class="month-glass-card locked">
+                                <div class="month-name">April</div>
+                                <div class="month-meta"><span>🔒 COMING SOON</span></div>
+                            </div>
+                            <div class="month-glass-card locked">
+                                <div class="month-name">Mei</div>
+                                <div class="month-meta"><span>🔒 COMING SOON</span></div>
+                            </div>
+                            <div class="month-glass-card locked">
+                                <div class="month-name">Juni</div>
+                                <div class="month-meta"><span>🔒 COMING SOON</span></div>
+                            </div>
+                            <div class="month-glass-card locked">
+                                <div class="month-name">Juli</div>
+                                <div class="month-meta"><span>🔒 COMING SOON</span></div>
+                            </div>
+                            <div class="month-glass-card locked">
+                                <div class="month-name">Agustus</div>
+                                <div class="month-meta"><span>🔒 COMING SOON</span></div>
+                            </div>
+                            <div class="month-glass-card locked">
+                                <div class="month-name">September</div>
+                                <div class="month-meta"><span>🔒 COMING SOON</span></div>
+                            </div>
+                            <div class="month-glass-card locked">
+                                <div class="month-name">Oktober</div>
+                                <div class="month-meta"><span>🔒 COMING SOON</span></div>
+                            </div>
+                            <div class="month-glass-card locked">
+                                <div class="month-name">November</div>
+                                <div class="month-meta"><span>🔒 COMING SOON</span></div>
+                            </div>
+                            <div class="month-glass-card locked">
+                                <div class="month-name">Desember</div>
+                                <div class="month-meta"><span>🔒 COMING SOON</span></div>
+                            </div>
                         </div>
                     </div>
-                    <div class="character-placeholder">
-                        <span><img src="img/image_04.png" alt="Character" style="width: 100%; height: 100%; object-fit: contain; border-radius: 0px;"></span>
-                    </div>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <!-- 2025 Shelf -->
-            <section class="shelf">
-                <div class="shelf-header">
-                    <h2 class="shelf-title">2025</h2>
-                </div>
-                <div class="shelf-content">
-                    <div class="shelf-items">
-                        <a href="https://docs.google.com/spreadsheets/d/13_caN1dST0AifY9GgH9Y7gHF-6zn5fjVyokdcrRoMsg/edit?usp=sharing" class="month-btn available" target="_blank">SUSULAN</a>
-                        <a href="https://docs.google.com/spreadsheets/d/18XRzK9JfIniUrPYVs3eoRfT1VjNOdcKUXKdG95MVn18/edit?usp=sharing" class="month-btn available" target="_blank">Maret</a>
-                        <a href="https://docs.google.com/spreadsheets/d/1qtSOlpuEWlYbi0bMrlC49PhbXjFJD1IN-_ot_Lanmok/edit?usp=sharing" class="month-btn available" target="_blank">April</a>
-                        <a href="https://docs.google.com/spreadsheets/d/1ChtM_qPC6GM8tvAtVwin4yCnezFCfkJlWCVy-1P1UVU/edit?usp=sharing" class="month-btn available" target="_blank">Mei</a>
-                        <a href="https://docs.google.com/spreadsheets/d/1KD_g6o-ubtvY0YFJq7d6ikoctSka98fTabH7iMABHFw/edit?usp=sharing" class="month-btn available" target="_blank">Juni</a>
-                        <a href="https://docs.google.com/spreadsheets/d/1cUuqVSSJKJks5tafPktRJ4pliOVTVTsgBC1RDtdTRXY/edit?usp=sharing" class="month-btn available" target="_blank">Juli</a>
-                        <a href="https://docs.google.com/spreadsheets/d/1o92G73TxvQpuRCYXREvO3haCXZS1yCisbRKQHgTcD7g/edit?usp=sharing" class="month-btn available" target="_blank">Agustus</a>
-                        <a href="https://docs.google.com/spreadsheets/d/1wFVvgCkgSOYR6TNhuMyo_gqSzrsSREVnXKf9Mgbu-jE/edit?usp=sharing" class="month-btn available" target="_blank">September</a>
-                        <a href="https://docs.google.com/spreadsheets/d/1OH3yQ2XG_ec-TWA9DAE_pYAnwqLIujf9BwNa8eb-Kqg/edit?usp=sharing" class="month-btn available" target="_blank">Oktober</a>
-                        <a href="https://docs.google.com/spreadsheets/d/1k5vWnr9d_BfiSLdb27Eh17MApxa_0awWm7kxD-syN6Q/edit?usp=sharing" class="month-btn available" target="_blank">November</a>
-                        <a href="https://docs.google.com/spreadsheets/d/1iuGyd62cXSLHkl8nVaOxSoEDtcE9asvKTxegW4BuXq8/edit?usp=sharing" class="month-btn available" target="_blank">Desember</a>
-                        <a href="https://docs.google.com/spreadsheets/d/1q0zJLlRorQtbSaJ97oMwCrelmPYRlFXFibhnILzl84M/edit?usp=sharing" class="month-btn available" target="_blank">ke-13</a>
-                    </div>
-                    <div class="character-placeholder">
-                        <span><img src="img/laniakea_1.png" alt="Character" style="width: 100%; height: 100%; object-fit: contain; border-radius: 0px;"></span>
-                    </div>
-                </div>
-            </section>
+        <!-- 3. BENTO GRID: TAHUN 2026 (ACTIVE // TENGAH) -->
+        <section id="year-2026" class="bento-year-station">
+            <div class="section-headline">
+                <div class="section-icon-badge">📊</div>
+                <h2>Tahun 2026 (Active Operational)</h2>
+                <span>// 2026 SPREADSHEET ARCHIVE //</span>
+            </div>
 
-            <!-- 2026 Shelf -->
-            <section class="shelf">
-                <div class="shelf-header">
-                    <h2 class="shelf-title">2026</h2>
-                </div>
-                <div class="shelf-content">
-                    <div class="shelf-items">
-                        <a href="https://docs.google.com/spreadsheets/d/1G8eeESuKThLG6vSGsmyLQQnem6iFtCpRw4r8N9k5rOk/edit?usp=sharing" class="month-btn available" target="_blank">Januari</a>
-                        <a href="https://docs.google.com/spreadsheets/d/1v3M1pK2FKdhvyg5t_XK_efEyKyM2-PLJE2bRltAHypQ/edit?usp=sharing" class="month-btn available" target="_blank">Februari</a>
-                        <a href="https://docs.google.com/spreadsheets/d/1JQt0M7m6XESzih0rqzzA0ZZaIgxgFc_SVqAC0r9B6j4/edit?usp=sharing" class="month-btn available" target="_blank">TPP ke-14</a>
-                        <a href="https://docs.google.com/spreadsheets/d/1CNDb5R8qykdSHIGDib_gOg4ro3ahnuVukv1gyN-8bVo/edit?usp=sharing" class="month-btn available" target="_blank">Maret</a>
-                        <a href="https://docs.google.com/spreadsheets/d/1th2XVPYRGGVA8AUavx0HyHHS4N8ttLVfCSMYuOJaK8I/edit?usp=sharing" class="month-btn available" target="_blank">April</a>
-                        <a href="https://docs.google.com/spreadsheets/d/1mhbK1-njqcTbh6zcO5_TxDp-yyEMf0nVu_V6xbUQFSw/edit?usp=sharing" class="month-btn available" target="_blank">Mei</a>
-                        <a href="https://docs.google.com/spreadsheets/d/1_1lxypWAQWk6xb0tXDoU9U1LYJi2rw7FtB4Xqukqo6M/edit?usp=sharing" class="month-btn available" target="_blank">TPP ke-13</a>
-                        <a href="https://docs.google.com/spreadsheets/d/1buv_SaCsIXBB5QDbm_j_qyuaf-eraZAVfYpkBDiYY0w/edit?usp=sharing" class="month-btn available" target="_blank">Juni</a>
-                        <a href="https://docs.google.com/spreadsheets/d/1dUiBfhanQZ7Y2QXHF3hdHG9ER8W32we4DKgZ18KzUrQ/edit?usp=sharing" class="month-btn available" target="_blank">Juli</a>
-                        <a href="#" class="month-btn unavailable">August<span class="status-icon">✕</span></a>
-                        <a href="#" class="month-btn unavailable">September<span class="status-icon">✕</span></a>
-                        <a href="#" class="month-btn unavailable">October<span class="status-icon">✕</span></a>
-                        <a href="#" class="month-btn unavailable">November<span class="status-icon">✕</span></a>
-                        <a href="#" class="month-btn unavailable">December<span class="status-icon">✕</span></a>
-                        <a href="https://docs.google.com/spreadsheets/d/1KhzY5wPshPGvU1Ey8m5WflRyWQfClejDx70iszJ2fEI/edit?usp=sharing" class="month-btn available" target="_blank">LATIHAN</a>
-                    </div>
-                    <div class="character-placeholder">
-                        <span><img src="img/lunix_laniakea_2.jpg" alt="Character" style="width: 100%; height: 100%; object-fit: contain; border-radius: 0px;"></span>
-                    </div>
-                </div>
-            </section>
+            <div class="bento-grid-wrapper">
+                <!-- Left Column: Featured Hero Card -->
+                <div class="bento-hero-card">
+                    <img src="img/2026_gen.jpg" alt="Laniakea 2026" class="bento-hero-bg" onerror="this.src='img/lunix.jpg'">
+                    <div class="bento-hero-vignette"></div>
 
-            <!-- 2027 Shelf -->
-            <!-- <section class="shelf">
-                <div class="shelf-header">
-                    <h2 class="shelf-title">2027</h2>
-                </div>
-                <div class="shelf-content">
-                    <div class="shelf-items">
-                        <a href="#" class="month-btn unavailable">January<span class="status-icon">✕</span></a>
-                        <a href="#" class="month-btn unavailable">February<span class="status-icon">✕</span></a>
-                        <a href="#" class="month-btn unavailable">March<span class="status-icon">✕</span></a>
-                        <a href="#" class="month-btn unavailable">April<span class="status-icon">✕</span></a>
-                        <a href="#" class="month-btn unavailable">May<span class="status-icon">✕</span></a>
-                        <a href="#" class="month-btn unavailable">June<span class="status-icon">✕</span></a>
-                        <a href="#" class="month-btn unavailable">July<span class="status-icon">✕</span></a>
-                        <a href="#" class="month-btn unavailable">August<span class="status-icon">✕</span></a>
-                        <a href="#" class="month-btn unavailable">September<span class="status-icon">✕</span></a>
-                        <a href="#" class="month-btn unavailable">October<span class="status-icon">✕</span></a>
-                        <a href="#" class="month-btn unavailable">November<span class="status-icon">✕</span></a>
-                        <a href="#" class="month-btn unavailable">December<span class="status-icon">✕</span></a>
+                    <div class="bento-hero-top">
+                        <span class="bento-hero-badge">✦ ACTIVE SUITE</span>
                     </div>
-                    <div class="character-placeholder">
-                        <span><img src="img/image_03.png" alt="Character" style="width: 100%; height: 100%; object-fit: contain; border-radius: 0px;"></span>
+
+                    <div class="bento-hero-bottom">
+                        <div class="bento-hero-year">LUNIX TPP 2026</div>
+                        <div class="bento-hero-sub">Rekapitulasi berkas TPP berkala &amp; formula otomatis terintegrasi.</div>
                     </div>
                 </div>
-            </section> -->
 
+                <!-- Right Column: Month Cards Compartment -->
+                <div class="bento-content-column">
+                    <!-- Routine Months Compartment -->
+                    <div class="bento-compartment">
+                        <div class="compartment-header">
+                            <span>📅 TPP Bulanan Reguler (2026)</span>
+                            <span class="tag">Jan – Des</span>
+                        </div>
 
-            <!-- Archieve Shelf -->
-            <section class="shelf">
-                <div class="shelf-header">
-                    <h2 class="shelf-title">Arsip (file dibawah Maret 2025)</h2>
-                </div>
-                <div class="shelf-content">
-                    <div class="shelf-items">
-                        <a href="https://drive.google.com/drive/folders/12giw6buz_UnXOI7iMeRAVgG42DZUOFnD?usp=drive_link" class="month-btn available" target="_blank">Archive TPP ASN sebelum Maret 2025</a>
-                        
+                        <div class="bento-month-grid">
+                            <a href="https://docs.google.com/spreadsheets/d/1G8eeESuKThLG6vSGsmyLQQnem6iFtCpRw4r8N9k5rOk/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="month-glass-card">
+                                <div class="month-name">Januari</div>
+                                <div class="month-meta">
+                                    <span>● TERSEDIA</span>
+                                    <span class="month-arrow">↗</span>
+                                </div>
+                            </a>
 
+                            <a href="https://docs.google.com/spreadsheets/d/1v3M1pK2FKdhvyg5t_XK_efEyKyM2-PLJE2bRltAHypQ/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="month-glass-card">
+                                <div class="month-name">Februari</div>
+                                <div class="month-meta">
+                                    <span>● TERSEDIA</span>
+                                    <span class="month-arrow">↗</span>
+                                </div>
+                            </a>
+
+                            <a href="https://docs.google.com/spreadsheets/d/1CNDb5R8qykdSHIGDib_gOg4ro3ahnuVukv1gyN-8bVo/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="month-glass-card">
+                                <div class="month-name">Maret</div>
+                                <div class="month-meta">
+                                    <span>● TERSEDIA</span>
+                                    <span class="month-arrow">↗</span>
+                                </div>
+                            </a>
+
+                            <a href="https://docs.google.com/spreadsheets/d/1th2XVPYRGGVA8AUavx0HyHHS4N8ttLVfCSMYuOJaK8I/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="month-glass-card">
+                                <div class="month-name">April</div>
+                                <div class="month-meta">
+                                    <span>● TERSEDIA</span>
+                                    <span class="month-arrow">↗</span>
+                                </div>
+                            </a>
+
+                            <a href="https://docs.google.com/spreadsheets/d/1mhbK1-njqcTbh6zcO5_TxDp-yyEMf0nVu_V6xbUQFSw/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="month-glass-card">
+                                <div class="month-name">Mei</div>
+                                <div class="month-meta">
+                                    <span>● TERSEDIA</span>
+                                    <span class="month-arrow">↗</span>
+                                </div>
+                            </a>
+
+                            <a href="https://docs.google.com/spreadsheets/d/1buv_SaCsIXBB5QDbm_j_qyuaf-eraZAVfYpkBDiYY0w/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="month-glass-card">
+                                <div class="month-name">Juni</div>
+                                <div class="month-meta">
+                                    <span>● TERSEDIA</span>
+                                    <span class="month-arrow">↗</span>
+                                </div>
+                            </a>
+
+                            <a href="https://docs.google.com/spreadsheets/d/1dUiBfhanQZ7Y2QXHF3hdHG9ER8W32we4DKgZ18KzUrQ/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="month-glass-card">
+                                <div class="month-name">Juli</div>
+                                <div class="month-meta">
+                                    <span>● TERSEDIA</span>
+                                    <span class="month-arrow">↗</span>
+                                </div>
+                            </a>
+
+                            <div class="month-glass-card locked">
+                                <div class="month-name">Agustus</div>
+                                <div class="month-meta">
+                                    <span>🔒 LOCKED</span>
+                                </div>
+                            </div>
+
+                            <div class="month-glass-card locked">
+                                <div class="month-name">September</div>
+                                <div class="month-meta">
+                                    <span>🔒 LOCKED</span>
+                                </div>
+                            </div>
+
+                            <div class="month-glass-card locked">
+                                <div class="month-name">Oktober</div>
+                                <div class="month-meta">
+                                    <span>🔒 LOCKED</span>
+                                </div>
+                            </div>
+
+                            <div class="month-glass-card locked">
+                                <div class="month-name">November</div>
+                                <div class="month-meta">
+                                    <span>🔒 LOCKED</span>
+                                </div>
+                            </div>
+
+                            <div class="month-glass-card locked">
+                                <div class="month-name">Desember</div>
+                                <div class="month-meta">
+                                    <span>🔒 LOCKED</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="character-placeholder">
-                        <span><img src="img/archieve_01.png" alt="Character" style="width: 100%; height: 100%; object-fit: contain; border-radius: 0px;"></span>
+
+                    <!-- Special Payouts Compartment -->
+                    <div class="bento-compartment">
+                        <div class="compartment-header">
+                            <span>⭐ TPP Khusus &amp; Simulasi (2026)</span>
+                            <span class="tag">Special Payouts</span>
+                        </div>
+
+                        <div class="bento-month-grid">
+                            <a href="https://docs.google.com/spreadsheets/d/1JQt0M7m6XESzih0rqzzA0ZZaIgxgFc_SVqAC0r9B6j4/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="month-glass-card special-card">
+                                <div class="month-name">TPP ke-14</div>
+                                <div class="month-meta">
+                                    <span>● TERSEDIA</span>
+                                    <span class="month-arrow">↗</span>
+                                </div>
+                            </a>
+
+                            <a href="https://docs.google.com/spreadsheets/d/1_1lxypWAQWk6xb0tXDoU9U1LYJi2rw7FtB4Xqukqo6M/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="month-glass-card special-card">
+                                <div class="month-name">TPP ke-13</div>
+                                <div class="month-meta">
+                                    <span>● TERSEDIA</span>
+                                    <span class="month-arrow">↗</span>
+                                </div>
+                            </a>
+
+                            <a href="https://docs.google.com/spreadsheets/d/1KhzY5wPshPGvU1Ey8m5WflRyWQfClejDx70iszJ2fEI/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="month-glass-card special-card">
+                                <div class="month-name">LATIHAN / SIMULASI</div>
+                                <div class="month-meta">
+                                    <span>● TERSEDIA</span>
+                                    <span class="month-arrow">↗</span>
+                                </div>
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </section>
+            </div>
+        </section>
 
-        </div>
+        <!-- 4. BENTO GRID: TAHUN 2025 (ARCHIVE // BAWAH) -->
+        <section id="year-2025" class="bento-year-station">
+            <div class="section-headline">
+                <div class="section-icon-badge">📁</div>
+                <h2>Tahun 2025 (Archive Genesis)</h2>
+                <span>// 2025 SPREADSHEET ARCHIVE //</span>
+            </div>
+
+            <div class="bento-grid-wrapper">
+                <!-- Left Column: Featured Hero Card -->
+                <div class="bento-hero-card">
+                    <img src="img/2025_gen.jpg" alt="Laniakea 2025" class="bento-hero-bg" onerror="this.src='img/lunix.jpg'">
+                    <div class="bento-hero-vignette"></div>
+
+                    <div class="bento-hero-top">
+                        <span class="bento-hero-badge">✦ ARCHIVED</span>
+                    </div>
+
+                    <div class="bento-hero-bottom">
+                        <div class="bento-hero-year">LUNIX TPP 2025</div>
+                        <div class="bento-hero-sub">Fondasi awal arsip berkas Tambahan Penghasilan Pegawai LUNIX.</div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Month Cards Compartment -->
+                <div class="bento-content-column">
+                    <!-- Routine Months Compartment -->
+                    <div class="bento-compartment">
+                        <div class="compartment-header">
+                            <span>📅 TPP Bulanan Reguler (2025)</span>
+                            <span class="tag">Susulan &amp; Mar – Des</span>
+                        </div>
+
+                        <div class="bento-month-grid">
+                            <a href="https://docs.google.com/spreadsheets/d/13_caN1dST0AifY9GgH9Y7gHF-6zn5fjVyokdcrRoMsg/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="month-glass-card special-card">
+                                <div class="month-name">SUSULAN</div>
+                                <div class="month-meta">
+                                    <span>● TERSEDIA</span>
+                                    <span class="month-arrow">↗</span>
+                                </div>
+                            </a>
+
+                            <a href="https://docs.google.com/spreadsheets/d/18XRzK9JfIniUrPYVs3eoRfT1VjNOdcKUXKdG95MVn18/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="month-glass-card">
+                                <div class="month-name">Maret</div>
+                                <div class="month-meta">
+                                    <span>● TERSEDIA</span>
+                                    <span class="month-arrow">↗</span>
+                                </div>
+                            </a>
+
+                            <a href="https://docs.google.com/spreadsheets/d/1qtSOlpuEWlYbi0bMrlC49PhbXjFJD1IN-_ot_Lanmok/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="month-glass-card">
+                                <div class="month-name">April</div>
+                                <div class="month-meta">
+                                    <span>● TERSEDIA</span>
+                                    <span class="month-arrow">↗</span>
+                                </div>
+                            </a>
+
+                            <a href="https://docs.google.com/spreadsheets/d/1ChtM_qPC6GM8tvAtVwin4yCnezFCfkJlWCVy-1P1UVU/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="month-glass-card">
+                                <div class="month-name">Mei</div>
+                                <div class="month-meta">
+                                    <span>● TERSEDIA</span>
+                                    <span class="month-arrow">↗</span>
+                                </div>
+                            </a>
+
+                            <a href="https://docs.google.com/spreadsheets/d/1KD_g6o-ubtvY0YFJq7d6ikoctSka98fTabH7iMABHFw/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="month-glass-card">
+                                <div class="month-name">Juni</div>
+                                <div class="month-meta">
+                                    <span>● TERSEDIA</span>
+                                    <span class="month-arrow">↗</span>
+                                </div>
+                            </a>
+
+                            <a href="https://docs.google.com/spreadsheets/d/1cUuqVSSJKJks5tafPktRJ4pliOVTVTsgBC1RDtdTRXY/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="month-glass-card">
+                                <div class="month-name">Juli</div>
+                                <div class="month-meta">
+                                    <span>● TERSEDIA</span>
+                                    <span class="month-arrow">↗</span>
+                                </div>
+                            </a>
+
+                            <a href="https://docs.google.com/spreadsheets/d/1o92G73TxvQpuRCYXREvO3haCXZS1yCisbRKQHgTcD7g/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="month-glass-card">
+                                <div class="month-name">Agustus</div>
+                                <div class="month-meta">
+                                    <span>● TERSEDIA</span>
+                                    <span class="month-arrow">↗</span>
+                                </div>
+                            </a>
+
+                            <a href="https://docs.google.com/spreadsheets/d/1wFVvgCkgSOYR6TNhuMyo_gqSzrsSREVnXKf9Mgbu-jE/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="month-glass-card">
+                                <div class="month-name">September</div>
+                                <div class="month-meta">
+                                    <span>● TERSEDIA</span>
+                                    <span class="month-arrow">↗</span>
+                                </div>
+                            </a>
+
+                            <a href="https://docs.google.com/spreadsheets/d/1OH3yQ2XG_ec-TWA9DAE_pYAnwqLIujf9BwNa8eb-Kqg/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="month-glass-card">
+                                <div class="month-name">Oktober</div>
+                                <div class="month-meta">
+                                    <span>● TERSEDIA</span>
+                                    <span class="month-arrow">↗</span>
+                                </div>
+                            </a>
+
+                            <a href="https://docs.google.com/spreadsheets/d/1k5vWnr9d_BfiSLdb27Eh17MApxa_0awWm7kxD-syN6Q/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="month-glass-card">
+                                <div class="month-name">November</div>
+                                <div class="month-meta">
+                                    <span>● TERSEDIA</span>
+                                    <span class="month-arrow">↗</span>
+                                </div>
+                            </a>
+
+                            <a href="https://docs.google.com/spreadsheets/d/1iuGyd62cXSLHkl8nVaOxSoEDtcE9asvKTxegW4BuXq8/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="month-glass-card">
+                                <div class="month-name">Desember</div>
+                                <div class="month-meta">
+                                    <span>● TERSEDIA</span>
+                                    <span class="month-arrow">↗</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Special Payouts 2025 -->
+                    <div class="bento-compartment">
+                        <div class="compartment-header">
+                            <span>⭐ TPP Khusus (2025)</span>
+                            <span class="tag">Special Payouts</span>
+                        </div>
+
+                        <div class="bento-month-grid">
+                            <a href="https://docs.google.com/spreadsheets/d/1q0zJLlRorQtbSaJ97oMwCrelmPYRlFXFibhnILzl84M/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="month-glass-card special-card">
+                                <div class="month-name">TPP ke-13 (2025)</div>
+                                <div class="month-meta">
+                                    <span>● TERSEDIA</span>
+                                    <span class="month-arrow">↗</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. GOOGLE DRIVE ARCHIVE VAULT -->
+        <section id="vault">
+            <div class="section-headline">
+                <div class="section-icon-badge">📁</div>
+                <h2>Google Drive Archive Vault</h2>
+                <span>// PRE-MARET 2025 ARCHIVE //</span>
+            </div>
+
+            <div class="vault-grid">
+                <a href="https://drive.google.com/drive/folders/12giw6buz_UnXOI7iMeRAVgG42DZUOFnD?usp=drive_link" target="_blank" rel="noopener noreferrer" class="vault-card">
+                    <div class="vault-folder-icon">📁</div>
+                    <div class="vault-info">
+                        <div class="vault-title">Archive TPP ASN sebelum Maret 2025</div>
+                        <div class="vault-sub">Folder Google Drive Berkas Tambahan Penghasilan Pegawai (TPP) ASN</div>
+                    </div>
+                    <div class="vault-arrow">↗</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 6. CAT ARCHITECT NOTE (CLEAN EXECUTIVE WHITE) -->
+        <section id="credits">
+            <div class="cat-note-card">
+                <div class="cat-badge-chip">ARCHITECT'S DESK</div>
+
+                <pre class="cat-ascii-art">
+ /_/  
+( o.o ) ☕
+ &gt; ^ &lt;
+                </pre>
+
+                <p class="cat-note-quote">
+                    &ldquo;Menyusun setiap berkas Tambahan Penghasilan Pegawai (TPP) dengan presisi, agar seluruh alur administrasi berjalan transparan, profesional, dan nyaman untuk semua~&rdquo;
+                </p>
+
+                <div class="cat-social-row">
+                    <a href="javascript:void(0)" class="cat-social-btn" aria-label="GitHub" title="GitHub">
+                        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                    </a>
+                    <a href="javascript:void(0)" class="cat-social-btn" aria-label="Instagram" title="Instagram">
+                        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                    </a>
+                    <a href="javascript:void(0)" class="cat-social-btn" aria-label="LinkedIn" title="LinkedIn">
+                        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                    </a>
+                    <a href="javascript:void(0)" class="cat-social-btn" aria-label="Email" title="Email">
+                        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    </a>
+                </div>
+
+                <div class="cat-note-footer">
+                    LUNIX TPP COLLABSPACE // CLEAN EXECUTIVE SUITE // 2026
+                </div>
+            </div>
+        </section>
+
     </main>
 
-    <!-- Floating Character -->
-    <div class="floating-character" id="floatingCharacter">
-        <img src="img/lunix_badge.png" alt="Character" style="width: 100%; height: 100%; object-fit: contain; border-radius: 0px;">
-    </div>
-
-    <!-- Theme Toggle Button -->
-    <div class="theme-toggle" id="themeToggle">
-        <i class="fas fa-sun theme-icon" id="themeIcon"></i>
-    </div>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <p class="footer-text">LUNIX</p>
-            <div class="footer-links">
-                <a href="#" class="footer-link">2</a>
-                <a href="#" class="footer-link">1</a>
-                <a href="#" class="footer-link">3</a>
-            </div>
-        </div>
-    </footer>
-
+    <!-- JAVASCRIPT: AMBIENT PARTICLES ENGINE & NAVBAR SCROLLSPY -->
     <script>
-        // Create animated particles
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = 50;
+        // =========================================================
+        // 1. CLEAN AMBIENT LIGHT PARTICLES ENGINE (0% IDLE GPU)
+        // =========================================================
+        (function() {
+            const canvas = document.getElementById('ambient-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
 
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                
-                // Random position
-                particle.style.left = Math.random() * 100 + '%';
-                
-                // Random animation delay
-                particle.style.animationDelay = Math.random() * 15 + 's';
-                
-                // Random size
-                const size = Math.random() * 4 + 2;
-                particle.style.width = size + 'px';
-                particle.style.height = size + 'px';
-                
-                // Random color
-                const colors = ['#7c3aed', '#ec4899', '#06b6d4', '#a78bfa'];
-                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-                
-                particlesContainer.appendChild(particle);
-            }
-        }
+            let width, height;
+            let particles = [];
+            let animId = null;
+            let isVisible = true;
 
-// Theme toggle functionality
-const themeToggle = document.getElementById('themeToggle');
-const themeIcon = document.getElementById('themeIcon');
-const bodyElement = document.body; // Perbaikan di sini
+            const particleColors = ['#6366f1', '#4f46e5', '#059669', '#d97706', '#94a3b8'];
 
-// Check for saved theme preference or default to light mode
-const currentTheme = localStorage.getItem('theme') || 'light';
-bodyElement.setAttribute('data-theme', currentTheme);
+            function initCanvas() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+                particles = [];
+                const count = Math.min(35, Math.floor((width * height) / 35000));
 
-if (currentTheme === 'dark') {
-    themeIcon.classList.remove('fa-sun');
-    themeIcon.classList.add('fa-moon');
-}
-
-themeToggle.addEventListener('click', () => {
-    const theme = bodyElement.getAttribute('data-theme'); // Perbaikan di sini
-    const newTheme = theme === 'dark' ? 'light' : 'dark';
-    
-    bodyElement.setAttribute('data-theme', newTheme); // Perbaikan di sini
-    localStorage.setItem('theme', newTheme);
-    
-    // Update icon
-    if (newTheme === 'light') {
-        themeIcon.classList.remove('fa-moon');
-        themeIcon.classList.add('fa-sun');
-    } else {
-        themeIcon.classList.remove('fa-sun');
-        themeIcon.classList.add('fa-moon');
-    }
-});
-
-        // Scroll effect for top panel
-        window.addEventListener('scroll', () => {
-            const topPanel = document.getElementById('topPanel');
-            if (window.scrollY > 50) {
-                topPanel.classList.add('scrolled');
-            } else {
-                topPanel.classList.remove('scrolled');
-            }
-        });
-
-        // Music toggle functionality
-        let isMusicPlaying = false;
-        const musicToggle = document.getElementById('musicToggle');
-        
-        musicToggle.addEventListener('click', () => {
-            isMusicPlaying = !isMusicPlaying;
-            if (isMusicPlaying) {
-                musicToggle.classList.add('playing');
-                musicToggle.innerHTML = '<i class="fas fa-pause"></i> Music';
-                // Here you would add actual music playing logic
-            } else {
-                musicToggle.classList.remove('playing');
-                musicToggle.innerHTML = '<i class="fas fa-music"></i> Music';
-                // Here you would add actual music pausing logic
-            }
-        });
-
-        // Contact button functionality
-        document.getElementById('contactBtn').addEventListener('click', () => {
-            // Create a simple modal for contact
-            const modal = document.createElement('div');
-            modal.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.8);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: 2000;
-            `;
-            
-            const modalContent = document.createElement('div');
-            modalContent.style.cssText = `
-                background: linear-gradient(135deg, #1a1a3e, #2d1b69);
-                padding: 30px;
-                border-radius: 15px;
-                max-width: 500px;
-                width: 90%;
-                border: 1px solid rgba(167, 139, 250, 0.3);
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            `;
-            
-            // Adjust modal content for light theme
-            if (htmlElement.getAttribute('data-theme') === 'light') {
-                modalContent.style.background = 'linear-gradient(135deg, #e0e7ff, #f1f5f9)';
-                modalContent.style.color = '#1e293b';
-            }
-            
-            modalContent.innerHTML = `
-                <h2 style="color: var(--text-light); margin-bottom: 20px;">Contact Us</h2>
-                <p style="color: rgba(224, 231, 255, 0.8); margin-bottom: 20px;">Feel free to reach out to us at:</p>
-                <p style="color: var(--glow-color); margin-bottom: 20px;">contact@lunix-collabspace.com</p>
-                <button id="closeModal" style="
-                    padding: 10px 20px;
-                    background: var(--button-bg);
-                    border: 1px solid var(--glow-color);
-                    border-radius: 30px;
-                    color: var(--text-light);
-                    font-weight: 600;
-                    cursor: pointer;
-                ">Close</button>
-            `;
-            
-            modal.appendChild(modalContent);
-            document.body.appendChild(modal);
-            
-            document.getElementById('closeModal').addEventListener('click', () => {
-                document.body.removeChild(modal);
-            });
-            
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    document.body.removeChild(modal);
+                for (let i = 0; i < count; i++) {
+                    particles.push({
+                        x: Math.random() * width,
+                        y: Math.random() * height,
+                        vx: (Math.random() - 0.5) * 0.3,
+                        vy: - (Math.random() * 0.35 + 0.1),
+                        radius: Math.random() * 2.0 + 0.8,
+                        color: particleColors[Math.floor(Math.random() * particleColors.length)],
+                        alpha: Math.random() * 0.3 + 0.1,
+                        pulseSpeed: Math.random() * 0.015 + 0.005,
+                        pulseDir: Math.random() > 0.5 ? 1 : -1
+                    });
                 }
-            });
-        });
+            }
 
-        // Floating character interaction
-        document.getElementById('floatingCharacter').addEventListener('click', () => {
-            // Create a fun animation when clicked
-            const character = document.getElementById('floatingCharacter');
-            character.style.animation = 'none';
-            setTimeout(() => {
-                character.style.animation = 'float-character 3s ease-in-out infinite, spin 0.5s ease';
-            }, 10);
-            
-            // Add spin animation
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes spin {
-                    0% { transform: rotate(0deg) scale(1); }
-                    50% { transform: rotate(180deg) scale(1.2); }
-                    100% { transform: rotate(360deg) scale(1); }
+            function animate() {
+                if (!isVisible) {
+                    animId = null;
+                    return;
                 }
-            `;
-            document.head.appendChild(style);
-            
-            setTimeout(() => {
-                character.style.animation = 'float-character 3s ease-in-out infinite';
-            }, 500);
-        });
 
-        // Prevent default action for unavailable buttons
-        document.querySelectorAll('.month-btn.unavailable').forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.preventDefault();
-                
-                // Create a toast notification
-                const toast = document.createElement('div');
-                toast.style.cssText = `
-                    position: fixed;
-                    bottom: 100px;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    background: rgba(239, 68, 68, 0.9);
-                    color: white;
-                    padding: 15px 25px;
-                    border-radius: 30px;
-                    font-weight: 600;
-                    z-index: 2000;
-                    animation: slideUp 0.3s ease;
-                `;
-                toast.textContent = 'Konten ini belum tersedia!';
-                
-                // Add animation
-                const style = document.createElement('style');
-                style.textContent = `
-                    @keyframes slideUp {
-                        from {
-                            transform: translateX(-50%) translateY(20px);
-                            opacity: 0;
-                        }
-                        to {
-                            transform: translateX(-50%) translateY(0);
-                            opacity: 1;
-                        }
+                ctx.clearRect(0, 0, width, height);
+
+                for (let i = 0; i < particles.length; i++) {
+                    const p = particles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    if (p.y < -10) {
+                        p.y = height + 10;
+                        p.x = Math.random() * width;
                     }
-                `;
-                document.head.appendChild(style);
-                
-                document.body.appendChild(toast);
-                
-                // Remove toast after 3 seconds
-                setTimeout(() => {
-                    toast.style.animation = 'slideDown 0.3s ease';
-                    setTimeout(() => {
-                        document.body.removeChild(toast);
-                    }, 300);
-                }, 3000);
-            });
-        });
+                    if (p.x < 0) p.x = width;
+                    if (p.x > width) p.x = 0;
 
-        // Add ripple effect to available buttons
-        document.querySelectorAll('.month-btn.available, .month-btn:not(.unavailable)').forEach(button => {
-            button.addEventListener('click', function(e) {
-                const ripple = document.createElement('span');
-                const rect = this.getBoundingClientRect();
-                const size = Math.max(rect.width, rect.height);
-                const x = e.clientX - rect.left - size / 2;
-                const y = e.clientY - rect.top - size / 2;
-                
-                ripple.style.cssText = `
-                    position: absolute;
-                    width: ${size}px;
-                    height: ${size}px;
-                    border-radius: 50%;
-                    background: rgba(255, 255, 255, 0.5);
-                    left: ${x}px;
-                    top: ${y}px;
-                    pointer-events: none;
-                    transform: scale(0);
-                    animation: ripple 0.6s ease-out;
-                `;
-                
-                this.appendChild(ripple);
-                
-                setTimeout(() => {
-                    ripple.remove();
-                }, 600);
-            });
-        });
+                    p.alpha += p.pulseSpeed * p.pulseDir;
+                    if (p.alpha > 0.45 || p.alpha < 0.08) {
+                        p.pulseDir *= -1;
+                    }
 
-        // Add ripple animation
-        const rippleStyle = document.createElement('style');
-        rippleStyle.textContent = `
-            @keyframes ripple {
-                to {
-                    transform: scale(4);
-                    opacity: 0;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color;
+                    ctx.globalAlpha = Math.max(0.04, Math.min(0.45, p.alpha));
+                    ctx.fill();
                 }
+
+                ctx.globalAlpha = 1;
+                animId = requestAnimationFrame(animate);
             }
-            @keyframes slideDown {
-                from {
-                    transform: translateX(-50%) translateY(0);
-                    opacity: 1;
-                }
-                to {
-                    transform: translateX(-50%) translateY(20px);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(rippleStyle);
 
-        // Initialize particles on page load
-        document.addEventListener('DOMContentLoaded', createParticles);
+            window.addEventListener('resize', initCanvas, { passive: true });
+            
+            document.addEventListener('visibilitychange', () => {
+                isVisible = !document.hidden;
+                if (isVisible) {
+                    if (!animId) animate();
+                }
+            });
+
+            initCanvas();
+            animate();
+        })();
+
+        // =========================================================
+        // 2. NAVBAR SCROLL & SCROLLSPY
+        // =========================================================
+        (function() {
+            const header = document.getElementById('main-header');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section[id]');
+
+            window.addEventListener('scroll', () => {
+                if (header) {
+                    if (window.scrollY > 30) {
+                        header.classList.add('scrolled');
+                    } else {
+                        header.classList.remove('scrolled');
+                    }
+                }
+                updateScrollSpy();
+            }, { passive: true });
+
+            function updateScrollSpy() {
+                const scrollPos = window.scrollY + 200;
+                sections.forEach(section => {
+                    const top = section.offsetTop;
+                    const height = section.offsetHeight;
+                    const id = section.getAttribute('id');
+                    if (scrollPos >= top && scrollPos < top + height) {
+                        navLinks.forEach(link => {
+                            if (link.getAttribute('data-section') === id) {
+                                link.classList.add('active');
+                            } else {
+                                link.classList.remove('active');
+                            }
+                        });
+                    }
+                });
+            }
+        })();
     </script>
 </body>
-
 </html>
-
-
-
-
-
-
-
-
-
-
