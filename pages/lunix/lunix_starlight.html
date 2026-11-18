@@ -76,7 +76,7 @@
         }
 
         /* ========================================================= */
-        /* FULL-WIDTH NAVBAR - MASTER LUNIX STYLE */
+        /* FULL-WIDTH NAVBAR - MASTER LUNIX STYLE (NO UNDERLINES)    */
         /* ========================================================= */
         #main-header {
             position: fixed;
@@ -87,13 +87,11 @@
             background: rgba(4, 8, 18, 0.88);
             backdrop-filter: blur(12px) saturate(150%);
             -webkit-backdrop-filter: blur(12px) saturate(150%);
-            border-bottom: 1px solid rgba(16, 185, 129, 0.22);
-            transition: all 0.3s ease;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         #main-header.scrolled {
             background: rgba(3, 6, 14, 0.96);
-            border-bottom-color: var(--accent);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
         }
 
@@ -122,10 +120,11 @@
             font-family: 'Orbitron', monospace;
             font-size: 0.72rem;
             font-weight: 800;
+            letter-spacing: 0.08em;
             color: var(--accent-cyan);
             background: rgba(0, 247, 255, 0.1);
             border: 1px solid rgba(0, 247, 255, 0.3);
-            padding: 5px 12px;
+            padding: 6px 12px;
             border-radius: 6px;
             transition: all 0.25s ease;
             text-decoration: none;
@@ -140,15 +139,23 @@
 
         .brand-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
+            font-size: 1.42rem;
             font-weight: 900;
             color: #ffffff;
-            letter-spacing: 2px;
+            letter-spacing: 2.5px;
+            line-height: 1;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .brand-title span {
-            color: var(--accent);
-            text-shadow: 0 0 12px rgba(16, 185, 129, 0.5);
+            background: linear-gradient(135deg, #34d399 0%, #00f7ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.4));
         }
 
         .nav-links {
@@ -164,31 +171,16 @@
             font-weight: 700;
             color: var(--text-secondary);
             text-decoration: none;
-            letter-spacing: 1.5px;
+            letter-spacing: 1.8px;
             text-transform: uppercase;
-            transition: all 0.25s ease;
-            position: relative;
+            transition: color 0.25s ease, text-shadow 0.25s ease;
             padding: 6px 0;
         }
 
-        .nav-link:hover, .nav-link.active {
-            color: var(--accent);
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent);
-            box-shadow: 0 0 8px var(--accent);
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover::after, .nav-link.active::after {
-            width: 100%;
+        .nav-link:hover,
+        .nav-link.active {
+            color: #34d399;
+            text-shadow: 0 0 12px rgba(16, 185, 129, 0.55);
         }
 
         /* ========================================================= */
@@ -353,35 +345,114 @@
         }
 
         /* ========================================================= */
-        /* EDITIONS SECTION - UNIFIED BLEACH CAPTAINS SQUARE STRIP */
+        /* EDITIONS SECTION - ATTACHED MONOLITHIC PILLARS SHOWCASE   */
         /* ========================================================= */
         #editions {
             background-color: #040812;
             position: relative;
             min-height: 100vh;
-            padding: 90px 20px 70px;
+            padding: clamp(86px, 9vh, 108px) 36px clamp(56px, 7vh, 80px);
             overflow: hidden;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background-image: 
-                radial-gradient(circle at 50% 40%, rgba(16, 185, 129, 0.05) 0%, transparent 65%),
-                radial-gradient(circle at 85% 80%, rgba(0, 247, 255, 0.035) 0%, transparent 50%),
+            background-image:
                 radial-gradient(rgba(16, 185, 129, 0.12) 1px, transparent 1px);
-            background-size: 100% 100%, 100% 100%, 36px 36px;
+            background-size: 36px 36px;
+        }
+
+        /* Whole-Section Reactive Atmospheric Aura */
+        #editions::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background: radial-gradient(ellipse 72% 58% at 50% 54%, rgba(16, 185, 129, 0.16) 0%, rgba(0, 247, 255, 0.05) 45%, transparent 74%);
+            opacity: 0.72;
+            transition: opacity 0.45s ease, filter 0.45s ease;
+        }
+
+        #editions[data-hover-edition="2025"]::before {
+            background: radial-gradient(ellipse 72% 58% at 24% 54%, rgba(255, 204, 0, 0.2) 0%, rgba(245, 158, 11, 0.07) 45%, transparent 74%);
+            opacity: 1;
+        }
+
+        #editions[data-hover-edition="2026"]::before {
+            background: radial-gradient(ellipse 72% 58% at 50% 54%, rgba(16, 185, 129, 0.24) 0%, rgba(0, 247, 255, 0.08) 45%, transparent 74%);
+            opacity: 1;
+        }
+
+        #editions[data-hover-edition="2027"]::before {
+            background: radial-gradient(ellipse 72% 58% at 76% 54%, rgba(0, 247, 255, 0.22) 0%, rgba(139, 92, 246, 0.11) 46%, transparent 74%);
+            opacity: 1;
+        }
+
+        /* Giant Watermark Year Behind the Joined Pillars */
+        .editions-watermark {
+            position: absolute;
+            top: 52%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(7rem, 21vw, 18rem);
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            color: rgba(255, 255, 255, 0.025);
+            pointer-events: none;
+            user-select: none;
+            z-index: 1;
+            transition: opacity 0.4s ease, transform 0.55s cubic-bezier(0.16, 1, 0.3, 1), color 0.45s ease;
+            white-space: nowrap;
+        }
+
+        #editions[data-hover-edition="2025"] .editions-watermark {
+            color: rgba(255, 204, 0, 0.065);
+            transform: translate(-54%, -50%) scale(1.04);
+        }
+
+        #editions[data-hover-edition="2026"] .editions-watermark {
+            color: rgba(16, 185, 129, 0.075);
+            transform: translate(-50%, -50%) scale(1.04);
+        }
+
+        #editions[data-hover-edition="2027"] .editions-watermark {
+            color: rgba(0, 247, 255, 0.075);
+            transform: translate(-46%, -50%) scale(1.04);
+        }
+
+        /* Horizontal Energy Spine Connecting the 3 Pillars */
+        .editions-energy-line {
+            position: absolute;
+            top: 55%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, rgba(16, 185, 129, 0.35) 50%, transparent 100%);
+            z-index: 1;
+            pointer-events: none;
+            transition: background 0.45s ease, opacity 0.45s ease;
+        }
+
+        #editions[data-hover-edition="2025"] .editions-energy-line {
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 204, 0, 0.55) 30%, transparent 100%);
+        }
+
+        #editions[data-hover-edition="2027"] .editions-energy-line {
+            background: linear-gradient(90deg, transparent 0%, rgba(0, 247, 255, 0.55) 70%, transparent 100%);
         }
 
         .section-header-compact {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: clamp(22px, 3vh, 34px);
             position: relative;
             z-index: 2;
         }
 
         .section-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: 2.6rem;
+            font-size: clamp(2rem, 3.6vw, 2.7rem);
             font-weight: 900;
             color: #ffffff;
             letter-spacing: 3px;
@@ -396,83 +467,233 @@
             letter-spacing: 3px;
             text-transform: uppercase;
             font-weight: 600;
+            transition: color 0.35s ease;
         }
 
-        /* Unified Continuous Edge-to-Edge Deck (3 Squares Joined Together in 1 Strip) */
+        #editions[data-hover-edition="2025"] .section-subtitle { color: #fde047; }
+        #editions[data-hover-edition="2026"] .section-subtitle { color: #6ee7b7; }
+        #editions[data-hover-edition="2027"] .section-subtitle { color: #67e8f9; }
+
+        /* Joined 3-Pillar Monolith Deck (Stationary Slots + Center-Show-Up Choreography) */
         .roster-deck {
             width: 100%;
-            max-width: 1350px;
+            max-width: 1440px;
             margin: 0 auto;
-            display: flex;
-            gap: 2px;
-            background: #000000;
-            border-radius: 16px;
-            overflow: hidden;
-            border: 2px solid rgba(255, 204, 0, 0.4);
-            box-shadow: 0 25px 65px rgba(0, 0, 0, 0.9), 0 0 25px rgba(16, 185, 129, 0.2);
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0;
+            align-items: stretch;
             position: relative;
-            z-index: 2;
+            z-index: 3;
+            overflow: visible;
+            perspective: 1500px;
         }
 
-        /* Individual Square Slice inside the Continuous Strip */
-        .roster-slice {
-            flex: 1;
-            aspect-ratio: 1 / 1;
+        /* Central Stage Show-Up Beacon Behind Cards */
+        .editions-stage-beacon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 520px;
+            height: 520px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0.82);
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.22) 0%, transparent 66%);
+            filter: blur(26px);
+            opacity: 0.35;
+            pointer-events: none;
+            z-index: 0;
+            transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease, background 0.45s ease;
+        }
+
+        #editions[data-hover-edition="2025"] .editions-stage-beacon {
+            background: radial-gradient(circle, rgba(255, 204, 0, 0.28) 0%, transparent 66%);
+            transform: translate(-50%, -50%) scale(1.1);
+            opacity: 0.72;
+        }
+
+        #editions[data-hover-edition="2026"] .editions-stage-beacon {
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.3) 0%, transparent 66%);
+            transform: translate(-50%, -50%) scale(1.12);
+            opacity: 0.75;
+        }
+
+        #editions[data-hover-edition="2027"] .editions-stage-beacon {
+            background: radial-gradient(circle, rgba(0, 247, 255, 0.28) 0%, transparent 66%);
+            transform: translate(-50%, -50%) scale(1.1);
+            opacity: 0.72;
+        }
+
+        /* Stationary Hitbox Slot Prevents Hover Flicker During Horizontal Slide */
+        .pillar-slot {
             position: relative;
+            z-index: 2;
+            display: flex;
+        }
+
+        .pillar-slot[data-slot="center"] {
+            z-index: 6;
+        }
+
+        .pillar-slot.is-active {
+            z-index: 30 !important;
+        }
+
+        /* Individual Attached Pillar */
+        .roster-slice {
+            position: relative;
+            width: 100%;
+            border-radius: 0;
             overflow: hidden;
             cursor: pointer;
             text-decoration: none;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            background: #050a14;
-            border-right: 1px solid rgba(255, 255, 255, 0.15);
-            transition: flex 0.6s cubic-bezier(0.25, 1, 0.5, 1), filter 0.4s ease;
+            background: #030712;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            box-shadow: 0 22px 55px rgba(0, 0, 0, 0.88);
+            transform-style: preserve-3d;
+            transition:
+                transform 0.58s cubic-bezier(0.22, 1.16, 0.36, 1),
+                box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.35s ease,
+                border-radius 0.4s ease,
+                filter 0.45s ease,
+                opacity 0.45s ease;
+            will-change: transform;
         }
 
-        .roster-slice:last-child {
-            border-right: none;
+        .pillar-slot[data-slot="left"] .roster-slice {
+            border-radius: 16px 0 0 16px;
+            transform: translate3d(0, 0, 0) rotateY(2deg) scale(1);
         }
 
+        .pillar-slot[data-slot="right"] .roster-slice {
+            border-radius: 0 16px 16px 0;
+            transform: translate3d(0, 0, 0) rotateY(-2deg) scale(1);
+        }
+
+        /* Active 2026 Pillar sits subtly layered forward over its joined neighbors at rest */
         .roster-slice.featured {
-            flex: 1.1;
+            border-radius: 12px;
+            transform: translate3d(0, -4px, 0) scale(1.028);
+            border: 1.5px solid rgba(16, 185, 129, 0.8);
+            box-shadow:
+                0 26px 65px rgba(0, 0, 0, 0.94),
+                0 0 32px rgba(16, 185, 129, 0.24);
         }
 
-        .roster-slice:hover {
-            flex: 1.5;
-            z-index: 10;
-        }
-
-        .roster-deck:hover .roster-slice:not(:hover) {
-            filter: brightness(0.7) saturate(0.8);
-        }
-
-        /* Full 1:1 Square Artwork (100% Uncropped & Fit) */
-        .roster-bg-art {
+        /* Pointer Spotlight Aura on Card Edge */
+        .roster-slice::before {
+            content: '';
             position: absolute;
             inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-            display: block;
-        }
-
-        .roster-slice:hover .roster-bg-art {
-            transform: scale(1.05);
-        }
-
-        /* Gentle Shading Vignette */
-        .roster-vignette {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, transparent 16%, transparent 78%, rgba(0, 0, 0, 0.8) 100%);
+            background: radial-gradient(440px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 204, 0, 0.2), transparent 62%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
             pointer-events: none;
-            z-index: 2;
+            z-index: 4;
         }
 
-        /* Top Header Strip (Bleach Captains Style) */
+        .roster-slice[data-edition="2026"]::before {
+            background: radial-gradient(440px circle at var(--mx, 50%) var(--my, 50%), rgba(16, 185, 129, 0.24), transparent 62%);
+        }
+
+        .roster-slice[data-edition="2027"]::before {
+            background: radial-gradient(440px circle at var(--mx, 50%) var(--my, 50%), rgba(0, 247, 255, 0.24), transparent 62%);
+        }
+
+        /* Subtle Target-Lock Pulse Border When Showing Up at Center */
+        .roster-slice::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            border: 1px solid transparent;
+            pointer-events: none;
+            z-index: 6;
+            transition: border-color 0.35s ease, box-shadow 0.45s ease;
+        }
+
+        @media (hover: hover) {
+            /* Left Card (2025) Hovered -> Glides Toward Center for Show Up */
+            .roster-deck[data-active-slot="left"] .pillar-slot[data-slot="left"] .roster-slice {
+                transform: translate3d(14%, -14px, 0) rotateY(0deg) scale(1.095);
+                border-radius: 16px;
+                border-color: #ffcc00;
+                box-shadow:
+                    0 40px 92px rgba(0, 0, 0, 0.96),
+                    0 0 48px rgba(255, 204, 0, 0.38);
+            }
+            .roster-deck[data-active-slot="left"] .pillar-slot[data-slot="left"] .roster-slice::after {
+                border-color: rgba(255, 230, 0, 0.55);
+                box-shadow: inset 0 0 24px rgba(255, 204, 0, 0.14);
+            }
+            .roster-deck[data-active-slot="left"] .pillar-slot[data-slot="center"] .roster-slice {
+                transform: translate3d(6%, 4px, 0) rotateY(-5deg) scale(0.92);
+                filter: brightness(0.45) saturate(0.7);
+                opacity: 0.84;
+            }
+            .roster-deck[data-active-slot="left"] .pillar-slot[data-slot="right"] .roster-slice {
+                transform: translate3d(3%, 10px, 0) rotateY(-7deg) scale(0.88);
+                filter: brightness(0.36) saturate(0.65);
+                opacity: 0.76;
+            }
+
+            /* Center Card (2026) Hovered -> Surges Forward Like Main Stage Hero */
+            .roster-deck[data-active-slot="center"] .pillar-slot[data-slot="center"] .roster-slice {
+                transform: translate3d(0, -16px, 0) rotateY(0deg) scale(1.115);
+                border-radius: 16px;
+                border-color: #34d399;
+                box-shadow:
+                    0 40px 92px rgba(0, 0, 0, 0.96),
+                    0 0 52px rgba(16, 185, 129, 0.44);
+            }
+            .roster-deck[data-active-slot="center"] .pillar-slot[data-slot="center"] .roster-slice::after {
+                border-color: rgba(52, 211, 153, 0.58);
+                box-shadow: inset 0 0 26px rgba(16, 185, 129, 0.16);
+            }
+            .roster-deck[data-active-slot="center"] .pillar-slot[data-slot="left"] .roster-slice {
+                transform: translate3d(-5%, 6px, 0) rotateY(6deg) scale(0.92);
+                filter: brightness(0.42) saturate(0.7);
+                opacity: 0.82;
+            }
+            .roster-deck[data-active-slot="center"] .pillar-slot[data-slot="right"] .roster-slice {
+                transform: translate3d(5%, 6px, 0) rotateY(-6deg) scale(0.92);
+                filter: brightness(0.42) saturate(0.7);
+                opacity: 0.82;
+            }
+
+            /* Right Card (2027) Hovered -> Glides Toward Center for Show Up */
+            .roster-deck[data-active-slot="right"] .pillar-slot[data-slot="right"] .roster-slice {
+                transform: translate3d(-14%, -14px, 0) rotateY(0deg) scale(1.095);
+                border-radius: 16px;
+                border-color: #00f7ff;
+                box-shadow:
+                    0 40px 92px rgba(0, 0, 0, 0.96),
+                    0 0 50px rgba(0, 247, 255, 0.42);
+            }
+            .roster-deck[data-active-slot="right"] .pillar-slot[data-slot="right"] .roster-slice::after {
+                border-color: rgba(0, 247, 255, 0.58);
+                box-shadow: inset 0 0 26px rgba(0, 247, 255, 0.16);
+            }
+            .roster-deck[data-active-slot="right"] .pillar-slot[data-slot="center"] .roster-slice {
+                transform: translate3d(-6%, 4px, 0) rotateY(5deg) scale(0.92);
+                filter: brightness(0.45) saturate(0.7);
+                opacity: 0.84;
+            }
+            .roster-deck[data-active-slot="right"] .pillar-slot[data-slot="left"] .roster-slice {
+                transform: translate3d(-3%, 10px, 0) rotateY(7deg) scale(0.88);
+                filter: brightness(0.36) saturate(0.65);
+                opacity: 0.76;
+            }
+
+            .pillar-slot.is-active .roster-slice::before {
+                opacity: 1;
+            }
+        }
+
+        /* Top Header Strip (Above Image — 0% Overlap) */
         .roster-top-bar {
             position: relative;
             z-index: 5;
@@ -485,8 +706,8 @@
             font-weight: 900;
             letter-spacing: 2px;
             color: #ffffff;
-            background: #000000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            background: #02050c;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
         }
 
         .roster-index-num {
@@ -503,6 +724,12 @@
             height: 14px;
             background: #ffcc00;
             box-shadow: 0 0 8px #ffcc00;
+            transition: height 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .roster-slice:hover .roster-index-num::before {
+            height: 18px;
+            box-shadow: 0 0 14px #ffcc00;
         }
 
         .roster-slice.featured .roster-index-num::before {
@@ -510,51 +737,117 @@
             box-shadow: 0 0 10px var(--accent);
         }
 
+        .roster-slice[data-edition="2027"] .roster-index-num::before {
+            background: var(--accent-cyan);
+            box-shadow: 0 0 10px var(--accent-cyan);
+        }
+
         .roster-top-tag {
             font-size: 0.65rem;
-            padding: 2px 8px;
-            border-radius: 3px;
-            background: rgba(255, 255, 255, 0.12);
+            padding: 3px 9px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
             color: #cbd5e1;
             text-transform: uppercase;
             letter-spacing: 1px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            transition: transform 0.3s ease, border-color 0.3s ease;
         }
 
-        /* Continuous Solid Bleach Captains Yellow Bottom Banner */
+        .roster-slice:hover .roster-top-tag {
+            transform: scale(1.04);
+            border-color: rgba(255, 204, 0, 0.65);
+        }
+
+        .roster-slice[data-edition="2026"]:hover .roster-top-tag {
+            border-color: #34d399;
+        }
+
+        .roster-slice[data-edition="2027"]:hover .roster-top-tag {
+            border-color: #00f7ff;
+        }
+
+        /* Dedicated 1:1 Unobstructed Artwork Stage */
+        .roster-art-stage {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            background: #050a14;
+        }
+
+        /* Diagonal Glass Sheen Sweep on Hover */
+        .roster-art-stage::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                115deg,
+                transparent 28%,
+                rgba(255, 255, 255, 0.22) 50%,
+                transparent 72%
+            );
+            transform: translateX(-130%);
+            transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .roster-slice:hover .roster-art-stage::after {
+            transform: translateX(130%);
+        }
+
+        /* Full 1:1 Square Artwork (100% Uncropped & Uncovered) */
+        .roster-bg-art {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+            transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+            display: block;
+        }
+
+        .roster-slice:hover .roster-bg-art {
+            transform: scale(1.022);
+        }
+
+        /* Continuous Solid Bleach Captains Yellow Bottom Banner (Below Image — 0% Overlap) */
         .roster-bottom-banner {
             position: relative;
             z-index: 5;
             background: #ffcc00; /* Solid Bleach Captain Yellow */
             color: #000000;
-            padding: 12px 18px;
+            padding: 13px 18px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            transition: all 0.3s ease;
-            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.4);
-            border-top: 1px solid #000000;
+            gap: 12px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            border-top: 2px solid #000000;
         }
 
         .roster-slice:hover .roster-bottom-banner {
             background: #ffe600;
-            box-shadow: 0 -4px 20px rgba(255, 204, 0, 0.5);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
         }
 
         .banner-text-left {
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            min-width: 0;
         }
 
         .banner-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.1rem;
+            font-size: clamp(0.96rem, 1.3vw, 1.12rem);
             font-weight: 900;
-            letter-spacing: 1.5px;
+            letter-spacing: 1.4px;
             text-transform: uppercase;
-            line-height: 1.1;
+            line-height: 1.15;
             white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             color: #000000;
         }
 
@@ -562,10 +855,12 @@
             font-family: 'Rajdhani', sans-serif;
             font-size: 0.85rem;
             font-weight: 800;
-            letter-spacing: 1.2px;
+            letter-spacing: 1.1px;
             text-transform: uppercase;
-            color: rgba(0, 0, 0, 0.75);
+            color: rgba(0, 0, 0, 0.78);
             white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .banner-action-btn {
@@ -577,27 +872,53 @@
             font-weight: 900;
             letter-spacing: 1px;
             text-transform: uppercase;
-            padding: 6px 12px;
+            padding: 7px 13px;
             background: #000000;
             color: #ffffff;
-            border-radius: 3px;
+            border-radius: 5px;
             flex-shrink: 0;
-            transition: all 0.25s ease;
+            transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .banner-arrow {
+            display: inline-block;
+            transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .roster-slice:hover .banner-action-btn {
-            background: #000000;
             color: #ffcc00;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
         }
 
-        @media (max-width: 900px) {
-            .roster-deck {
-                flex-direction: column;
+        .roster-slice:hover .banner-arrow {
+            transform: translate(2px, -2px);
+        }
+
+        @media (max-width: 980px) {
+            #editions {
+                padding: 86px 16px 60px;
             }
-            .roster-slice {
-                border-right: none;
-                border-bottom: 2px solid #000000;
+            .roster-deck {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+                gap: 0;
+            }
+            .pillar-slot[data-slot="left"] .roster-slice {
+                border-radius: 16px 16px 0 0;
+                transform: none;
+            }
+            .pillar-slot[data-slot="center"] .roster-slice.featured {
+                transform: none;
+                border-radius: 0;
+            }
+            .pillar-slot[data-slot="right"] .roster-slice {
+                border-radius: 0 0 16px 16px;
+                transform: none;
+            }
+            .editions-watermark,
+            .editions-stage-beacon {
+                display: none;
             }
         }
 
@@ -978,6 +1299,7 @@
         @media (max-width: 900px) {
             h1.hero-title-main { font-size: 3rem; }
             .nav-links { display: none; }
+            .brand-title { font-size: 1.15rem; letter-spacing: 1.8px; }
         }
     </style>
 </head>
@@ -988,8 +1310,8 @@
         <div class="nav-container">
             <div class="nav-brand">
                 <a href="../../index.html" class="nav-back-hub" title="Kembali ke LUNIX Hub">
-                    <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                    <span>← LUNIX</span>
+                    <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    <span>LUNIX</span>
                 </a>
                 <a href="#hero" class="brand-title">LUNIX <span>STARLIGHT</span></a>
             </div>
@@ -1027,76 +1349,89 @@
         </a>
     </section>
 
-    <!-- EDITIONS SECTION (1:1 SQUARE FIT CARDS) -->
-    <section id="editions">
+    <!-- EDITIONS SECTION (ATTACHED MONOLITHIC PILLARS SHOWCASE) -->
+    <section id="editions" data-hover-edition="2026">
+        <div class="editions-watermark" id="editionsWatermark" aria-hidden="true">2026</div>
+        <div class="editions-energy-line" aria-hidden="true"></div>
+        <div class="editions-stage-beacon" aria-hidden="true"></div>
+
         <div class="section-header-compact">
             <h2 class="section-title">YEAR EDITIONS</h2>
-            <div class="section-subtitle">// INTEGRATED SPREADSHEET MODULE ROSTER //</div>
+            <div class="section-subtitle" id="editionsSubtitle">// INTEGRATED SPREADSHEET MODULE ROSTER //</div>
         </div>
 
-        <div class="roster-deck">
+        <div class="roster-deck" id="rosterDeck">
             <!-- Captain Slice 1: 2025 Genesis -->
-            <a href="https://docs.google.com/spreadsheets/d/1fZfXUds0IP4VHzWaA2bMFBsepn5H916KR32rdx2NV4I/edit?usp=sharing" target="_blank" class="roster-slice" title="Buka Starlight 2025">
-                <img src="img/card_2025_r.jpg" alt="Starlight 2025 Genesis" class="roster-bg-art">
-                <div class="roster-vignette"></div>
-
-                <div class="roster-top-bar">
-                    <div class="roster-index-num">| 1 2025</div>
-                    <span class="roster-top-tag">LEGACY</span>
-                </div>
-
-                <div class="roster-bottom-banner">
-                    <div class="banner-text-left">
-                        <div class="banner-title">KAS KECIL 2025</div>
-                        <div class="banner-subtitle">1ST GEN // PROTOTYPE</div>
+            <div class="pillar-slot" data-slot="left">
+                <a href="https://docs.google.com/spreadsheets/d/1fZfXUds0IP4VHzWaA2bMFBsepn5H916KR32rdx2NV4I/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="roster-slice" data-edition="2025" data-subtitle="// 2025 • 1ST GEN PROTOTYPE //" title="Buka Starlight 2025">
+                    <div class="roster-top-bar">
+                        <div class="roster-index-num">| 1 2025</div>
+                        <span class="roster-top-tag">LEGACY</span>
                     </div>
-                    <div class="banner-action-btn">
-                        <span>OPEN ↗</span>
+
+                    <div class="roster-art-stage">
+                        <img src="img/card_2025_r.jpg" alt="Starlight 2025 Genesis" class="roster-bg-art">
                     </div>
-                </div>
-            </a>
+
+                    <div class="roster-bottom-banner">
+                        <div class="banner-text-left">
+                            <div class="banner-title">KAS KECIL 2025</div>
+                            <div class="banner-subtitle">1ST GEN // PROTOTYPE</div>
+                        </div>
+                        <div class="banner-action-btn">
+                            <span>OPEN</span><span class="banner-arrow">↗</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
 
             <!-- Captain Slice 2: 2026 Refined (Featured / Active) -->
-            <a href="https://docs.google.com/spreadsheets/d/14uVe3KE8eIXKVl8kzqPJmJh62ClrKT8pWvgCtcgmLLY/edit?usp=sharing" target="_blank" class="roster-slice featured" title="Buka Starlight 2026">
-                <img src="img/card_2026_r.jpg" alt="Starlight 2026 Refined" class="roster-bg-art">
-                <div class="roster-vignette"></div>
-
-                <div class="roster-top-bar">
-                    <div class="roster-index-num">| 2 2026</div>
-                    <span class="roster-top-tag" style="background: rgba(16,185,129,0.3); color: #34d399;">✦ ACTIVE</span>
-                </div>
-
-                <div class="roster-bottom-banner">
-                    <div class="banner-text-left">
-                        <div class="banner-title">KAS KECIL 2026</div>
-                        <div class="banner-subtitle">2ND GEN // REFINED SUITE</div>
+            <div class="pillar-slot" data-slot="center">
+                <a href="https://docs.google.com/spreadsheets/d/14uVe3KE8eIXKVl8kzqPJmJh62ClrKT8pWvgCtcgmLLY/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="roster-slice featured" data-edition="2026" data-subtitle="// 2026 • ACTIVE REFINED SUITE //" title="Buka Starlight 2026">
+                    <div class="roster-top-bar">
+                        <div class="roster-index-num">| 2 2026</div>
+                        <span class="roster-top-tag" style="background: rgba(16,185,129,0.28); color: #34d399;">✦ ACTIVE</span>
                     </div>
-                    <div class="banner-action-btn">
-                        <span>LAUNCH ↗</span>
+
+                    <div class="roster-art-stage">
+                        <img src="img/card_2026_r.jpg" alt="Starlight 2026 Refined" class="roster-bg-art">
                     </div>
-                </div>
-            </a>
+
+                    <div class="roster-bottom-banner">
+                        <div class="banner-text-left">
+                            <div class="banner-title">KAS KECIL 2026</div>
+                            <div class="banner-subtitle">2ND GEN // REFINED SUITE</div>
+                        </div>
+                        <div class="banner-action-btn">
+                            <span>LAUNCH</span><span class="banner-arrow">↗</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
 
             <!-- Captain Slice 3: 2027 Future Protocol -->
-            <a href="https://script.google.com/macros/s/AKfycbxWlmwewdDjt0v4Gd7sgIeOnSkBlzOU38DEUpz-fDUvqAvuGeIzZzgBYInrJ_RhIVfCXA/exec" target="_blank" class="roster-slice" title="Buka Starlight 2027">
-                <img src="img/card_2027_r.jpg" alt="Starlight 2027 Next-Gen" class="roster-bg-art">
-                <div class="roster-vignette"></div>
-
-                <div class="roster-top-bar">
-                    <div class="roster-index-num">| 3 2027</div>
-                    <span class="roster-top-tag">NEXT-GEN</span>
-                </div>
-
-                <div class="roster-bottom-banner">
-                    <div class="banner-text-left">
-                        <div class="banner-title">KAS KECIL 2027</div>
-                        <div class="banner-subtitle">3RD GEN // BETA TESTER</div>
+            <div class="pillar-slot" data-slot="right">
+                <a href="https://script.google.com/macros/s/AKfycbxWlmwewdDjt0v4Gd7sgIeOnSkBlzOU38DEUpz-fDUvqAvuGeIzZzgBYInrJ_RhIVfCXA/exec" target="_blank" rel="noopener noreferrer" class="roster-slice" data-edition="2027" data-subtitle="// 2027 • NEXT-GEN BETA PROTOCOL //" title="Buka Starlight 2027">
+                    <div class="roster-top-bar">
+                        <div class="roster-index-num">| 3 2027</div>
+                        <span class="roster-top-tag">NEXT-GEN</span>
                     </div>
-                    <div class="banner-action-btn">
-                        <span>TEST ↗</span>
+
+                    <div class="roster-art-stage">
+                        <img src="img/card_2027_r.jpg" alt="Starlight 2027 Next-Gen" class="roster-bg-art">
                     </div>
-                </div>
-            </a>
+
+                    <div class="roster-bottom-banner">
+                        <div class="banner-text-left">
+                            <div class="banner-title">KAS KECIL 2027</div>
+                            <div class="banner-subtitle">3RD GEN // BETA TESTER</div>
+                        </div>
+                        <div class="banner-action-btn">
+                            <span>TEST</span><span class="banner-arrow">↗</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
         </div>
     </section>
 
@@ -1527,6 +1862,52 @@
             });
 
             updatePositions();
+        })();
+
+        // =========================================================
+        // 4. ROSTER PILLAR CENTER-SHOW-UP & SECTION REACTIVE ENGINE
+        // =========================================================
+        (function initRosterShowcase() {
+            if (!window.matchMedia('(hover: hover)').matches) return;
+            const editionsSection = document.getElementById('editions');
+            const watermark = document.getElementById('editionsWatermark');
+            const subtitleEl = document.getElementById('editionsSubtitle');
+            const defaultSubtitle = subtitleEl ? subtitleEl.textContent : '';
+            const deck = document.getElementById('rosterDeck');
+            const slots = document.querySelectorAll('.pillar-slot');
+
+            slots.forEach(function (slot) {
+                const card = slot.querySelector('.roster-slice');
+                if (!card) return;
+
+                slot.addEventListener('pointermove', function (e) {
+                    const rect = card.getBoundingClientRect();
+                    card.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
+                    card.style.setProperty('--my', (e.clientY - rect.top) + 'px');
+                }, { passive: true });
+
+                slot.addEventListener('pointerenter', function () {
+                    const slotName = slot.getAttribute('data-slot') || 'center';
+                    const edition = card.getAttribute('data-edition') || '2026';
+                    const sub = card.getAttribute('data-subtitle') || defaultSubtitle;
+
+                    slots.forEach(function (s) { s.classList.toggle('is-active', s === slot); });
+                    if (deck) deck.setAttribute('data-active-slot', slotName);
+                    if (editionsSection) editionsSection.setAttribute('data-hover-edition', edition);
+                    if (watermark) watermark.textContent = edition;
+                    if (subtitleEl) subtitleEl.textContent = sub;
+                });
+            });
+
+            if (deck) {
+                deck.addEventListener('pointerleave', function () {
+                    slots.forEach(function (s) { s.classList.remove('is-active'); });
+                    deck.removeAttribute('data-active-slot');
+                    if (editionsSection) editionsSection.setAttribute('data-hover-edition', '2026');
+                    if (watermark) watermark.textContent = '2026';
+                    if (subtitleEl) subtitleEl.textContent = defaultSubtitle;
+                });
+            }
         })();
     </script>
 </body>
